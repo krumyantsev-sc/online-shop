@@ -25,8 +25,6 @@ public class MetadataExtractor {
         metadata.put("Keywords", info.getKeywords());
         metadata.put("Creator", info.getCreator());
         metadata.put("Producer", info.getProducer());
-
-        // Remember to close the pdf document
         document.close();
 
         return metadata;
