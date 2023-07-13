@@ -1,20 +1,20 @@
-package com.scand.bookshop.service;
+package com.scand.bookshop.service.Metadataextractor;
 
-
+import lombok.Getter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-public class MetadataExtractor {
 
-    public static Map<String, String> extractPdfMetadata(MultipartFile file) throws IOException {
+public class PdfExtractor implements Extractor {
+    @Getter
+    private final String extension = "pdf";
+
+    @Override
+    public Map<String, String> extractMetaData(MultipartFile file) throws IOException {
         PDDocument document = PDDocument.load(file.getInputStream());
         PDDocumentInformation info = document.getDocumentInformation();
 
@@ -29,4 +29,8 @@ public class MetadataExtractor {
 
         return metadata;
     }
+
+
+
+
 }

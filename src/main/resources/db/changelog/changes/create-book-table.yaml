@@ -14,7 +14,7 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: uuid
+                  name: book_id
                   type: varchar(255)
                   constraints:
                     nullable: false
@@ -23,24 +23,24 @@ databaseChangeLog:
                   name: title
                   type: varchar(255)
                   constraints:
-                    nullable: true
+                    nullable: false
               - column:
                   name: genre
                   type: varchar(255)
                   constraints:
-                    nullable: true
+                    nullable: false
               - column:
                   name: price
                   type: double
                   constraints:
-                    nullable: true
+                    nullable: false
               - column:
                   name: author
                   type: varchar(255)
                   constraints:
-                    nullable: true
+                    nullable: false
               - column:
                   name: file_path
                   type: varchar(255)
                   constraints:
-                    nullable: true
+                    nullable: false

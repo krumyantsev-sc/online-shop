@@ -1,23 +1,14 @@
 package com.scand.bookshop.service;
 
+import com.scand.bookshop.dto.BookResponseDTO;
 import com.scand.bookshop.entity.Book;
 import com.scand.bookshop.repository.BookRepository;
-import com.scand.bookshop.dtos.BookRequestDTO;
-import com.scand.bookshop.dtos.BookResponseDTO;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
-
-import static com.scand.bookshop.service.MetadataExtractor.extractPdfMetadata;
 
 @Service
 public class BookService {
@@ -28,53 +19,36 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    public BookResponseDTO createBook(MultipartFile file) throws IOException {
-        Map<String, String> metadata = extractPdfMetadata(file);
+    public Book createBook(Map<String, String> metadata, String extension) {
         Book book = new Book();
         book.setTitle(metadata.get("Title"));
         book.setAuthor(metadata.get("Author"));
         book.setGenre(metadata.get("Subject"));
         String uniqueFilename = UUID.randomUUID().toString();
-        String originalFilename = file.getOriginalFilename();
-        String extension = originalFilename != null ? originalFilename.substring(originalFilename.lastIndexOf('.')) : "";
-        Path path = Paths.get("uploads/" + uniqueFilename + extension);
-        if (!Files.exists(path.getParent())) {
-            Files.createDirectories(path.getParent());
-        }
-        Files.write(path, file.getBytes());
-        book.setFilePath(path.toString());
-
         book.setUuid(uniqueFilename);
+        book.setFilePath("uploads/" + uniqueFilename + "." + extension);
         book = bookRepository.save(book);
-
-        return convertEntityToDTO(book);
+        return book;
     }
 
-    public Optional<BookResponseDTO> getBookByUuid(String uuid) {
-        Optional<Book> bookOptional = bookRepository.findByUuid(uuid);
-        return bookOptional.map(this::convertEntityToDTO);
+    public Optional<Book> getBookByUuid(String uuid) {
+        return bookRepository.findByUuid(uuid);
     }
 
-    public void deleteBookByUuid(String uuid) {
-        bookRepository.deleteByUuid(uuid);
+    public void deleteBook(Book book) {
+        bookRepository.delete(book);
     }
 
-    public BookResponseDTO updateBook(String uuid, BookRequestDTO bookRequestDTO) {
-        Optional<Book> bookOptional = bookRepository.findByUuid(uuid);
-        if (bookOptional.isPresent()) {
-            Book book = bookOptional.get();
-            book.setTitle(bookRequestDTO.getTitle());
-            book.setGenre(bookRequestDTO.getGenre());
-            book.setPrice(bookRequestDTO.getPrice());
-            book.setAuthor(bookRequestDTO.getAuthor());
-            book = bookRepository.save(book);
-            return convertEntityToDTO(book);
-        } else {
-            throw new RuntimeException("Book not found");
-        }
+    public Book updateBook(Book book, String title, String genre, Double price, String author) {
+        book.setTitle(title);
+        book.setGenre(genre);
+        book.setPrice(price);
+        book.setAuthor(author);
+        book = bookRepository.save(book);
+        return book;
     }
 
-    private BookResponseDTO convertEntityToDTO(Book book) {
+    public BookResponseDTO convertEntityToDTO(Book book) {
         BookResponseDTO responseDTO = new BookResponseDTO();
         responseDTO.setTitle(book.getTitle());
         responseDTO.setGenre(book.getGenre());
@@ -84,19 +58,7 @@ public class BookService {
         return responseDTO;
     }
 
-    private BookResponseDTO convertToBookResponseDTO(Book book) {
-        BookResponseDTO responseDTO = new BookResponseDTO();
-        responseDTO.setTitle(book.getTitle());
-        responseDTO.setAuthor(book.getAuthor());
-        responseDTO.setGenre(book.getGenre());
-        responseDTO.setPrice(book.getPrice());
-        responseDTO.setUuid(book.getUuid());
-        return responseDTO;
-    }
-
-    public List<BookResponseDTO> getAllBooks() {
-        return bookRepository.findAll().stream()
-                .map(this::convertToBookResponseDTO)
-                .collect(Collectors.toList());
+    public List<Book> getAllBooks() {
+        return bookRepository.findAll();
     }
 }
