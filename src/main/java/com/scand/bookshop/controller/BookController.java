@@ -1,63 +1,46 @@
 package com.scand.bookshop.controller;
-import com.scand.bookshop.service.BookService;
-import com.scand.bookshop.dtos.BookRequestDTO;
-import com.scand.bookshop.dtos.BookResponseDTO;
+
+import com.scand.bookshop.dto.BookRequestDTO;
+import com.scand.bookshop.dto.BookResponseDTO;
+import com.scand.bookshop.facade.BookFacade;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
-
+@RequiredArgsConstructor
 @RestController
+@RequestMapping("books")
 public class BookController {
 
-    private final BookService bookService;
-
-    public BookController(BookService bookService) {
-        this.bookService = bookService;
-    }
+    private final BookFacade bookFacade;
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<BookResponseDTO> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
-        if (file.isEmpty()) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        String originalFilename = file.getOriginalFilename();
-        if (originalFilename == null || !(originalFilename.endsWith(".pdf"))) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok(bookService.createBook(file));
+    public BookResponseDTO uploadFile(@RequestParam("file") @NotNull MultipartFile file){
+        return bookFacade.uploadBook(file);
     }
 
-    @GetMapping("/books")
-    public ResponseEntity<List<BookResponseDTO>> getAllBooks() {
-        List<BookResponseDTO> books = bookService.getAllBooks();
-        return ResponseEntity.ok(books);
+    @GetMapping("/")
+    public List<BookResponseDTO> getAllBooks() {
+        return bookFacade.getAllBooks();
     }
 
-    @GetMapping("/books/{uuid}")
-    public ResponseEntity<BookResponseDTO> getBook(@PathVariable String uuid) {
-        return bookService.getBookByUuid(uuid)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/{uuid}")
+    public BookResponseDTO getBook(@PathVariable String uuid) {
+        return bookFacade.getBook(uuid);
     }
 
-    @DeleteMapping("/books/{uuid}")
-    public ResponseEntity<Void> deleteBook(@PathVariable String uuid) {
-        bookService.deleteBookByUuid(uuid);
-        return ResponseEntity.ok().build();
+    @DeleteMapping("/{uuid}")
+    public void deleteBook(@PathVariable String uuid) {
+        bookFacade.deleteBook(uuid);
     }
 
-    @PostMapping("/books/{uuid}/update")
-    public ResponseEntity<BookResponseDTO> updateBook(@PathVariable String uuid, @RequestBody BookRequestDTO updatedBook) {
-        try {
-            return ResponseEntity.ok(bookService.updateBook(uuid, updatedBook));
-        } catch (RuntimeException ex) {
-            return ResponseEntity.notFound().build();
-        }
+    @PostMapping("/{uuid}/update")
+    public BookResponseDTO updateBook(@PathVariable String uuid, @RequestBody @Valid BookRequestDTO updatedBook) {
+       return bookFacade.updateBook(uuid, updatedBook);
     }
 }
