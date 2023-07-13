@@ -1,10 +1,7 @@
 package com.scand.bookshop.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,4 +33,12 @@ public class Book {
 
     @Column(name = "book_id", nullable = false)
     private String uuid;
+
+    public Book(String title, String author, String subject, String uniqueFilename, String filePath) {
+        this.title = title;
+        this.author = author;
+        this.genre = subject;
+        this.uuid = uniqueFilename;
+        this.filePath = filePath;
+    }
 }

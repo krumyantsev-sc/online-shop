@@ -4,6 +4,7 @@ import com.scand.bookshop.dto.BookResponseDTO;
 import com.scand.bookshop.entity.Book;
 import com.scand.bookshop.repository.BookRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -19,19 +20,16 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    public Book createBook(Map<String, String> metadata, String extension) {
-        Book book = new Book();
-        book.setTitle(metadata.get("Title"));
-        book.setAuthor(metadata.get("Author"));
-        book.setGenre(metadata.get("Subject"));
+    @Transactional
+    public Book createBook(String title, String author, String subject, String extension) {
         String uniqueFilename = UUID.randomUUID().toString();
-        book.setUuid(uniqueFilename);
-        book.setFilePath("uploads/" + uniqueFilename + "." + extension);
+        String filePath = "uploads/" + uniqueFilename + "." + extension;
+        Book book = new Book(title,author,subject,uniqueFilename, filePath);
         book = bookRepository.save(book);
         return book;
     }
 
-    public Optional<Book> getBookByUuid(String uuid) {
+    public Optional<Book> findBookByUuid(String uuid) {
         return bookRepository.findByUuid(uuid);
     }
 
@@ -39,24 +37,16 @@ public class BookService {
         bookRepository.delete(book);
     }
 
+    @Transactional
     public Book updateBook(Book book, String title, String genre, Double price, String author) {
         book.setTitle(title);
         book.setGenre(genre);
         book.setPrice(price);
         book.setAuthor(author);
-        book = bookRepository.save(book);
         return book;
     }
 
-    public BookResponseDTO convertEntityToDTO(Book book) {
-        BookResponseDTO responseDTO = new BookResponseDTO();
-        responseDTO.setTitle(book.getTitle());
-        responseDTO.setGenre(book.getGenre());
-        responseDTO.setPrice(book.getPrice());
-        responseDTO.setAuthor(book.getAuthor());
-        responseDTO.setUuid(book.getUuid());
-        return responseDTO;
-    }
+
 
     public List<Book> getAllBooks() {
         return bookRepository.findAll();

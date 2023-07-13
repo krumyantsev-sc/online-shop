@@ -6,6 +6,6 @@ import java.io.IOException;
 import java.util.Map;
 
 public interface Extractor {
-    Map<String, String> extractMetaData(MultipartFile file) throws IOException;
+    Metadata extractMetaData(MultipartFile file) throws IOException;
     String getExtension();
 }
