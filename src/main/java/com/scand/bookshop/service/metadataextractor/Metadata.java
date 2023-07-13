@@ -1,4 +1,4 @@
-package com.scand.bookshop.service.Metadataextractor;
+package com.scand.bookshop.service.metadataextractor;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,4 +15,5 @@ public class Metadata {
     private String subject;
     private String producer;
     private String creator;
+    private byte[] content;
 }

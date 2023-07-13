@@ -1,16 +1,13 @@
-package com.scand.bookshop.service.Metadataextractor;
+package com.scand.bookshop.service.metadataextractor;
 
-import lombok.Getter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 
 @Component
 public class EpubExtractor implements Extractor {
 
     @Override
-    public Metadata extractMetaData(MultipartFile file) throws IOException {
+    public Metadata extractMetaData(MultipartFile file) {
         return new Metadata();
     }
 

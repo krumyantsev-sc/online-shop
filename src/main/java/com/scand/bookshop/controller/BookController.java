@@ -1,14 +1,15 @@
 package com.scand.bookshop.controller;
-import com.scand.bookshop.facade.BookFacade;
+
 import com.scand.bookshop.dto.BookRequestDTO;
 import com.scand.bookshop.dto.BookResponseDTO;
+import com.scand.bookshop.facade.BookFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -39,7 +40,7 @@ public class BookController {
     }
 
     @PostMapping("/{uuid}/update")
-    public BookResponseDTO updateBook(@PathVariable String uuid, @RequestBody BookRequestDTO updatedBook) {
+    public BookResponseDTO updateBook(@PathVariable String uuid, @RequestBody @Valid BookRequestDTO updatedBook) {
        return bookFacade.updateBook(uuid, updatedBook);
     }
 }

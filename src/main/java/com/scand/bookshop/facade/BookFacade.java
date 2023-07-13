@@ -5,18 +5,14 @@ import com.scand.bookshop.dto.BookResponseDTO;
 import com.scand.bookshop.dto.DTOConverter;
 import com.scand.bookshop.entity.Book;
 import com.scand.bookshop.service.BookService;
-import com.scand.bookshop.service.Metadataextractor.Extractor;
-import com.scand.bookshop.service.Metadataextractor.Metadata;
+import com.scand.bookshop.service.metadataextractor.Extractor;
+import com.scand.bookshop.service.metadataextractor.Metadata;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -27,7 +23,6 @@ public class BookFacade {
     private final BookService bookService;
     private final List<Extractor> extractors;
 
-    @Valid
     public BookResponseDTO uploadBook(MultipartFile file) {
         if (file.isEmpty()) {
             throw new IllegalArgumentException("File is empty");
@@ -41,25 +36,23 @@ public class BookFacade {
                 .filter(fileExtractor -> fileExtractor.getExtension().equals(extension))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("No extractor found for the extension"));
-        try {
-            Metadata metadata = extractor.extractMetaData(file);
-            Book book = bookService.createBook(metadata.getTitle(), metadata.getAuthor(), metadata.getSubject(), extension);
-            Path path = Paths.get(book.getFilePath());
-            Files.write(path, file.getBytes());
-            return DTOConverter.convertEntityToDTO(book);
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Error writing a file on disk");
-        }
+        Metadata metadata = extractor.extractMetaData(file);
+        Book book = bookService.createBook(metadata.getTitle(),
+                metadata.getAuthor(),
+                metadata.getSubject(),
+                extension,
+                metadata.getContent());
+        return DTOConverter.toDTO(book);
     }
 
     public List<BookResponseDTO> getAllBooks() {
         return bookService.getAllBooks().stream()
-                .map(DTOConverter::convertEntityToDTO)
+                .map(DTOConverter::toDTO)
                 .collect(Collectors.toList());
     }
 
     public BookResponseDTO getBook(String uuid) {
-        return DTOConverter.convertEntityToDTO(bookService.findBookByUuid(uuid)
+        return DTOConverter.toDTO(bookService.findBookByUuid(uuid)
                 .orElseThrow(() -> new NoSuchElementException("Book not found")));
     }
 
@@ -69,8 +62,7 @@ public class BookFacade {
         bookService.deleteBook(book);
     }
 
-    @Valid
-    public BookResponseDTO updateBook(String uuid, @RequestBody BookRequestDTO updatedBook) {
+    public BookResponseDTO updateBook(String uuid, BookRequestDTO updatedBook) {
         Book book = bookService.findBookByUuid(uuid)
                 .orElseThrow(() -> new NoSuchElementException("Book not found"));
         book = bookService.updateBook(book,
@@ -79,6 +71,6 @@ public class BookFacade {
                 updatedBook.getPrice(),
                 updatedBook.getAuthor()
         );
-        return DTOConverter.convertEntityToDTO(book);
+        return DTOConverter.toDTO(book);
     }
 }
