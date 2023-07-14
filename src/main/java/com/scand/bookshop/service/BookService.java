@@ -26,7 +26,7 @@ public class BookService {
     public Book createBook(String title, String author, String subject, String extension, byte[] content) {
         String uniqueFilename = UUID.randomUUID().toString();
         String filePath = "uploads/" + uniqueFilename + "." + extension;
-        Book book = new Book(null, title, subject, 0.0, author, uniqueFilename, filePath);
+        Book book = new Book(null, title, subject, 0.0, author, filePath,  uniqueFilename);
         book = bookRepository.save(book);
         writeFile(Paths.get(book.getFilePath()), content);
         return book;
