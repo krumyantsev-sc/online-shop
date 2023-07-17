@@ -1,5 +1,6 @@
 package com.scand.bookshop.exception;
 
+import com.scand.bookshop.utility.ServerMessage;
 import org.hibernate.PropertyValueException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,5 +31,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(PropertyValueException.class)
     public ResponseEntity<String> propertyValueException(PropertyValueException e) {
         return ResponseEntity.badRequest().body(PROPERTY_VALUE_EXCEPTION_MESSAGE);
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<ServerMessage> UserAlreadyExistsException(PropertyValueException e) {
+        return ResponseEntity.badRequest().body(new ServerMessage("error",e.getMessage()));
     }
 }

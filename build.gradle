@@ -21,7 +21,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'junit:junit:4.13.1'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-//	implementation "org.springframework.boot:spring-boot-starter-security"
+	implementation "org.springframework.boot:spring-boot-starter-security"
 	implementation 'org.apache.pdfbox:pdfbox:2.0.25'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.liquibase:liquibase-core:4.23.0'
@@ -43,6 +43,10 @@ liquibase {
 			password 'root'
 		}
 	}
+}
+
+test {
+	maxParallelForks = 1
 }
 
 tasks.named('test') {

@@ -7,6 +7,7 @@ import com.scand.bookshop.repository.BookRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -26,6 +27,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class BookControllerTests {
 
+    @LocalServerPort
+    private int port;
+
     @Autowired
     private BookRepository bookRepository;
 
@@ -44,7 +48,7 @@ public class BookControllerTests {
     public void shouldUploadBook() {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<MultiValueMap<String, Object>> requestEntity = createEntityWithFile("src/test/resources/files/book1.pdf");
-        ResponseEntity<BookResponseDTO> response = restTemplate.postForEntity("http://localhost:8054/books/upload", requestEntity, BookResponseDTO.class);
+        ResponseEntity<BookResponseDTO> response = restTemplate.postForEntity("http://localhost:" + port + "/books/upload", requestEntity, BookResponseDTO.class);
         assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().getUuid()).isNotNull();
@@ -56,7 +60,7 @@ public class BookControllerTests {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<MultiValueMap<String, Object>> requestEntity = createEntityWithFile("src/test/resources/files/bg.jpg");
         assertThrows(org.springframework.web.client.HttpClientErrorException.BadRequest.class, () -> {
-            restTemplate.postForEntity("http://localhost:8054/books/upload", requestEntity, BookResponseDTO.class);
+            restTemplate.postForEntity("http://localhost:" + port + "/books/upload", requestEntity, BookResponseDTO.class);
         });
     }
 
@@ -65,7 +69,7 @@ public class BookControllerTests {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<MultiValueMap<String, Object>> requestEntity = createEntityWithFile("");
         assertThrows(org.springframework.web.client.HttpClientErrorException.BadRequest.class, () -> {
-            restTemplate.postForEntity("http://localhost:8054/books/upload", requestEntity, BookResponseDTO.class);
+            restTemplate.postForEntity("http://localhost:" + port + "/books/upload", requestEntity, BookResponseDTO.class);
         });
     }
 
@@ -76,16 +80,16 @@ public class BookControllerTests {
         book = bookRepository.save(book);
         BookRequestDTO bookRequestDto = new BookRequestDTO("new title", "new genre", 1.00, "new author", null);
         ResponseEntity<BookResponseDTO> response =
-                restTemplate.postForEntity("http://localhost:8054/books/" + book.getUuid() + "/update",
+                restTemplate.postForEntity("http://localhost:" + port + "/books/" + book.getUuid() + "/update",
                         bookRequestDto,
                         BookResponseDTO.class);
         Optional<Book> updatedBook = bookRepository.findByUuid(book.getUuid());
         assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
         assertThat(response.getBody()).isNotNull();
         assertThat(updatedBook).isPresent();
-        assertThat(updatedBook.get().getTitle().equals(bookRequestDto.getTitle())).isTrue();
-        assertThat(updatedBook.get().getAuthor().equals(bookRequestDto.getAuthor())).isTrue();
-        assertThat(updatedBook.get().getGenre().equals(bookRequestDto.getGenre())).isTrue();
+        assertThat(updatedBook.get().getTitle()).isEqualTo(bookRequestDto.getTitle());
+        assertThat(updatedBook.get().getAuthor()).isEqualTo(bookRequestDto.getAuthor());
+        assertThat(updatedBook.get().getGenre()).isEqualTo(bookRequestDto.getGenre());
         assertThat(updatedBook.get().getPrice() == (bookRequestDto.getPrice())).isTrue();
     }
 
@@ -97,7 +101,7 @@ public class BookControllerTests {
         BookRequestDTO bookRequestDto = new BookRequestDTO("new title", "new genre", 1.00, null, null);
         String uuid = book.getUuid();
         assertThrows(org.springframework.web.client.HttpClientErrorException.BadRequest.class, () -> {
-            restTemplate.postForEntity("http://localhost:8054/books/" + uuid + "/update",
+            restTemplate.postForEntity("http://localhost:" + port + "/books/" + uuid + "/update",
                     bookRequestDto,
                     BookResponseDTO.class);
         });
