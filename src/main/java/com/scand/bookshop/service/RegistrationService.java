@@ -14,6 +14,7 @@ public class RegistrationService {
     private final UserRepository userRepository;
 
     public User register(String username, String hashPassword, String email, LocalDateTime regDate) {
+        System.out.println(username+hashPassword+email+regDate+"USER");
         User user = new User(null, java.util.UUID.randomUUID(),username,hashPassword,email,regDate, User.Role.USER);
         user = userRepository.save(user);
         return user;

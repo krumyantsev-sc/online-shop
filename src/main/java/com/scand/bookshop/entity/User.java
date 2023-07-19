@@ -15,14 +15,15 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "user_id", nullable = false, unique = true)
+    @Column(name = "uuid", nullable = false, unique = true)
     private UUID uuid;
 
     @Column(name = "login", nullable = false, unique = true)
