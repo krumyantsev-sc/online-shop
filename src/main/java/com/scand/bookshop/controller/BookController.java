@@ -26,7 +26,7 @@ public class BookController {
         return bookFacade.uploadBook(file);
     }
 
-    @GetMapping("/getBooks")
+    @GetMapping("/list")
     public List<BookResponseDTO> getAllBooks() {
         return bookFacade.getAllBooks();
     }

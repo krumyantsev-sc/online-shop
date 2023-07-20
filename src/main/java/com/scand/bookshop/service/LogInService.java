@@ -24,7 +24,7 @@ public class LogInService {
     public JwtResponse logIn(String username, String password) {
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        //SecurityContextHolder.getContext().setAuthentication(authentication);
         return generateToken(authentication);
     }
 
