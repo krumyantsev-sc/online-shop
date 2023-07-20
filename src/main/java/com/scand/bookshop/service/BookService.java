@@ -1,18 +1,13 @@
 package com.scand.bookshop.service;
 
-import com.scand.bookshop.dto.BookResponseDTO;
 import com.scand.bookshop.entity.Book;
 import com.scand.bookshop.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -21,23 +16,16 @@ import java.util.UUID;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final FileService fileService;
 
     @Transactional
     public Book createBook(String title, String author, String subject, String extension, byte[] content) {
         String uniqueFilename = UUID.randomUUID().toString();
         String filePath = "uploads/" + uniqueFilename + "." + extension;
-        Book book = new Book(null, title, subject, 0.0, author, uniqueFilename, filePath);
+        Book book = new Book(null, title, subject, 0.0, author, filePath,  uniqueFilename);
         book = bookRepository.save(book);
-        writeFile(Paths.get(book.getFilePath()), content);
+        fileService.writeFile(Paths.get(book.getFilePath()), content);
         return book;
-    }
-
-    private void writeFile(Path path, byte[] content) {
-        try {
-            Files.write(path, content);
-        } catch (IOException e) {
-            throw new RuntimeException("Error");
-        }
     }
 
     public Optional<Book> findBookByUuid(String uuid) {
@@ -50,6 +38,7 @@ public class BookService {
 
     @Transactional
     public Book updateBook(Book book, String title, String genre, Double price, String author) {
+        book = bookRepository.getReferenceById(book.getId());
         book.setTitle(title);
         book.setGenre(genre);
         book.setPrice(price);
