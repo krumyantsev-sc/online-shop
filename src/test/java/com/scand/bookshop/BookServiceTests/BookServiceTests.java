@@ -84,11 +84,10 @@ public class BookServiceTests {
         String newTitle = "The New Book";
         String newAuthor = "Jane Doe";
         Double newPrice = 10.0;
-        book = bookService.updateBook(book, newTitle, "new genre", newPrice, newAuthor);
+        book = bookService.updateBook(book, newTitle, "new genre", newAuthor);
         Optional<Book> newBook = bookService.findBookByUuid(book.getUuid());
         assertThat(newBook).isPresent();
         assertThat(newBook.get().getTitle()).isEqualTo(newTitle);
         assertThat(book.getAuthor()).isEqualTo(newAuthor);
-        assertThat(book.getPrice()).isEqualTo(newPrice);
     }
 }
