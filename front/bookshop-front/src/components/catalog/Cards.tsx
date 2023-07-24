@@ -7,10 +7,11 @@ import Card from "./Card";
 import "../../styles/Catalog.css"
 import AddCard from "./AddCard";
 import {useAuth} from "../auth/context/AuthContextProvider";
+import {Roles} from "../../enums/Roles";
 
 
 const Cards = () => {
-    const {isAdmin} = useAuth();
+    const {roles} = useAuth();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [books, setBooks] = useState<IBook[]>([]);
     const navigate = useNavigate();
@@ -53,7 +54,7 @@ const Cards = () => {
                         getBooksFromServer={getBooksFromServer}
                     />
                 ))}
-                {isAdmin &&
+                {roles.includes(Roles.Admin) &&
                 <AddCard getBooksFromServer={getBooksFromServer}/>}
             </div>
         </div>

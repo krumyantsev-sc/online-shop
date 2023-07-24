@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from 'react';
-import { useAuth } from './context/AuthContextProvider';
+import {useAuth} from './context/AuthContextProvider';
 import {Button, Grid, Paper, TextField, Typography} from '@mui/material';
 import AuthService from "../../API/AuthService";
 import Modal from "../util/Modal"
@@ -10,7 +10,7 @@ interface LoginFormProps {
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({setIsLoginForm}) => {
-    const { login, isAuthenticated, giveAdminAccess } = useAuth();
+    const {login, isAuthenticated} = useAuth();
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -40,13 +40,9 @@ const LoginForm: React.FC<LoginFormProps> = ({setIsLoginForm}) => {
         try {
             let response = await AuthService.login({username, password});
             let data = await response.data;
-            console.log(data);
             localStorage.setItem('token', data.accessToken);
-            localStorage.setItem('role', data.roles[0]);
-            if (data.roles[0] === "ADMIN")  {
-                giveAdminAccess();
-            }
-            login();
+            localStorage.setItem('roles', data.roles);
+            login(data.roles);
             setTimeout(() => {
                 navigate('/catalog');
             }, 3000);
@@ -59,7 +55,7 @@ const LoginForm: React.FC<LoginFormProps> = ({setIsLoginForm}) => {
     return (
         <Grid container justifyContent="center">
             <Grid item xs={12} sm={8} md={6} lg={4}>
-                <Paper style={{ padding: 16, textAlign: "center" }}>
+                <Paper style={{padding: 16, textAlign: "center"}}>
                     <Typography variant="h5" component="h2">
                         Login
                     </Typography>
@@ -86,7 +82,7 @@ const LoginForm: React.FC<LoginFormProps> = ({setIsLoginForm}) => {
                             variant="contained"
                             color="primary"
                             type="submit"
-                            style={{ marginTop: 16 }}
+                            style={{marginTop: 16}}
                             disabled={usernameError}
                         >
                             Login
@@ -97,14 +93,14 @@ const LoginForm: React.FC<LoginFormProps> = ({setIsLoginForm}) => {
                             color="primary"
                             type="button"
                             onClick={() => setIsLoginForm(false)}
-                            style={{ marginTop: 16 }}
+                            style={{marginTop: 16}}
                         >
                             Register
                         </Button>
                     </form>
                 </Paper>
             </Grid>
-            <Modal open={open} modalText={modalText}  handleClose={handleClose}/>
+            <Modal open={open} modalText={modalText} handleClose={handleClose}/>
         </Grid>
     );
 };

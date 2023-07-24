@@ -13,6 +13,7 @@ const Header = () => {
 
     useEffect(() => {
         console.log(isAuthenticated);
+        console.log()
     }, [])
 
     useEffect(() => {
@@ -22,7 +23,6 @@ const Header = () => {
     return (
         <div className={"header-container"}>
             <div className="menu-container">
-
                 <div className="logo-container">
                     <Link to={"/"}>
                         <BookOnlineIcon className={"logo-icon"}/>

@@ -10,9 +10,9 @@ const AuthPage = () => {
     return (
         <div className={"login-form-container"}>
             <div className="login-form-button-container">
-                    {isLoginForm ?
-                        <LoginForm setIsLoginForm={setIsLoginForm}/> :
-                        <RegistrationForm setIsLoginForm={setIsLoginForm}/>}
+                {isLoginForm ?
+                    <LoginForm setIsLoginForm={setIsLoginForm}/> :
+                    <RegistrationForm setIsLoginForm={setIsLoginForm}/>}
             </div>
         </div>
     );
