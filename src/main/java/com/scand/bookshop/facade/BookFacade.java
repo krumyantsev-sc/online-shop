@@ -3,11 +3,15 @@ package com.scand.bookshop.facade;
 import com.scand.bookshop.dto.BookRequestDTO;
 import com.scand.bookshop.dto.BookResponseDTO;
 import com.scand.bookshop.dto.DTOConverter;
+import com.scand.bookshop.dto.PageResponseDTO;
 import com.scand.bookshop.entity.Book;
 import com.scand.bookshop.service.BookService;
 import com.scand.bookshop.service.metadataextractor.Extractor;
 import com.scand.bookshop.service.metadataextractor.Metadata;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,6 +47,14 @@ public class BookFacade {
                 extension,
                 metadata.getContent());
         return DTOConverter.toDTO(book);
+    }
+
+    public PageResponseDTO getBooksPage(int pageNumber, int pageSize) {
+        System.out.println(pageNumber + pageSize);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Book> bookPage = bookService.getAllBooks(pageable);
+        int totalPages = bookPage.getTotalPages();
+        return new PageResponseDTO(bookPage.map(DTOConverter::toDTO).getContent(), totalPages);
     }
 
     public List<BookResponseDTO> getAllBooks() {

@@ -14,18 +14,24 @@ const Cards = () => {
     const {roles} = useAuth();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [books, setBooks] = useState<IBook[]>([]);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [pageSize, setPageSize] = useState<number>(10);
+    const [totalPages, setTotalPages] = useState<number>(0);
+
     const navigate = useNavigate();
 
-    async function getBooksFromServer() {
+    async function getBooksFromServer(page: number, size: number) {
         try {
-            const response = await BookService.getBooks();
+            setIsLoading(true);
+            const response = await BookService.getBooks(page, size);
             const data = await response.data;
             if (data) {
-                setBooks(data);
+                setBooks(response.data.books);
+                setTotalPages(response.data.totalPages);
                 setIsLoading(false);
             }
         } catch (error) {
-            console.error('Ошибка при получении игр:', error);
+            console.error('Ошибка при получении книг:', error);
             navigate('/');
         } finally {
             setIsLoading(false);
@@ -33,8 +39,8 @@ const Cards = () => {
     }
 
     useEffect(() => {
-        getBooksFromServer();
-    }, []);
+        getBooksFromServer(currentPage, pageSize);
+    }, [currentPage, pageSize]);
 
     if (isLoading) {
         return <Loading/>;
@@ -51,11 +57,26 @@ const Cards = () => {
                         genre={book.genre}
                         price={book.price}
                         uuid={book.uuid}
-                        getBooksFromServer={getBooksFromServer}
+                        getBooksFromServer={() => getBooksFromServer(currentPage, pageSize)}
                     />
                 ))}
                 {roles.includes(Roles.Admin) &&
-                <AddCard getBooksFromServer={getBooksFromServer}/>}
+                <AddCard getBooksFromServer={() => getBooksFromServer(currentPage, pageSize)}/>}
+            </div>
+            <div className="pagination">
+                <button
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage(currentPage - 1)}
+                >
+                    Previous
+                </button>
+                <span>{currentPage} / {totalPages}</span>
+                <button
+                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage(currentPage + 1)}
+                >
+                    Next
+                </button>
             </div>
         </div>
     );
