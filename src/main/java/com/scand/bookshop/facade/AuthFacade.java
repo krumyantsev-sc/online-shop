@@ -26,6 +26,9 @@ public class AuthFacade {
                 || userService.findUserByUsername(userData.getUsername()).isPresent()) {
             throw new UserAlreadyExistsException("User already exists");
         }
+        for(int i = 0; i < 100; i++) {
+            System.out.println("test");
+        }
         registrationService.register(userData.getUsername(),
                 PasswordEncryptor.encryptPassword(userData.getPassword()),
                 userData.getEmail(),
@@ -34,6 +37,9 @@ public class AuthFacade {
     }
 
     public JwtResponse authenticateUser(UserLoginDTO loginRequest) {
+        for(int i = 0; i < 100; i++) {
+            System.out.println("test");
+        }
         return logInService.logIn(loginRequest.getUsername(), loginRequest.getPassword());
     }
 }
