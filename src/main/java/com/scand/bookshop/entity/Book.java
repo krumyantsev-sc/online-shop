@@ -22,9 +22,6 @@ public class Book {
     @Column(name = "genre", nullable = false)
     private String genre;
 
-    @Column(name = "price", nullable = false)
-    private double price;
-
     @Column(name = "author", nullable = false)
     private String author;
 

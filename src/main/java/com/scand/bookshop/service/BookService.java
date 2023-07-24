@@ -22,7 +22,7 @@ public class BookService {
     public Book createBook(String title, String author, String subject, String extension, byte[] content) {
         String uniqueFilename = UUID.randomUUID().toString();
         String filePath = "uploads/" + uniqueFilename + "." + extension;
-        Book book = new Book(null, title, subject, 0.0, author, filePath,  uniqueFilename);
+        Book book = new Book(null, title, subject, author, filePath,  uniqueFilename);
         book = bookRepository.save(book);
         fileService.writeFile(Paths.get(book.getFilePath()), content);
         return book;
@@ -37,11 +37,10 @@ public class BookService {
     }
 
     @Transactional
-    public Book updateBook(Book book, String title, String genre, Double price, String author) {
+    public Book updateBook(Book book, String title, String genre, String author) {
         book = bookRepository.getReferenceById(book.getId());
         book.setTitle(title);
         book.setGenre(genre);
-        book.setPrice(price);
         book.setAuthor(author);
         return book;
     }

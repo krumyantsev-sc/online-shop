@@ -7,7 +7,6 @@ public class DTOConverter {
         BookResponseDTO responseDTO = new BookResponseDTO();
         responseDTO.setTitle(book.getTitle());
         responseDTO.setGenre(book.getGenre());
-        responseDTO.setPrice(book.getPrice());
         responseDTO.setAuthor(book.getAuthor());
         responseDTO.setUuid(book.getUuid());
         return responseDTO;

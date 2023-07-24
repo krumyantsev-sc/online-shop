@@ -1,0 +1,10 @@
+export type UserLoginCredentials = {
+    username: string;
+    password: string;
+};
+
+export type UserRegistrationCredentials = {
+    username: string;
+    password: string;
+    email: string;
+};
