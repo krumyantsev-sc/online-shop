@@ -3,6 +3,8 @@ package com.scand.bookshop.service;
 import com.scand.bookshop.entity.Book;
 import com.scand.bookshop.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +47,9 @@ public class BookService {
         return book;
     }
 
+    public Page<Book> getAllBooks(Pageable pageable) {
+        return bookRepository.findAll(pageable);
+    }
 
     public List<Book> getAllBooks() {
         return bookRepository.findAll();

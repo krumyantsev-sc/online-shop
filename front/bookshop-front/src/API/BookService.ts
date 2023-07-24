@@ -7,8 +7,13 @@ interface BookData {
 }
 
 export default class BookService {
-    static getBooks = async () => {
-        return await axiosInstance.get(`${process.env.REACT_APP_API_URL}/books/list`, {withCredentials: true});
+    static getBooks = async (page: number, size: number) => {
+        return await axiosInstance.get(`${process.env.REACT_APP_API_URL}/books/list`, {
+            params: {
+                page: page,
+                size: size,
+            }, withCredentials: true
+        });
     };
 
     static uploadBook = async (formData: FormData) => {

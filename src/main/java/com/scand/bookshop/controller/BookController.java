@@ -2,8 +2,10 @@ package com.scand.bookshop.controller;
 
 import com.scand.bookshop.dto.BookRequestDTO;
 import com.scand.bookshop.dto.BookResponseDTO;
+import com.scand.bookshop.dto.PageResponseDTO;
 import com.scand.bookshop.facade.BookFacade;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +29,8 @@ public class BookController {
     }
 
     @GetMapping("/list")
-    public List<BookResponseDTO> getAllBooks() {
-        return bookFacade.getAllBooks();
+    public PageResponseDTO getAllBooks(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
+            return bookFacade.getBooksPage(page, size);
     }
 
     @GetMapping("/{uuid}")
