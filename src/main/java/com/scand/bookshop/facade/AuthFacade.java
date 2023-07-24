@@ -29,10 +29,10 @@ public class AuthFacade {
         for(int i = 0; i < 100; i++) {
             System.out.println("test");
         }
-        registrationService.register(userData.getUsername(),
-                PasswordEncryptor.encryptPassword(userData.getPassword()),
-                userData.getEmail(),
-                LocalDateTime.now());
+//        registrationService.register(userData.getUsername(),
+//                PasswordEncryptor.encryptPassword(userData.getPassword()),
+//                userData.getEmail(),
+//                LocalDateTime.now());
         return new ServerMessage("success", "user registered successfully");
     }
 
