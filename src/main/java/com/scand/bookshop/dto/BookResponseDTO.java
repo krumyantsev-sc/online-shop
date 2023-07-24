@@ -8,7 +8,6 @@ import lombok.Setter;
 public class BookResponseDTO {
     private String title;
     private String genre;
-    private double price;
     private String author;
     private String uuid;
 }
