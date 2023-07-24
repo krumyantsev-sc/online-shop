@@ -46,10 +46,6 @@ public class BookFacade {
     }
 
     public List<BookResponseDTO> getAllBooks() {
-        System.out.println("test");
-        for(int i = 0; i < 100; i++) {
-            System.out.println("test");
-        }
         return bookService.getAllBooks().stream()
                 .map(DTOConverter::toDTO)
                 .collect(Collectors.toList());
