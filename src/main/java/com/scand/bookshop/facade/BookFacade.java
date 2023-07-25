@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,7 +52,7 @@ public class BookFacade {
 
     public PageResponseDTO getBooksPage(int pageNumber, int pageSize) {
         System.out.println(pageNumber + pageSize);
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("id"));
         Page<Book> bookPage = bookService.getAllBooks(pageable);
         int totalPages = bookPage.getTotalPages();
         return new PageResponseDTO(bookPage.map(DTOConverter::toDTO).getContent(), totalPages);
