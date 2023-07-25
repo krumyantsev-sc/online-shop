@@ -29,8 +29,11 @@ public class BookController {
     }
 
     @GetMapping("/list")
-    public PageResponseDTO getAllBooks(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
-            return bookFacade.getBooksPage(page, size);
+    public PageResponseDTO getAllBooks(@RequestParam(defaultValue = "id") String sortField,
+                                       @RequestParam(defaultValue = "ASC") String sortDirection,
+                                       @RequestParam int page,
+                                       @RequestParam int size) {
+            return bookFacade.getBooksPage(page, size, sortField, sortDirection);
     }
 
     @GetMapping("/{uuid}")

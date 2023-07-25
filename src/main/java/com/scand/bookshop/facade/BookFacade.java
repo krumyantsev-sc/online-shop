@@ -50,9 +50,9 @@ public class BookFacade {
         return DTOConverter.toDTO(book);
     }
 
-    public PageResponseDTO getBooksPage(int pageNumber, int pageSize) {
-        System.out.println(pageNumber + pageSize);
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("id"));
+    public PageResponseDTO getBooksPage(int pageNumber, int pageSize, String sortField, String sortDirection) {
+        Sort.Direction direction = Sort.Direction.valueOf(sortDirection.toUpperCase());
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(direction, sortField));
         Page<Book> bookPage = bookService.getAllBooks(pageable);
         int totalPages = bookPage.getTotalPages();
         return new PageResponseDTO(bookPage.map(DTOConverter::toDTO).getContent(), totalPages);
