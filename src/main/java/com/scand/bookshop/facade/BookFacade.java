@@ -14,10 +14,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -50,10 +48,15 @@ public class BookFacade {
         return DTOConverter.toDTO(book);
     }
 
-    public PageResponseDTO getBooksPage(int pageNumber, int pageSize, String sortField, String sortDirection) {
+    public PageResponseDTO getBooksPage(int pageNumber, int pageSize, String sortField, String sortDirection, String searchTerm) {
         Sort.Direction direction = Sort.Direction.valueOf(sortDirection.toUpperCase());
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(direction, sortField));
-        Page<Book> bookPage = bookService.getAllBooks(pageable);
+        Page<Book> bookPage;
+        if (searchTerm == null) {
+            bookPage = bookService.getAllBooks(pageable);
+        } else {
+            bookPage = bookService.searchBooks(searchTerm, pageable);
+        }
         int totalPages = bookPage.getTotalPages();
         return new PageResponseDTO(bookPage.map(DTOConverter::toDTO).getContent(), totalPages);
     }

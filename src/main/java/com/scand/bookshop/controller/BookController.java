@@ -5,7 +5,6 @@ import com.scand.bookshop.dto.BookResponseDTO;
 import com.scand.bookshop.dto.PageResponseDTO;
 import com.scand.bookshop.facade.BookFacade;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -32,8 +30,9 @@ public class BookController {
     public PageResponseDTO getAllBooks(@RequestParam(defaultValue = "id") String sortField,
                                        @RequestParam(defaultValue = "ASC") String sortDirection,
                                        @RequestParam int page,
-                                       @RequestParam int size) {
-            return bookFacade.getBooksPage(page, size, sortField, sortDirection);
+                                       @RequestParam int size,
+                                       @RequestParam(required = false) String searchTerm) {
+        return bookFacade.getBooksPage(page, size, sortField, sortDirection, searchTerm);
     }
 
     @GetMapping("/{uuid}")

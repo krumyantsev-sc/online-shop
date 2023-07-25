@@ -113,3 +113,10 @@
 .cards-sort-container {
     display: flex;
 }
+
+.sort-search-container {
+    display: flex;
+    flex-direction: column;
+    height: 200px;
+    justify-content: space-evenly;
+}

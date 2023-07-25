@@ -25,7 +25,7 @@ public class BookService {
     public Book createBook(String title, String author, String subject, String extension, byte[] content) {
         String uniqueFilename = UUID.randomUUID().toString();
         String filePath = "uploads/" + uniqueFilename + "." + extension;
-        Book book = new Book(null, title, subject, author, filePath,  uniqueFilename);
+        Book book = new Book(null, title, subject, author, filePath, uniqueFilename);
         book = bookRepository.save(book);
         fileService.writeFile(Paths.get(book.getFilePath()), content);
         return book;
@@ -50,6 +50,10 @@ public class BookService {
 
     public Page<Book> getAllBooks(Pageable pageable) {
         return bookRepository.findAll(pageable);
+    }
+
+    public Page<Book> searchBooks(String searchTerm, Pageable pageable) {
+        return bookRepository.findByTitleContainingIgnoreCaseOrGenreContainingIgnoreCaseOrAuthorContainingIgnoreCase(searchTerm, searchTerm, searchTerm, pageable);
     }
 
     public List<Book> getAllBooks() {
