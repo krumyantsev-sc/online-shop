@@ -24,8 +24,6 @@ const Cards = () => {
 
     const handleSortChange = (value: string) => {
         const [field, direction] = value.split(':');
-        console.log(field, direction);
-        console.log(currentPage);
         setSortField(field);
         setSortDirection(direction);
         getBooksFromServer(currentPage, pageSize, field, direction);
@@ -52,7 +50,7 @@ const Cards = () => {
     }
 
     useEffect(() => {
-        getBooksFromServer(currentPage, pageSize, "id", "ASC");
+        getBooksFromServer(currentPage, pageSize, sortField, sortDirection);
     }, [currentPage, pageSize]);
 
     if (isLoading) {
