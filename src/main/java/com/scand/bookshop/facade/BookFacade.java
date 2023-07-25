@@ -9,6 +9,7 @@ import com.scand.bookshop.service.BookService;
 import com.scand.bookshop.service.metadataextractor.Extractor;
 import com.scand.bookshop.service.metadataextractor.Metadata;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -70,6 +73,12 @@ public class BookFacade {
     public BookResponseDTO getBook(String uuid) {
         return DTOConverter.toDTO(bookService.findBookByUuid(uuid)
                 .orElseThrow(() -> new NoSuchElementException("Book not found")));
+    }
+
+    public Resource getBookCover(String uuid) {
+        Book book = bookService.findBookByUuid(uuid)
+                .orElseThrow(() -> new NoSuchElementException("Book not found"));
+        return bookService.getCover(book);
     }
 
     public void deleteBook(String uuid) {

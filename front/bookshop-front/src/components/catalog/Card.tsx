@@ -1,12 +1,11 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import IBook from "./IBook";
 import "../../styles/Catalog.css"
-import cardImgPlaceholder from "../../assets/img/question.jpg"
 import SettingsIcon from '@mui/icons-material/Settings';
 import {useAuth} from "../auth/context/AuthContextProvider";
-import {FileUploadDialog} from "./FileUploadDialog";
 import BookModal from "./EditBookModal";
 import {Roles} from "../../enums/Roles";
+import ImageComponent from "./Image";
 
 interface CardBookProps extends IBook {
     getBooksFromServer: () => {};
@@ -32,7 +31,7 @@ const Card: React.FC<CardBookProps> = ({
     };
     return (
         <div className={"card"}>
-            <img src={cardImgPlaceholder} alt="bookImage"/>
+            <ImageComponent uuid={uuid}/>
             <div className="desc-container">
                 <span>Название: {title}</span><br/>
                 <span>Автор: {author}</span><br/>
