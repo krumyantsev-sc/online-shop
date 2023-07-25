@@ -7,14 +7,15 @@ interface BookData {
 }
 
 export default class BookService {
-    static getBooks = async (page: number, size: number, sortField: string, sortDirection: string) => {
-        console.log(sortField,sortDirection)
+    static getBooks = async (page: number, size: number, sortField: string, sortDirection: string, searchTerm: string | null) => {
+        console.log(sortField, sortDirection)
         return await axiosInstance.get(`${process.env.REACT_APP_API_URL}/books/list`, {
             params: {
                 page: page,
                 size: size,
                 sortField: sortField,
-                sortDirection: sortDirection
+                sortDirection: sortDirection,
+                searchTerm: searchTerm
             }, withCredentials: true
         });
     };

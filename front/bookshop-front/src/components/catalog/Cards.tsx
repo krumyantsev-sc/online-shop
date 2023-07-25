@@ -9,6 +9,7 @@ import AddCard from "./AddCard";
 import {useAuth} from "../auth/context/AuthContextProvider";
 import {Roles} from "../../enums/Roles";
 import SortMenu from "./SortMenu";
+import SearchBar from "./SearchBar";
 
 
 const Cards = () => {
@@ -21,6 +22,12 @@ const Cards = () => {
     const navigate = useNavigate();
     const [sortField, setSortField] = useState<string>("id");
     const [sortDirection, setSortDirection] = useState<string>("ASC");
+    const [searchTerm, setSearchTerm] = useState<string | null>(null);
+
+    const handleSearch = (searchWord: string) => {
+        setSearchTerm(searchWord);
+        getBooksFromServer(currentPage, pageSize, sortField, sortDirection);
+    };
 
     const handleSortChange = (value: string) => {
         const [field, direction] = value.split(':');
@@ -33,9 +40,8 @@ const Cards = () => {
     async function getBooksFromServer(page: number, size: number, field: string = "id", direction: string = "ASC") {
         try {
             setIsLoading(true);
-            const response = await BookService.getBooks(page - 1, size, field, direction);
+            const response = await BookService.getBooks(page - 1, size, field, direction, searchTerm);
             const data = await response.data;
-            console.log(response.data.books)
             if (data) {
                 setBooks(response.data.books);
                 setTotalPages(response.data.totalPages);
@@ -48,10 +54,9 @@ const Cards = () => {
             setIsLoading(false);
         }
     }
-
     useEffect(() => {
         getBooksFromServer(currentPage, pageSize, sortField, sortDirection);
-    }, [currentPage, pageSize]);
+    }, [searchTerm, currentPage, pageSize, sortField, sortDirection]);
 
     if (isLoading) {
         return <Loading/>;
@@ -60,7 +65,10 @@ const Cards = () => {
     return (
         <div className={"cards-container-wrapper"}>
             <div className="cards-sort-container">
-                <SortMenu sortField={sortField} sortDirection={sortDirection} onSortChange={handleSortChange}/>
+                <div className="sort-search-container">
+                    <SortMenu sortField={sortField} sortDirection={sortDirection} onSortChange={handleSortChange}/>
+                    <SearchBar onSearch={handleSearch}/>
+                </div>
                 <div className={"cards-container"}>
                     {books.map((book) => (
                         <Card
