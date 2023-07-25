@@ -8,7 +8,6 @@ interface BookData {
 
 export default class BookService {
     static getBooks = async (page: number, size: number, sortField: string, sortDirection: string, searchTerm: string | null) => {
-        console.log(sortField, sortDirection)
         return await axiosInstance.get(`${process.env.REACT_APP_API_URL}/books/list`, {
             params: {
                 page: page,
@@ -30,5 +29,15 @@ export default class BookService {
 
     static deleteBook = async (uuid: string) => {
         return await axiosInstance.delete(`${process.env.REACT_APP_API_URL}/books/${uuid}`, {withCredentials: true});
+    }
+
+    static getCover = async (uuid: string) => {
+        return await axiosInstance.get(`${process.env.REACT_APP_API_URL}/books/${uuid}/cover`, {
+            withCredentials: true,
+            responseType: 'arraybuffer',
+            headers: {
+                'Accept': 'image/png', // Укажите правильный тип изображения здесь
+            },
+        });
     }
 }

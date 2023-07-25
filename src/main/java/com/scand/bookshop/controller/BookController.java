@@ -5,7 +5,9 @@ import com.scand.bookshop.dto.BookResponseDTO;
 import com.scand.bookshop.dto.PageResponseDTO;
 import com.scand.bookshop.facade.BookFacade;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,6 +40,13 @@ public class BookController {
     @GetMapping("/{uuid}")
     public BookResponseDTO getBook(@PathVariable String uuid) {
         return bookFacade.getBook(uuid);
+    }
+
+    @GetMapping("/{uuid}/cover")
+    public ResponseEntity<Resource> getBookCover(@PathVariable String uuid) {
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_PNG)
+                .body(bookFacade.getBookCover(uuid));
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
