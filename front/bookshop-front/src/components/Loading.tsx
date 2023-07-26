@@ -16,8 +16,6 @@ const LoadingScreen = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  width: 100vw;
 `;
 
 const Title = styled.h1`

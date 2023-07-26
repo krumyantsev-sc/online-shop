@@ -11,12 +11,17 @@ import java.io.IOException;
 
 @Service
 public class BookCoverService {
-    public byte[] generateCover(byte[] data) {
+    public byte[] generateCover(byte[] data, int pageNum) {
         PDDocument document = getDocumentFromBytes(data);
         PDFRenderer pdfRenderer = new PDFRenderer(document);
-        BufferedImage image = getCoverBufferedImage(pdfRenderer);
+        BufferedImage image = getCoverBufferedImage(pdfRenderer, pageNum);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         writeImageToStream(image, baos);
+        try {
+            document.close();
+        } catch (IOException e) {
+            throw new RuntimeException("Error closing document");
+        }
         return baos.toByteArray();
     }
 
@@ -28,9 +33,9 @@ public class BookCoverService {
         }
     }
 
-    private BufferedImage getCoverBufferedImage(PDFRenderer pdfRenderer) {
+    private BufferedImage getCoverBufferedImage(PDFRenderer pdfRenderer, int pageNum) {
         try {
-            return pdfRenderer.renderImage(0);
+            return pdfRenderer.renderImage(pageNum);
         } catch (IOException e) {
             throw new RuntimeException("Error while creating cover image");
         }

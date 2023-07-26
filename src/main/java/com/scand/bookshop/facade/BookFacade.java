@@ -14,11 +14,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -81,6 +83,12 @@ public class BookFacade {
         return bookService.getCover(book);
     }
 
+    public List<String> getPreviewImages(String uuid) {
+        Book book = bookService.findBookByUuid(uuid)
+                .orElseThrow(() -> new NoSuchElementException("Book not found"));
+        return bookService.getPreviewImages(book);
+    }
+
     public void deleteBook(String uuid) {
         Book book = bookService.findBookByUuid(uuid)
                 .orElseThrow(() -> new NoSuchElementException("Book not found"));
@@ -96,5 +104,15 @@ public class BookFacade {
                 updatedBook.getAuthor()
         );
         return DTOConverter.toDTO(book);
+    }
+
+    public ResponseEntity<byte[]> downloadBook(String uuid){
+        Book book = bookService.findBookByUuid(uuid)
+                .orElseThrow(() -> new NoSuchElementException("Book not found"));
+        byte[] content = bookService.downloadBook(book);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", "book.pdf");
+        return new ResponseEntity<>(content, headers, HttpStatus.OK);
     }
 }

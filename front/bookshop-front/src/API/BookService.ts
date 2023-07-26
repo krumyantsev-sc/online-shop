@@ -36,8 +36,14 @@ export default class BookService {
             withCredentials: true,
             responseType: 'arraybuffer',
             headers: {
-                'Accept': 'image/png', // Укажите правильный тип изображения здесь
+                'Accept': 'image/png',
             },
+        });
+    }
+
+    static getPreview = async (uuid: string) => {
+        return await axiosInstance.get(`${process.env.REACT_APP_API_URL}/books/${uuid}/preview`, {
+            withCredentials: true,
         });
     }
 }
