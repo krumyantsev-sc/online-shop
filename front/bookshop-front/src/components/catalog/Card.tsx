@@ -6,6 +6,7 @@ import {useAuth} from "../auth/context/AuthContextProvider";
 import BookModal from "./EditBookModal";
 import {Roles} from "../../enums/Roles";
 import ImageComponent from "./Image";
+import PreviewModal from "./PreviewModal";
 
 interface CardBookProps extends IBook {
     getBooksFromServer: () => {};
@@ -20,42 +21,72 @@ const Card: React.FC<CardBookProps> = ({
                                            getBooksFromServer
                                        }) => {
     const {roles} = useAuth();
-    const [open, setOpen] = React.useState(false);
-
-    const handleClickOpen = () => {
-        setOpen(true);
+    const [openEdit, setOpenEdit] = React.useState(false);
+    const [openPreview, setOpenPreview] = React.useState(false);
+    const handleClickOpenEdit = () => {
+        setOpenEdit(true);
     };
 
-    const handleClose = () => {
-        setOpen(false);
+    const handleCloseEdit = () => {
+        setOpenEdit(false);
     };
+
+    const handleClickOpenPreview = () => {
+        setOpenPreview(true);
+    };
+
+    const handleClosePreview = () => {
+        setOpenPreview(false);
+    };
+
+    function downloadFile(url: string, filename: string) {
+        let link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
     return (
         <div className={"card"}>
-            <ImageComponent uuid={uuid}/>
+            <div
+                className="img-container"
+                onClick={handleClickOpenPreview}
+                style={{cursor: "pointer"}}
+            >
+                <ImageComponent
+                    uuid={uuid}
+                />
+            </div>
             <div className="desc-container">
                 <span>Название: {title}</span><br/>
                 <span>Автор: {author}</span><br/>
                 <span>Жанр: {genre}</span><br/>
             </div>
             <div className="card-buttons-container">
-                <div className="download-button">
+                <div className="download-button"
+                     onClick={() => {
+                         downloadFile(`${process.env.REACT_APP_API_URL}/books/${uuid}/download`, title)
+                     }}>
                     СКАЧАТЬ
                 </div>
                 {roles.includes(Roles.Admin) && <div className="edit-button">
                     <SettingsIcon
-                        onClick={handleClickOpen}
+                        onClick={handleClickOpenEdit}
                     />
                 </div>}
             </div>
             <BookModal
-                open={open}
-                handleClose={handleClose}
+                open={openEdit}
+                handleClose={handleCloseEdit}
                 getBooksFromServer={getBooksFromServer}
                 author={author}
                 genre={genre}
                 title={title}
                 uuid={uuid}
             />
+            <PreviewModal open={openPreview} handleClose={handleClosePreview} uuid={uuid}/>
         </div>
     );
 };

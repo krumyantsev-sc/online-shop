@@ -120,3 +120,18 @@
     height: 200px;
     justify-content: space-evenly;
 }
+
+.img-container-preview {
+    height: 600px;
+    width: 450px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.preview-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}

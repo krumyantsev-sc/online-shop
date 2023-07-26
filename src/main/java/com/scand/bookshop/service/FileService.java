@@ -2,6 +2,7 @@ package com.scand.bookshop.service;
 
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,6 +14,15 @@ public class FileService {
             Files.write(path, content);
         } catch (IOException e) {
             throw new RuntimeException("Error");
+        }
+    }
+
+    public byte[] readFile(String path) {
+        File file = new File(path);
+        try {
+            return Files.readAllBytes(file.toPath());
+        } catch (IOException e) {
+            throw new RuntimeException("Error reading file");
         }
     }
 }

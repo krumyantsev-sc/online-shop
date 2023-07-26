@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -47,6 +48,16 @@ public class BookController {
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_PNG)
                 .body(bookFacade.getBookCover(uuid));
+    }
+
+    @GetMapping("/{uuid}/preview")
+    public List<String> getPreview(@PathVariable String uuid) {
+        return bookFacade.getPreviewImages(uuid);
+    }
+
+    @GetMapping("/{uuid}/download")
+    public ResponseEntity<byte[]> downloadBook(@PathVariable String uuid) {
+        return bookFacade.downloadBook(uuid);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
