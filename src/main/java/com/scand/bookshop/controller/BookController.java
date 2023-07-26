@@ -2,9 +2,12 @@ package com.scand.bookshop.controller;
 
 import com.scand.bookshop.dto.BookRequestDTO;
 import com.scand.bookshop.dto.BookResponseDTO;
+import com.scand.bookshop.dto.PageResponseDTO;
 import com.scand.bookshop.facade.BookFacade;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,13 +30,34 @@ public class BookController {
     }
 
     @GetMapping("/list")
-    public List<BookResponseDTO> getAllBooks() {
-        return bookFacade.getAllBooks();
+    public PageResponseDTO getAllBooks(@RequestParam(defaultValue = "id") String sortField,
+                                       @RequestParam(defaultValue = "ASC") String sortDirection,
+                                       @RequestParam int page,
+                                       @RequestParam int size,
+                                       @RequestParam(required = false) String searchTerm) {
+        return bookFacade.getBooksPage(page, size, sortField, sortDirection, searchTerm);
     }
 
     @GetMapping("/{uuid}")
     public BookResponseDTO getBook(@PathVariable String uuid) {
         return bookFacade.getBook(uuid);
+    }
+
+    @GetMapping("/{uuid}/cover")
+    public ResponseEntity<Resource> getBookCover(@PathVariable String uuid) {
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_PNG)
+                .body(bookFacade.getBookCover(uuid));
+    }
+
+    @GetMapping("/{uuid}/preview")
+    public List<String> getPreview(@PathVariable String uuid) {
+        return bookFacade.getPreviewImages(uuid);
+    }
+
+    @GetMapping("/{uuid}/download")
+    public ResponseEntity<byte[]> downloadBook(@PathVariable String uuid) {
+        return bookFacade.downloadBook(uuid);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")

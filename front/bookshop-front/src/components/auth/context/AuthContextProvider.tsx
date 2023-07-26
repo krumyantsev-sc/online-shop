@@ -2,24 +2,18 @@ import React, {createContext, useContext, useState} from 'react';
 
 interface AuthContextInterface {
     isAuthenticated: boolean;
-    login: () => void;
+    login: (roles: string[]) => void;
     logout: () => void;
-    giveAdminAccess: () => void;
-    makeGuest: () => void;
-    isAdmin: boolean;
+    roles: string[];
 }
 
 const AuthContext = createContext<AuthContextInterface>({
     isAuthenticated: false,
-    login: () => {
+    login: (roles: string[]) => {
     },
     logout: () => {
     },
-    giveAdminAccess: () => {
-    },
-    makeGuest: () => {
-    },
-    isAdmin: false
+    roles: []
 });
 
 export const useAuth = () => {
@@ -29,38 +23,32 @@ export const useAuth = () => {
 interface AuthProviderProps extends React.PropsWithChildren<{}> {
 }
 
+const TOKEN_KEY = "token";
+const ROLES_KEY = "roles";
+
 export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
-        () => !!localStorage.getItem("token")
+        () => !!localStorage.getItem(TOKEN_KEY)
     );
-    const [isAdmin, setIsAdmin] = useState<boolean>(
-        () => localStorage.getItem("role") === "ADMIN"
-    );
+    const rolesString = localStorage.getItem(ROLES_KEY);
+    const [roles, setRoles] = useState<string[]>(rolesString ? rolesString.split(",") : []);
 
-    const login = () => {
+
+    const login = (roles: string[]) => {
         setIsAuthenticated(true);
+        setRoles(roles);
     };
 
     const logout = () => {
         setIsAuthenticated(false);
-        setIsAdmin(false);
-        localStorage.removeItem("token");
-        localStorage.removeItem("role");
+        setRoles([]);
+        localStorage.removeItem(TOKEN_KEY);
+        localStorage.removeItem(ROLES_KEY);
     };
-
-    const giveAdminAccess = () => {
-        setIsAdmin(true);
-        localStorage.setItem("role", "ADMIN");
-    }
-
-    const makeGuest = () => {
-        setIsAdmin(false);
-        localStorage.setItem("role", "guest");
-    }
 
     return (
         <AuthContext.Provider
-            value={{isAuthenticated, login, logout, giveAdminAccess, makeGuest, isAdmin}}>
+            value={{isAuthenticated, login, logout, roles}}>
             {children}
         </AuthContext.Provider>
     );

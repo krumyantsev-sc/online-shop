@@ -3,16 +3,24 @@ package com.scand.bookshop.facade;
 import com.scand.bookshop.dto.BookRequestDTO;
 import com.scand.bookshop.dto.BookResponseDTO;
 import com.scand.bookshop.dto.DTOConverter;
+import com.scand.bookshop.dto.PageResponseDTO;
 import com.scand.bookshop.entity.Book;
 import com.scand.bookshop.service.BookService;
 import com.scand.bookshop.service.metadataextractor.Extractor;
 import com.scand.bookshop.service.metadataextractor.Metadata;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -45,6 +53,19 @@ public class BookFacade {
         return DTOConverter.toDTO(book);
     }
 
+    public PageResponseDTO getBooksPage(int pageNumber, int pageSize, String sortField, String sortDirection, String searchTerm) {
+        Sort.Direction direction = Sort.Direction.valueOf(sortDirection.toUpperCase());
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(direction, sortField));
+        Page<Book> bookPage;
+        if (searchTerm == null) {
+            bookPage = bookService.getAllBooks(pageable);
+        } else {
+            bookPage = bookService.searchBooks(searchTerm, pageable);
+        }
+        int totalPages = bookPage.getTotalPages();
+        return new PageResponseDTO(bookPage.map(DTOConverter::toDTO).getContent(), totalPages);
+    }
+
     public List<BookResponseDTO> getAllBooks() {
         return bookService.getAllBooks().stream()
                 .map(DTOConverter::toDTO)
@@ -54,6 +75,18 @@ public class BookFacade {
     public BookResponseDTO getBook(String uuid) {
         return DTOConverter.toDTO(bookService.findBookByUuid(uuid)
                 .orElseThrow(() -> new NoSuchElementException("Book not found")));
+    }
+
+    public Resource getBookCover(String uuid) {
+        Book book = bookService.findBookByUuid(uuid)
+                .orElseThrow(() -> new NoSuchElementException("Book not found"));
+        return bookService.getCover(book);
+    }
+
+    public List<String> getPreviewImages(String uuid) {
+        Book book = bookService.findBookByUuid(uuid)
+                .orElseThrow(() -> new NoSuchElementException("Book not found"));
+        return bookService.getPreviewImages(book);
     }
 
     public void deleteBook(String uuid) {
@@ -71,5 +104,15 @@ public class BookFacade {
                 updatedBook.getAuthor()
         );
         return DTOConverter.toDTO(book);
+    }
+
+    public ResponseEntity<byte[]> downloadBook(String uuid){
+        Book book = bookService.findBookByUuid(uuid)
+                .orElseThrow(() -> new NoSuchElementException("Book not found"));
+        byte[] content = bookService.downloadBook(book);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", "book.pdf");
+        return new ResponseEntity<>(content, headers, HttpStatus.OK);
     }
 }

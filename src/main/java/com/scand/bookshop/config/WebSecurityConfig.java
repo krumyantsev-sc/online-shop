@@ -66,6 +66,9 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/auth/**").permitAll()
                                 .requestMatchers("/books/list").permitAll()
+                                .requestMatchers("/books/*/cover").permitAll()
+                                .requestMatchers("/books/*/preview").permitAll()
+                                .requestMatchers("/books/*/download").permitAll()
                                 .anyRequest().authenticated()
                 );
         http.authenticationProvider(authenticationProvider());
