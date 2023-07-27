@@ -8,3 +8,8 @@ export type UserRegistrationCredentials = {
     password: string;
     email: string;
 };
+
+export type CredentialsToUpdate = {
+    email: string,
+    password: string
+}
