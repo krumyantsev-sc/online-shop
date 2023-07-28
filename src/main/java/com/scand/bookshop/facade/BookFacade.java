@@ -6,6 +6,7 @@ import com.scand.bookshop.dto.DTOConverter;
 import com.scand.bookshop.dto.PageResponseDTO;
 import com.scand.bookshop.entity.Book;
 import com.scand.bookshop.service.BookService;
+import com.scand.bookshop.service.FileService;
 import com.scand.bookshop.service.metadataextractor.Extractor;
 import com.scand.bookshop.service.metadataextractor.Metadata;
 import lombok.RequiredArgsConstructor;
@@ -30,16 +31,13 @@ import java.util.stream.Collectors;
 public class BookFacade {
     private final BookService bookService;
     private final List<Extractor> extractors;
+    private final FileService fileService;
 
     public BookResponseDTO uploadBook(MultipartFile file) {
         if (file.isEmpty()) {
             throw new IllegalArgumentException("File is empty");
         }
-        String originalFilename = file.getOriginalFilename();
-        if (originalFilename == null) {
-            throw new IllegalArgumentException("Files without name are not supported");
-        }
-        String extension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+        String extension = fileService.getExtension(file);
         Extractor extractor = extractors.stream()
                 .filter(fileExtractor -> fileExtractor.getExtension().equals(extension))
                 .findFirst()

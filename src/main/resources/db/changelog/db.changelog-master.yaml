@@ -5,3 +5,5 @@ databaseChangeLog:
       file: db/changelog/changes/create-admin.yaml
   - include:
       file: db/changelog/changes/create-book-table.yaml
+  - include:
+      file: db/changelog/changes/add-column-avatar.yaml

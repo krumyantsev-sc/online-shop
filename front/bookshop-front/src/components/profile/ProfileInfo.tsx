@@ -1,19 +1,21 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {UserInfo} from "./UserInfo";
 import {Avatar} from "@mui/material";
 import "../../styles/Profile.css"
+import ProfileService from "../../API/ProfileService";
+import Loading from "../Loading";
+import ProfileAvatar from "./ProfileAvatar";
 
 interface ProfileInfoProps {
     profileInfo: UserInfo;
 }
 
 const ProfileInfo: React.FC<ProfileInfoProps> = ({profileInfo}) => {
+
     return (
         <div className={"info-container"}>
             <div className="avatar-container">
-                <Avatar
-                    sx={{ width: 130, height: 130 }}
-                />
+                <ProfileAvatar/>
             </div>
             <div className="credentials">
                 <div className={"credentials-info"}>

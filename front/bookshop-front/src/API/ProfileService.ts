@@ -7,7 +7,14 @@ export default class ProfileService {
     };
 
     static updateCredentials = async (credentials: CredentialsToUpdate) => {
-        console.log(credentials)
         return await axiosInstance.post("/profile/update", credentials, {withCredentials: true});
+    }
+
+    static getAvatar = async () => {
+        return await axiosInstance.get("/profile/avatar", {withCredentials: true, responseType: "arraybuffer"});
+    };
+
+    static uploadAvatar = async (formData: FormData) => {
+        return await axiosInstance.post(`${process.env.REACT_APP_API_URL}/profile/avatar/upload`, formData, {withCredentials: true});
     }
 }

@@ -42,6 +42,9 @@ public class User {
     @Column(name = "role", nullable = false)
     private Role role;
 
+    @Column(name = "avatar")
+    private String avatar = "uploads/avatar/avatarDefault.png";
+
     public enum Role {
         ADMIN,
         USER,
