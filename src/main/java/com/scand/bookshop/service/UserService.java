@@ -53,7 +53,6 @@ public class UserService {
 
     public Resource getAvatar(User user) {
         Path file = Paths.get(user.getAvatar());
-        System.out.println(file);
         return fileService.getImageResource(file);
     }
 

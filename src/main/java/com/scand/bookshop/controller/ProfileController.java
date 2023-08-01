@@ -6,6 +6,8 @@ import com.scand.bookshop.dto.UserResponseDTO;
 import com.scand.bookshop.facade.BookFacade;
 import com.scand.bookshop.facade.ProfileFacade;
 import com.scand.bookshop.security.service.UserDetailsImpl;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -14,8 +16,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+
 
 @RestController
 @RequestMapping("/profile")
@@ -30,7 +31,7 @@ public class ProfileController {
 
     @PostMapping("/update")
     public void updateCredentials(@AuthenticationPrincipal UserDetailsImpl userPrincipal,
-                                  @RequestBody @Valid ProfileCredentialsDTO updatedCredentials) {
+                                  @Valid @RequestBody ProfileCredentialsDTO updatedCredentials) {
         profileFacade.updateCredentials(userPrincipal, updatedCredentials);
     }
 

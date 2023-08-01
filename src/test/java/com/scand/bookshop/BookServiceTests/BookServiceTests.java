@@ -1,6 +1,7 @@
 package com.scand.bookshop.BookServiceTests;
 
 import com.scand.bookshop.entity.Book;
+import com.scand.bookshop.service.BookCoverService;
 import com.scand.bookshop.service.BookService;
 import com.scand.bookshop.service.FileService;
 import org.junit.jupiter.api.Test;
@@ -23,6 +24,9 @@ public class BookServiceTests {
 
     @MockBean
     FileService fileService;
+
+    @MockBean
+    BookCoverService bookCoverService;
 
     @Test
     public void shouldCreateBook() {
@@ -83,7 +87,6 @@ public class BookServiceTests {
         Book book = bookService.createBook(title, author, subject, extension, content);
         String newTitle = "The New Book";
         String newAuthor = "Jane Doe";
-        Double newPrice = 10.0;
         book = bookService.updateBook(book, newTitle, "new genre", newAuthor);
         Optional<Book> newBook = bookService.findBookByUuid(book.getUuid());
         assertThat(newBook).isPresent();
