@@ -12,10 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +36,11 @@ public class UserService {
         return userRepository.findByLogin(username);
     }
 
+    public User getUserById(Long id) {
+        return findUserById(id)
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
+    }
+
     @Transactional
     public void updateCredentials(User user, String email, String password) {
         user = userRepository.getReferenceById(user.getId());
@@ -46,9 +48,7 @@ public class UserService {
         if (!Objects.equals(user.getPassword(), newHashPassword)) {
             user.setPassword(newHashPassword);
         }
-        if (!Objects.equals(user.getEmail(), email)) {
-            user.setEmail(email);
-        }
+        user.setEmail(email);
     }
 
     public Resource getAvatar(User user) {
@@ -59,7 +59,7 @@ public class UserService {
     @Transactional
     public void uploadAvatar(User user, byte[] content, String extension) {
         user = userRepository.getReferenceById(user.getId());
-        String filePath = "uploads/avatar/" + user.getUuid() + "." + extension;
+        String filePath = String.format("uploads/avatar/%s.%s", user.getUuid(), extension);
         user.setAvatar(filePath);
         Path file = Paths.get(filePath);
         fileService.deleteIfExists(file);

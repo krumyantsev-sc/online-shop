@@ -3,7 +3,7 @@ import {CredentialsToUpdate} from "../types/Credentials";
 
 export default class ProfileService {
     static getProfile = async () => {
-        return await axiosInstance.get("/profile/me", {withCredentials: true});
+        return await axiosInstance.get("/profile/", {withCredentials: true});
     };
 
     static updateCredentials = async (credentials: CredentialsToUpdate) => {

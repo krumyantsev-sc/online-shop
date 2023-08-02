@@ -24,7 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProfileController {
     private final ProfileFacade profileFacade;
 
-    @GetMapping("/me")
+    @GetMapping("/")
     public UserResponseDTO getCurrentUserProfile(@AuthenticationPrincipal UserDetailsImpl userPrincipal) {
         return profileFacade.getUserProfile(userPrincipal);
     }

@@ -28,21 +28,20 @@ public class ProfileFacade {
     }
 
     public void updateCredentials(UserDetailsImpl userPrincipal, ProfileCredentialsDTO updatedCredentials) {
-        User user = userService.findUserById(userPrincipal.getId())
-                .orElseThrow(() -> new NoSuchElementException("User not found"));
+        User user = userService.getUserById(userPrincipal.getId());
         userService.updateCredentials(user, updatedCredentials.getEmail(), updatedCredentials.getPassword());
     }
 
     public Resource getAvatar(UserDetailsImpl userPrincipal) {
-        User user = userService.findUserById(userPrincipal.getId())
-                .orElseThrow(() -> new NoSuchElementException("User not found"));
+        User user = userService.getUserById(userPrincipal.getId());
         return userService.getAvatar(user);
     }
 
+    final String PNG_EXTENSION = "png";
+    final String JPEG_EXTENSION = "jpg";
     public void uploadAvatar(UserDetailsImpl userPrincipal, MultipartFile file) {
-        User user = userService.findUserById(userPrincipal.getId())
-                .orElseThrow(() -> new NoSuchElementException("User not found"));
-        final List<String> allowedExtensions = List.of("png", "jpg");
+        User user = userService.getUserById(userPrincipal.getId());
+        final List<String> allowedExtensions = List.of(PNG_EXTENSION, JPEG_EXTENSION);
         String fileExtension = fileService.getExtension(file);
         String extension = allowedExtensions.stream()
                 .filter(allowedExtension -> allowedExtension.equals(fileExtension))

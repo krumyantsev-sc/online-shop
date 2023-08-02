@@ -35,7 +35,7 @@ public class RegistrationServiceTests {
                 role);
         Optional<User> newUser = userRepository.findById(user.getId());
         assertAll(
-                () -> assertThat(newUser.isPresent()).isTrue(),
+                () -> assertThat(newUser).isPresent(),
                 () -> assertThat(newUser.get().getLogin()).isEqualTo(username),
                 () -> assertThat(newUser.get().getEmail()).isEqualTo(email)
         );

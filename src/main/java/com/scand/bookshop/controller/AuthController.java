@@ -24,7 +24,6 @@ public class AuthController {
 
     @PostMapping(value = "/register")
     public ServerMessage register(@NotNull @RequestBody @Valid UserRegistrationDTO userRegData) {
-        System.out.println(userRegData.toString());
         return authFacade.register(userRegData);
     }
 

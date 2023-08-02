@@ -71,31 +71,26 @@ public class BookFacade {
     }
 
     public BookResponseDTO getBook(String uuid) {
-        return DTOConverter.toDTO(bookService.findBookByUuid(uuid)
-                .orElseThrow(() -> new NoSuchElementException("Book not found")));
+        return DTOConverter.toDTO(bookService.getBookByUuid(uuid));
     }
 
     public Resource getBookCover(String uuid) {
-        Book book = bookService.findBookByUuid(uuid)
-                .orElseThrow(() -> new NoSuchElementException("Book not found"));
+        Book book = bookService.getBookByUuid(uuid);
         return bookService.getCover(book);
     }
 
     public List<String> getPreviewImages(String uuid) {
-        Book book = bookService.findBookByUuid(uuid)
-                .orElseThrow(() -> new NoSuchElementException("Book not found"));
+        Book book = bookService.getBookByUuid(uuid);
         return bookService.getPreviewImages(book);
     }
 
     public void deleteBook(String uuid) {
-        Book book = bookService.findBookByUuid(uuid)
-                .orElseThrow(() -> new NoSuchElementException("Book not found"));
+        Book book = bookService.getBookByUuid(uuid);
         bookService.deleteBook(book);
     }
 
     public BookResponseDTO updateBook(String uuid, BookRequestDTO updatedBook) {
-        Book book = bookService.findBookByUuid(uuid)
-                .orElseThrow(() -> new NoSuchElementException("Book not found"));
+        Book book = bookService.getBookByUuid(uuid);
         book = bookService.updateBook(book,
                 updatedBook.getTitle(),
                 updatedBook.getGenre(),
@@ -105,8 +100,7 @@ public class BookFacade {
     }
 
     public ResponseEntity<byte[]> downloadBook(String uuid){
-        Book book = bookService.findBookByUuid(uuid)
-                .orElseThrow(() -> new NoSuchElementException("Book not found"));
+        Book book = bookService.getBookByUuid(uuid);
         byte[] content = bookService.downloadBook(book);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);

@@ -16,7 +16,6 @@ public class DTOConverter {
     }
 
     public static UserResponseDTO toUserDTO(User user) {
-        System.out.println(user.getRegistrationDate());
         return  new UserResponseDTO(user.getLogin(), user.getEmail(), user.getRegistrationDate().toLocalDate().toString());
     }
 }

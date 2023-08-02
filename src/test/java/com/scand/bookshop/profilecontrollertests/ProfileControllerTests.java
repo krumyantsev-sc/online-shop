@@ -48,7 +48,7 @@ public class ProfileControllerTests extends BaseTest {
     @Test
     public void getProfile_shouldReturnProfileInfo() {
         ResponseEntity<UserResponseDTO> response =
-                makeGetRequestWithToken(jwtToken, "/profile/me", UserResponseDTO.class);
+                makeGetRequestWithToken(jwtToken, "/profile/", UserResponseDTO.class);
         assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().getUsername()).isNotNull();
@@ -64,7 +64,7 @@ public class ProfileControllerTests extends BaseTest {
                 makePostRequestWithToken(jwtToken, "/profile/update", newCredentials, Void.class);
         Optional<User> updatedUser = userRepository.findByLogin("adminProfile");
         assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
-        assertThat(updatedUser.isPresent()).isTrue();
+        assertThat(updatedUser).isPresent();
         assertThat(updatedUser.get().getEmail()).isEqualTo(newEmail);
     }
 
@@ -76,7 +76,7 @@ public class ProfileControllerTests extends BaseTest {
                 makePostRequestWithToken(jwtToken, "/profile/update", newCredentials, String.class);
         Optional<User> updatedUser = userRepository.findByLogin("adminProfile");
         assertThat(response.getStatusCode().is4xxClientError()).isTrue();
-        assertThat(updatedUser.isPresent()).isTrue();
+        assertThat(updatedUser).isPresent();
         assertThat(updatedUser.get().getEmail()).isNotEqualTo(newEmail);
     }
 
@@ -86,7 +86,7 @@ public class ProfileControllerTests extends BaseTest {
                 createEntityWithFile("src/test/resources/files/bg.jpg", jwtToken, "avatar");
         makePostRequestWithFile("/profile/avatar/upload", requestEntity, Void.class);
         Optional<User> updatedUser = userRepository.findByLogin("adminProfile");
-        assertThat(updatedUser.isPresent()).isTrue();
+        assertThat(updatedUser).isPresent();
         assertThat(updatedUser.get().getAvatar()).isEqualTo("uploads/avatar/" + updatedUser.get().getUuid() + ".jpg");
     }
 
@@ -97,7 +97,7 @@ public class ProfileControllerTests extends BaseTest {
         ResponseEntity<String> response = makePostRequestWithFile("/profile/avatar/upload", requestEntity, String.class);
         Optional<User> updatedUser = userRepository.findByLogin("adminProfile");
         assertThat(response.getStatusCode().is4xxClientError()).isTrue();
-        assertThat(updatedUser.isPresent()).isTrue();
+        assertThat(updatedUser).isPresent();
         assertThat(updatedUser.get().getAvatar()).isNotEqualTo("uploads/avatar/" + updatedUser.get().getUuid() + ".pdf");
     }
 }

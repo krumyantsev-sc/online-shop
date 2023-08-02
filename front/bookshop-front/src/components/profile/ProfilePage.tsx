@@ -12,7 +12,7 @@ import UserForm from "./UserForm";
 const ProfilePage = () => {
     const [displayInfo, setDisplayInfo] = useState<boolean>(true);
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [userInfo, setUserInfo] = useState<UserInfo>();
+    const [userInfo, setUserInfo] = useState<UserInfo|null>(null);
     const navigate = useNavigate();
 
     async function getProfileFromServer() {
@@ -22,13 +22,10 @@ const ProfilePage = () => {
             const data = await response.data;
             if (data) {
                 setUserInfo(response.data);
-                setIsLoading(false);
             }
         } catch (error) {
             console.error('Ошибка при получении данных:', error);
             navigate('/');
-        } finally {
-            setIsLoading(false);
         }
     }
 
@@ -36,7 +33,7 @@ const ProfilePage = () => {
         getProfileFromServer()
     }, []);
 
-    if (isLoading) {
+    if (!userInfo) {
         return <Loading/>;
     }
 

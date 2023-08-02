@@ -43,7 +43,7 @@ public class User {
     private Role role;
 
     @Column(name = "avatar")
-    private String avatar = "uploads/avatar/avatarDefault.png";
+    private String avatar;
 
     public enum Role {
         ADMIN,

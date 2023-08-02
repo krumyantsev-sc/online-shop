@@ -42,7 +42,7 @@ public class UserServiceTests {
         String newEmail = "new@test.com";
         userService.updateCredentials(user, newEmail, "usertest");
         Optional<User> updatedUser = userService.findUserById(user.getId());
-        assertThat(updatedUser.isPresent()).isTrue();
+        assertThat(updatedUser).isPresent();
         assertThat(updatedUser.get().getEmail()).isEqualTo(newEmail);
     }
 
@@ -52,7 +52,7 @@ public class UserServiceTests {
         String extension = "jpg";
         userService.uploadAvatar(user, content, extension);
         Optional<User> updatedUser = userService.findUserById(user.getId());
-        assertThat(updatedUser.isPresent()).isTrue();
+        assertThat(updatedUser).isPresent();
         assertThat(updatedUser.get().getAvatar()).isNotNull();
         assertThat(updatedUser.get().getAvatar()).isEqualTo("uploads/avatar/" + user.getUuid() + ".jpg");
     }

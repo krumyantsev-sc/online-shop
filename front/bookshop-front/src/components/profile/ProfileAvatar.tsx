@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Avatar, Button} from "@mui/material";
 import ProfileService from "../../API/ProfileService";
 import Loading from "../Loading";
+import avatarDefault from "../../assets/img/avatarDefault.png"
 
 
 const ProfileAvatar = () => {
@@ -10,15 +11,20 @@ const ProfileAvatar = () => {
     const handleMouseOver = () => setIsHovered(true);
     const handleMouseOut = () => setIsHovered(false);
     const inputFileRef = useRef<HTMLInputElement>(null);
+
     useEffect(() => {
         loadAvatarFromServer();
     }, []);
 
     const loadAvatarFromServer = async () => {
+        try {
         const response = await ProfileService.getAvatar();
         const blob = new Blob([response.data], {type: response.headers['content-type']});
         const imageSrc = URL.createObjectURL(blob);
         setAvatarUrl(imageSrc);
+        } catch (e) {
+            setAvatarUrl(avatarDefault);
+        }
     }
 
     const handleClick = () => {

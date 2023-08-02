@@ -42,7 +42,7 @@ public class AuthControllerTests extends BaseTest {
         Optional<User> user = userRepository.findByLogin("usertest");
         assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
         assertThat(response.getBody()).isNotNull();
-        assertThat(user.isPresent()).isTrue();
+        assertThat(user).isPresent();
         assertThat(user.get().getLogin()).isEqualTo("usertest");
     }
 
@@ -53,7 +53,7 @@ public class AuthControllerTests extends BaseTest {
                 "usertest123.com");
         makePostRequestWithToken(null, "/auth/register", regDto, ServerMessage.class);
         Optional<User> user = userRepository.findByLogin("usertest123");
-        assertThat(user.isPresent()).isFalse();
+        assertThat(user).isNotPresent();
     }
 
     @Test

@@ -1,9 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {UserInfo} from "./UserInfo";
-import {Avatar} from "@mui/material";
 import "../../styles/Profile.css"
-import ProfileService from "../../API/ProfileService";
-import Loading from "../Loading";
 import ProfileAvatar from "./ProfileAvatar";
 
 interface ProfileInfoProps {

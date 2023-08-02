@@ -117,7 +117,7 @@ public class BookControllerTests extends BaseTest {
         String uuid = book.getUuid();
         makePostRequestWithToken(jwtToken, "/books/" + uuid + "/update", bookRequestDto, BookResponseDTO.class);
         Optional<Book> updatedBook = bookRepository.findByUuid(book.getUuid());
-        assertThat(updatedBook.isPresent()).isTrue();
+        assertThat(updatedBook).isPresent();
         assertThat(updatedBook.get().getTitle()).isEqualTo("old title");
         assertThat(updatedBook.get().getAuthor()).isEqualTo("old author");
     }
