@@ -1,9 +1,8 @@
-package com.scand.bookshop.userServiceTests;
+package com.scand.bookshop.userservicetests;
 
 import com.scand.bookshop.entity.User;
 import com.scand.bookshop.service.*;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;

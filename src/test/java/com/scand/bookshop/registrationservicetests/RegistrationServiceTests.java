@@ -1,10 +1,9 @@
-package com.scand.bookshop.registrationServiceTests;
+package com.scand.bookshop.registrationservicetests;
 
 import com.scand.bookshop.entity.User;
 import com.scand.bookshop.repository.UserRepository;
 import com.scand.bookshop.service.PasswordEncryptor;
 import com.scand.bookshop.service.RegistrationService;
-import com.scand.bookshop.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

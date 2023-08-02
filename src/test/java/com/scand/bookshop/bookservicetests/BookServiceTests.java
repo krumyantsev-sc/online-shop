@@ -1,4 +1,4 @@
-package com.scand.bookshop.BookServiceTests;
+package com.scand.bookshop.bookservicetests;
 
 import com.scand.bookshop.entity.Book;
 import com.scand.bookshop.service.BookCoverService;
@@ -35,7 +35,6 @@ public class BookServiceTests {
         String subject = "Computer Science";
         String extension = "pdf";
         byte[] content = "This is the content of the book.".getBytes();
-
         Book book = bookService.createBook(title, author, subject, extension, content);
         assertAll(
                 () -> assertThat(book).isNotNull(),

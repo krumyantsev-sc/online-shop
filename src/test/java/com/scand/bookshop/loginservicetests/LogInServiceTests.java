@@ -1,12 +1,10 @@
-package com.scand.bookshop.logInServiceTests;
+package com.scand.bookshop.loginservicetests;
 
+import com.scand.bookshop.BaseTest;
 import com.scand.bookshop.security.jwt.JwtResponse;
 import com.scand.bookshop.service.LogInService;
 import com.scand.bookshop.service.RegistrationService;
-import com.scand.bookshop.service.UserService;
-import com.scand.bookshop.util.auth.AuthSetUp;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,19 +15,16 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class LogInServiceTests {
+public class LogInServiceTests extends BaseTest {
     @Autowired
     private RegistrationService registrationService;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private LogInService logInService;
 
     @BeforeAll
     private void registerUser() {
-        AuthSetUp.createAdmin(registrationService,"admin","admin@mail.ru");
+        createAdmin(registrationService,"admin","admin@mail.ru");
     }
 
     @Test
