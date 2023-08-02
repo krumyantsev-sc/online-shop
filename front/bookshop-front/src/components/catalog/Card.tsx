@@ -7,6 +7,7 @@ import BookModal from "./EditBookModal";
 import {Roles} from "../../enums/Roles";
 import ImageComponent from "./Image";
 import PreviewModal from "./PreviewModal";
+import {useNavigate, useParams} from "react-router-dom";
 
 interface CardBookProps extends IBook {
     getBooksFromServer: () => {};
@@ -16,13 +17,15 @@ const Card: React.FC<CardBookProps> = ({
                                            title,
                                            author,
                                            genre,
-                                           price,
                                            uuid,
-                                           getBooksFromServer
+                                           getBooksFromServer,
+                                           description
                                        }) => {
     const {roles} = useAuth();
     const [openEdit, setOpenEdit] = React.useState(false);
     const [openPreview, setOpenPreview] = React.useState(false);
+    const navigate = useNavigate();
+    let {bookUuid} = useParams();
     const handleClickOpenEdit = () => {
         setOpenEdit(true);
     };
@@ -59,11 +62,16 @@ const Card: React.FC<CardBookProps> = ({
                     uuid={uuid}
                 />
             </div>
-            <div className="desc-container">
+            <div className="desc-container"
+                 onClick={() => {
+                     navigate(`/catalog/${uuid}`)
+                 }}
+            >
                 <span>Название: {title}</span><br/>
                 <span>Автор: {author}</span><br/>
                 <span>Жанр: {genre}</span><br/>
             </div>
+            {bookUuid &&
             <div className="card-buttons-container">
                 <div className="download-button"
                      onClick={() => {
@@ -77,6 +85,7 @@ const Card: React.FC<CardBookProps> = ({
                     />
                 </div>}
             </div>
+            }
             <BookModal
                 open={openEdit}
                 handleClose={handleCloseEdit}
@@ -85,6 +94,7 @@ const Card: React.FC<CardBookProps> = ({
                 genre={genre}
                 title={title}
                 uuid={uuid}
+                description={description}
             />
             <PreviewModal open={openPreview} handleClose={handleClosePreview} uuid={uuid}/>
         </div>

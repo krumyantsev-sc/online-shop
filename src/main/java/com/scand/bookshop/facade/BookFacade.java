@@ -94,7 +94,8 @@ public class BookFacade {
         book = bookService.updateBook(book,
                 updatedBook.getTitle(),
                 updatedBook.getGenre(),
-                updatedBook.getAuthor()
+                updatedBook.getAuthor(),
+                updatedBook.getDescription()
         );
         return DTOConverter.toDTO(book);
     }

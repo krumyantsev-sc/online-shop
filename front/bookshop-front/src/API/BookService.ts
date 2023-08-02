@@ -4,6 +4,7 @@ interface BookData {
     title: string;
     genre: string;
     author: string;
+    description: string
 }
 
 export default class BookService {
@@ -24,6 +25,7 @@ export default class BookService {
     }
 
     static updateBook = async (bookData: BookData, uuid: string) => {
+        console.log(bookData)
         return await axiosInstance.post(`${process.env.REACT_APP_API_URL}/books/${uuid}/update`, bookData, {withCredentials: true});
     }
 
@@ -43,6 +45,12 @@ export default class BookService {
 
     static getPreview = async (uuid: string) => {
         return await axiosInstance.get(`${process.env.REACT_APP_API_URL}/books/${uuid}/preview`, {
+            withCredentials: true,
+        });
+    }
+
+    static getBook = async (uuid: string) => {
+        return await axiosInstance.get(`${process.env.REACT_APP_API_URL}/books/${uuid}`, {
             withCredentials: true,
         });
     }

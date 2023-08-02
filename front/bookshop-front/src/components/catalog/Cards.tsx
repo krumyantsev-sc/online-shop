@@ -76,8 +76,8 @@ const Cards = () => {
                             author={book.author}
                             title={book.title}
                             genre={book.genre}
-                            price={book.price}
                             uuid={book.uuid}
+                            description={book.description}
                             getBooksFromServer={() => getBooksFromServer(currentPage, pageSize)}
                         />
                     ))}
