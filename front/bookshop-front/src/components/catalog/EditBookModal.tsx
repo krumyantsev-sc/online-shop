@@ -9,6 +9,7 @@ interface BookModalProps {
     genre: string;
     author: string;
     uuid: string;
+    description: string
     getBooksFromServer: () => {};
 }
 
@@ -19,11 +20,13 @@ const BookModal: React.FC<BookModalProps> = ({
                                                  genre,
                                                  author,
                                                  uuid,
-                                                 getBooksFromServer
+                                                 getBooksFromServer,
+                                                 description
                                              }) => {
     const [bookTitle, setBookTitle] = useState(title);
     const [bookGenre, setBookGenre] = useState(genre);
     const [bookAuthor, setBookAuthor] = useState(author);
+    const [value, setValue] = React.useState(description);
 
     useEffect(() => {
         setBookTitle(title);
@@ -37,7 +40,7 @@ const BookModal: React.FC<BookModalProps> = ({
 
     const handleSaveClick = () => {
         if (validateInput(bookTitle) && validateInput(bookGenre) && validateInput(bookAuthor)) {
-            BookService.updateBook({title: bookTitle, genre: bookGenre, author: bookAuthor}, uuid)
+            BookService.updateBook({title: bookTitle, genre: bookGenre, author: bookAuthor, description: value}, uuid)
                 .then(getBooksFromServer);
             handleClose();
         } else {
@@ -73,6 +76,17 @@ const BookModal: React.FC<BookModalProps> = ({
                     label="Author"
                     fullWidth
                     style={{marginBottom: 10}}
+                />
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    id="description"
+                    label="Description"
+                    type="text"
+                    fullWidth
+                    multiline
+                    value={value}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
                 />
             </DialogContent>
             <DialogActions>

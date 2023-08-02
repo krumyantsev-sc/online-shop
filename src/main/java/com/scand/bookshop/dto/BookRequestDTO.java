@@ -17,6 +17,5 @@ public class BookRequestDTO {
     private String genre;
     @NotBlank
     private String author;
-    @NotBlank
-    private String filePath;
+    private String description;
 }

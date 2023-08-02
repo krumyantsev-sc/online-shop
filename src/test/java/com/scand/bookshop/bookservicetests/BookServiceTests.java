@@ -86,7 +86,7 @@ public class BookServiceTests {
         Book book = bookService.createBook(title, author, subject, extension, content);
         String newTitle = "The New Book";
         String newAuthor = "Jane Doe";
-        book = bookService.updateBook(book, newTitle, "new genre", newAuthor);
+        book = bookService.updateBook(book, newTitle, "new genre", newAuthor,"desc");
         Optional<Book> newBook = bookService.findBookByUuid(book.getUuid());
         assertThat(newBook).isPresent();
         assertThat(newBook.get().getTitle()).isEqualTo(newTitle);

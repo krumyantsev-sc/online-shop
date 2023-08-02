@@ -12,6 +12,7 @@ public class DTOConverter {
         responseDTO.setGenre(book.getGenre());
         responseDTO.setAuthor(book.getAuthor());
         responseDTO.setUuid(book.getUuid());
+        responseDTO.setDescription(book.getDescription());
         return responseDTO;
     }
 

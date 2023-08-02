@@ -30,4 +30,7 @@ public class Book {
 
     @Column(name = "book_id", nullable = false)
     private String uuid;
+
+    @Column(name="description")
+    private String description;
 }

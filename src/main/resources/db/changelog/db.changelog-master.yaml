@@ -7,3 +7,5 @@ databaseChangeLog:
       file: db/changelog/changes/create-book-table.yaml
   - include:
       file: db/changelog/changes/add-column-avatar.yaml
+  - include:
+      file: db/changelog/changes/add_description_to_books.yaml
