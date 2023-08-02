@@ -9,9 +9,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookResponseDTO {
-    private String title;
-    private String genre;
-    private String author;
-    private String uuid;
+public class UserResponseDTO {
+    private String username;
+    private String email;
+    private String regDate;
 }

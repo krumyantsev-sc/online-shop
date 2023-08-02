@@ -26,7 +26,7 @@ public class BookService {
     @Transactional
     public Book createBook(String title, String author, String subject, String extension, byte[] content) {
         String uniqueFilename = UUID.randomUUID().toString();
-        String filePath = "uploads/" + uniqueFilename + "." + extension;
+        String filePath = String.format("uploads/%s.%s", uniqueFilename, extension);
         Book book = new Book(null, title, subject, author, filePath, uniqueFilename);
         book = bookRepository.save(book);
         fileService.writeFile(Paths.get(book.getFilePath()), content);
@@ -68,6 +68,11 @@ public class BookService {
 
     public Optional<Book> findBookByUuid(String uuid) {
         return bookRepository.findByUuid(uuid);
+    }
+
+    public Book getBookByUuid(String uuid) {
+        return findBookByUuid(uuid)
+                .orElseThrow(() -> new NoSuchElementException("Book not found"));
     }
 
     public void deleteBook(Book book) {

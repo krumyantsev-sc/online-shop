@@ -2,6 +2,7 @@ package com.scand.bookshop.facade;
 
 import com.scand.bookshop.dto.UserLoginDTO;
 import com.scand.bookshop.dto.UserRegistrationDTO;
+import com.scand.bookshop.entity.User;
 import com.scand.bookshop.exception.UserAlreadyExistsException;
 import com.scand.bookshop.security.jwt.JwtResponse;
 import com.scand.bookshop.service.LogInService;
@@ -29,7 +30,8 @@ public class AuthFacade {
         registrationService.register(userData.getUsername(),
                 PasswordEncryptor.encryptPassword(userData.getPassword()),
                 userData.getEmail(),
-                LocalDateTime.now());
+                LocalDateTime.now(),
+                User.Role.USER);
         return new ServerMessage("success", "user registered successfully");
     }
 

@@ -6,6 +6,7 @@ import com.scand.bookshop.dto.DTOConverter;
 import com.scand.bookshop.dto.PageResponseDTO;
 import com.scand.bookshop.entity.Book;
 import com.scand.bookshop.service.BookService;
+import com.scand.bookshop.service.FileService;
 import com.scand.bookshop.service.metadataextractor.Extractor;
 import com.scand.bookshop.service.metadataextractor.Metadata;
 import lombok.RequiredArgsConstructor;
@@ -30,16 +31,13 @@ import java.util.stream.Collectors;
 public class BookFacade {
     private final BookService bookService;
     private final List<Extractor> extractors;
+    private final FileService fileService;
 
     public BookResponseDTO uploadBook(MultipartFile file) {
         if (file.isEmpty()) {
             throw new IllegalArgumentException("File is empty");
         }
-        String originalFilename = file.getOriginalFilename();
-        if (originalFilename == null) {
-            throw new IllegalArgumentException("Files without name are not supported");
-        }
-        String extension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+        String extension = fileService.getExtension(file);
         Extractor extractor = extractors.stream()
                 .filter(fileExtractor -> fileExtractor.getExtension().equals(extension))
                 .findFirst()
@@ -73,31 +71,26 @@ public class BookFacade {
     }
 
     public BookResponseDTO getBook(String uuid) {
-        return DTOConverter.toDTO(bookService.findBookByUuid(uuid)
-                .orElseThrow(() -> new NoSuchElementException("Book not found")));
+        return DTOConverter.toDTO(bookService.getBookByUuid(uuid));
     }
 
     public Resource getBookCover(String uuid) {
-        Book book = bookService.findBookByUuid(uuid)
-                .orElseThrow(() -> new NoSuchElementException("Book not found"));
+        Book book = bookService.getBookByUuid(uuid);
         return bookService.getCover(book);
     }
 
     public List<String> getPreviewImages(String uuid) {
-        Book book = bookService.findBookByUuid(uuid)
-                .orElseThrow(() -> new NoSuchElementException("Book not found"));
+        Book book = bookService.getBookByUuid(uuid);
         return bookService.getPreviewImages(book);
     }
 
     public void deleteBook(String uuid) {
-        Book book = bookService.findBookByUuid(uuid)
-                .orElseThrow(() -> new NoSuchElementException("Book not found"));
+        Book book = bookService.getBookByUuid(uuid);
         bookService.deleteBook(book);
     }
 
     public BookResponseDTO updateBook(String uuid, BookRequestDTO updatedBook) {
-        Book book = bookService.findBookByUuid(uuid)
-                .orElseThrow(() -> new NoSuchElementException("Book not found"));
+        Book book = bookService.getBookByUuid(uuid);
         book = bookService.updateBook(book,
                 updatedBook.getTitle(),
                 updatedBook.getGenre(),
@@ -107,8 +100,7 @@ public class BookFacade {
     }
 
     public ResponseEntity<byte[]> downloadBook(String uuid){
-        Book book = bookService.findBookByUuid(uuid)
-                .orElseThrow(() -> new NoSuchElementException("Book not found"));
+        Book book = bookService.getBookByUuid(uuid);
         byte[] content = bookService.downloadBook(book);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);

@@ -1,6 +1,9 @@
 package com.scand.bookshop.service;
 
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +26,30 @@ public class FileService {
             return Files.readAllBytes(file.toPath());
         } catch (IOException e) {
             throw new RuntimeException("Error reading file");
+        }
+    }
+
+    public Resource getImageResource(Path path) {
+        try {
+            return new InputStreamResource(Files.newInputStream(path));
+        } catch (IOException e) {
+            throw new RuntimeException("Error reading file");
+        }
+    }
+
+    public String getExtension(MultipartFile file) {
+        String originalFilename = file.getOriginalFilename();
+        if (originalFilename == null) {
+            throw new IllegalArgumentException("Files without name are not supported");
+        }
+        return originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+    }
+
+    public boolean deleteIfExists(Path path) {
+        try {
+            return Files.deleteIfExists(path);
+        } catch (IOException e) {
+            throw new RuntimeException("Error while removing an old file");
         }
     }
 }

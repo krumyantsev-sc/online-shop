@@ -5,14 +5,16 @@ import com.scand.bookshop.dto.UserRegistrationDTO;
 import com.scand.bookshop.facade.AuthFacade;
 import com.scand.bookshop.security.jwt.JwtResponse;
 import com.scand.bookshop.utility.ServerMessage;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+
 
 @RequiredArgsConstructor
 @RestController
@@ -26,7 +28,7 @@ public class AuthController {
     }
 
     @PostMapping(value = "/signin")
-    public JwtResponse login(@NotNull @RequestBody @Valid UserLoginDTO userLoginData) {
+    public JwtResponse login(@NotNull @Valid @RequestBody UserLoginDTO userLoginData) {
         return authFacade.authenticateUser(userLoginData);
     }
 }

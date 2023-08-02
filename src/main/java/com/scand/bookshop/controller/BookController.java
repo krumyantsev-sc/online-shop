@@ -4,6 +4,8 @@ import com.scand.bookshop.dto.BookRequestDTO;
 import com.scand.bookshop.dto.BookResponseDTO;
 import com.scand.bookshop.dto.PageResponseDTO;
 import com.scand.bookshop.facade.BookFacade;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -12,8 +14,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RequiredArgsConstructor
