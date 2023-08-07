@@ -40,18 +40,28 @@ public class BaseTest {
         return Objects.requireNonNull(response.getBody()).get("accessToken").toString();
     }
 
-    public <T, U> ResponseEntity<U> makePostRequestWithToken(String jwtToken, String url, T requestDto, Class<U> responseType) {
+    private HttpHeaders creatTokenHeaders(String jwtToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + jwtToken);
+        return headers;
+    }
+
+    public <T, U> ResponseEntity<U> makePostRequestWithToken(String jwtToken, String url, T requestDto, Class<U> responseType) {
+        HttpHeaders headers = creatTokenHeaders(jwtToken);
         HttpEntity<T> requestEntity = new HttpEntity<>(requestDto, headers);
         return testRestTemplate.postForEntity(url, requestEntity, responseType);
     }
 
     public <T, U> ResponseEntity<U> makeGetRequestWithToken(String jwtToken, String url, Class<U> responseType) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + jwtToken);
+        HttpHeaders headers = creatTokenHeaders(jwtToken);
         HttpEntity<T> requestEntity = new HttpEntity<>(headers);
         return testRestTemplate.exchange(url, HttpMethod.GET, requestEntity, responseType);
+    }
+
+    public <T, U> ResponseEntity<U> makeDeleteRequestWithToken(String jwtToken, String url, Class<U> responseType) {
+        HttpHeaders headers = creatTokenHeaders(jwtToken);
+        HttpEntity<T> requestEntity = new HttpEntity<>(headers);
+        return testRestTemplate.exchange(url, HttpMethod.DELETE, requestEntity, responseType);
     }
 
     public <T, U> ResponseEntity<U> makePostRequestWithFile(String url,

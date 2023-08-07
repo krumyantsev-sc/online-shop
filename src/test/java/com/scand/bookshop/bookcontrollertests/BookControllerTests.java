@@ -81,7 +81,8 @@ public class BookControllerTests extends BaseTest {
                 "old genre",
                 "old author",
                 "old filepath",
-                UUID.randomUUID().toString());
+                UUID.randomUUID().toString(),
+                "description");
         book = bookRepository.save(book);
         BookRequestDTO bookRequestDto = new BookRequestDTO("new title",
                 "new genre",
@@ -108,7 +109,8 @@ public class BookControllerTests extends BaseTest {
                 "old genre",
                 "old author",
                 "old filepath",
-                UUID.randomUUID().toString());
+                UUID.randomUUID().toString(),
+                "description");
         book = bookRepository.save(book);
         BookRequestDTO bookRequestDto = new BookRequestDTO("new title",
                 "new genre",
