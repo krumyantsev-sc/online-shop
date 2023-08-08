@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button} from '@mui/material';
 import BookService from "../../API/BookService";
+import {useTranslation} from "react-i18next";
 
 interface BookModalProps {
     open: boolean;
@@ -23,6 +24,7 @@ const BookModal: React.FC<BookModalProps> = ({
                                                  getBooksFromServer,
                                                  description
                                              }) => {
+    const {t} = useTranslation();
     const [bookTitle, setBookTitle] = useState(title);
     const [bookGenre, setBookGenre] = useState(genre);
     const [bookAuthor, setBookAuthor] = useState(author);
@@ -54,26 +56,26 @@ const BookModal: React.FC<BookModalProps> = ({
 
     return (
         <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>Edit Book</DialogTitle>
+            <DialogTitle>{t("editBook")}</DialogTitle>
             <DialogContent>
                 <TextField
                     value={bookTitle}
                     onChange={e => setBookTitle(e.target.value)}
-                    label="Title"
+                    label={t("title")}
                     fullWidth
                     style={{marginBottom: 10}}
                 />
                 <TextField
                     value={bookGenre}
                     onChange={e => setBookGenre(e.target.value)}
-                    label="Genre"
+                    label={t("genre")}
                     fullWidth
                     style={{marginBottom: 10}}
                 />
                 <TextField
                     value={bookAuthor}
                     onChange={e => setBookAuthor(e.target.value)}
-                    label="Author"
+                    label={t("author")}
                     fullWidth
                     style={{marginBottom: 10}}
                 />
@@ -81,7 +83,7 @@ const BookModal: React.FC<BookModalProps> = ({
                     autoFocus
                     margin="dense"
                     id="description"
-                    label="Description"
+                    label={t("description")}
                     type="text"
                     fullWidth
                     multiline
@@ -90,8 +92,8 @@ const BookModal: React.FC<BookModalProps> = ({
                 />
             </DialogContent>
             <DialogActions>
-                <Button color="primary" onClick={handleSaveClick}>Save</Button>
-                <Button color="secondary" onClick={handleDelete}>Delete</Button>
+                <Button color="primary" onClick={handleSaveClick}>{t("save")}</Button>
+                <Button color="secondary" onClick={handleDelete}>{t("delete")}</Button>
             </DialogActions>
         </Dialog>
     );

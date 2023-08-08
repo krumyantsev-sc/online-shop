@@ -10,6 +10,7 @@ import {IComment} from "./comment/IComment";
 import Comment from "./comment/Comment";
 import {useAuth} from "../auth/context/AuthContextProvider";
 import CommentModal from "./comment/CommentModal";
+import {useTranslation} from "react-i18next";
 
 const BookPage = () => {
     const {roles, isAuthenticated} = useAuth();
@@ -17,6 +18,7 @@ const BookPage = () => {
     const [bookInfo, setBookInfo] = useState<IBook>();
     const [comments, setComments] = useState<IComment[]>();
     const [open, setOpen] = useState(false);
+    const {t} = useTranslation();
 
     const handleClose = () => {
         setOpen(false);
@@ -27,7 +29,7 @@ const BookPage = () => {
     };
 
     const handleClickSave = (comment: string) => {
-        CommentService.addComment(bookInfo!.uuid,comment).then(getComments);
+        CommentService.addComment(bookInfo!.uuid, comment).then(getComments);
     }
 
     useEffect(() => {
@@ -72,7 +74,7 @@ const BookPage = () => {
                     />
                     <div className="book-page-desc-container">
                         <div className={"desc"}>
-                            {bookInfo.description ? bookInfo.description : "NO DESCRIPTION"}
+                            {bookInfo.description ? bookInfo.description : t('emptyDescription')}
                         </div>
                         <div className="comments-container">
                             {
@@ -95,7 +97,7 @@ const BookPage = () => {
                                 style={{marginTop: 10}}
                                 onClick={handleClickOpen}
                             >
-                                ОСТАВИТЬ КОММЕНТАРИЙ
+                                {t('addComment')}
                             </div>
                         </div>
                         }

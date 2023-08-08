@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
+import {useTranslation} from "react-i18next";
 
 type SearchFunction = (searchTerm: string) => void;
 
@@ -12,6 +13,7 @@ interface SearchBarProps {
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
     const [searchTerm, setSearchTerm] = useState('');
+    const {t} = useTranslation();
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
@@ -23,7 +25,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
 
     return (
         <TextField
-            label="Поиск"
+            label={t('search')}
             variant="outlined"
             size="small"
             value={searchTerm}

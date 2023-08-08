@@ -8,12 +8,14 @@ import Loading from "../Loading";
 import ProfileInfo from "./ProfileInfo";
 import "../../styles/Profile.css"
 import UserForm from "./UserForm";
+import {useTranslation} from "react-i18next";
 
 const ProfilePage = () => {
     const [displayInfo, setDisplayInfo] = useState<boolean>(true);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [userInfo, setUserInfo] = useState<UserInfo|null>(null);
     const navigate = useNavigate();
+    const {t} = useTranslation();
 
     async function getProfileFromServer() {
         try {
@@ -46,7 +48,7 @@ const ProfilePage = () => {
                     <div
                         className="profile-switch-button"
                         onClick={() => {setDisplayInfo(!displayInfo)}}>
-                        {displayInfo ? "CHANGE CREDENTIALS" : "VIEW PROFILE"}
+                        {displayInfo ? t('changeCreds') : t('viewProfile')}
                     </div>
                 </div>
             </div>

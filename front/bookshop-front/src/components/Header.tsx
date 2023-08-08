@@ -7,21 +7,16 @@ import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import BookOnlineIcon from '@mui/icons-material/BookOnline';
 import {useAuth} from './auth/context/AuthContextProvider';
 import {Link} from "react-router-dom";
+import LanguageSwitcher from "./LanguageSwitcher";
+import {useTranslation} from "react-i18next";
 
 const Header = () => {
     const {isAuthenticated, logout} = useAuth();
-
-    useEffect(() => {
-        console.log(isAuthenticated);
-        console.log()
-    }, [])
-
-    useEffect(() => {
-        console.log(isAuthenticated);
-    }, [isAuthenticated]);
+    const {t} = useTranslation();
 
     return (
         <div className={"header-container"}>
+            <LanguageSwitcher/>
             <div className="menu-container">
                 <div className="logo-container">
                     <Link to={"/"}>
@@ -34,21 +29,21 @@ const Header = () => {
                     <div className="menu-item-container">
                         <Link to={"/profile"}>
                             <PersonIcon fontSize={"large"}/>
-                            <span className={"menu-item-name"}>Profile</span>
+                            <span className={"menu-item-name"}>{t("profile")}</span>
                         </Link>
                     </div>
                     }
                     <div className="menu-item-container">
                         <Link to={"/catalog"}>
                             <AutoStoriesIcon fontSize={"large"}/>
-                            <span className={"menu-item-name"}>Catalog</span>
+                            <span className={"menu-item-name"}>{t("catalog")}</span>
                         </Link>
                     </div>
                     {!isAuthenticated ?
                         <div className="menu-item-container">
                             <Link to={"/login"}>
                                 <LoginIcon fontSize={"large"}/>
-                                <span className={"menu-item-name"}>Log in</span>
+                                <span className={"menu-item-name"}>{t("login")}</span>
                             </Link>
                         </div>
                         :
@@ -57,7 +52,7 @@ const Header = () => {
                         >
                             <Link to={"/"}>
                                 <LogoutIcon fontSize={"large"}/>
-                                <span className={"menu-item-name"}>Log out</span>
+                                <span className={"menu-item-name"}>{t("logout")}</span>
                             </Link>
                         </div>
                     }

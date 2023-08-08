@@ -10,10 +10,12 @@ import {useAuth} from "../auth/context/AuthContextProvider";
 import {Roles} from "../../enums/Roles";
 import SortMenu from "./SortMenu";
 import SearchBar from "./SearchBar";
+import {useTranslation} from "react-i18next";
 
 
 const Cards = () => {
     const {roles} = useAuth();
+    const {t} = useTranslation();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [books, setBooks] = useState<IBook[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -90,14 +92,14 @@ const Cards = () => {
                     disabled={currentPage === 1}
                     onClick={() => setCurrentPage(currentPage - 1)}
                 >
-                    Previous
+                    {t('prev')}
                 </button>
                 <span>{currentPage} / {totalPages}</span>
                 <button
                     disabled={currentPage === totalPages}
                     onClick={() => setCurrentPage(currentPage + 1)}
                 >
-                    Next
+                    {t('next')}
                 </button>
             </div>
         </div>

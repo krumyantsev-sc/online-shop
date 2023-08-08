@@ -2,6 +2,7 @@ import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} fr
 import * as React from 'react';
 import {useRef} from "react";
 import BookService from "../../API/BookService";
+import {useTranslation} from "react-i18next";
 
 interface FileUploadDialogProps {
     open: boolean;
@@ -11,7 +12,7 @@ interface FileUploadDialogProps {
 
 export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({open, handleClose, getBooksFromServer}) => {
     const formRef = useRef<HTMLFormElement>(null);
-
+    const {t} = useTranslation();
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         if (formRef.current) {
@@ -28,7 +29,7 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({open, handleC
     return (
         <Dialog open={open} onClose={handleClose}>
             <form onSubmit={handleSubmit} ref={formRef}>
-                <DialogTitle>Upload a File</DialogTitle>
+                <DialogTitle>{t("uploadDialogTitle")}</DialogTitle>
                 <DialogContent>
                     <TextField
                         variant="outlined"
@@ -38,8 +39,8 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({open, handleC
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button type="submit">Upload</Button>
+                    <Button onClick={handleClose}>{t('cancel')}</Button>
+                    <Button type="submit">{t('upload')}</Button>
                 </DialogActions>
             </form>
         </Dialog>
