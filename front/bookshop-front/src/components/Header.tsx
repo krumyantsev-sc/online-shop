@@ -16,9 +16,9 @@ const Header = () => {
 
     return (
         <div className={"header-container"}>
-            <LanguageSwitcher/>
             <div className="menu-container">
                 <div className="logo-container">
+                    <LanguageSwitcher/>
                     <Link to={"/"}>
                         <BookOnlineIcon className={"logo-icon"}/>
                         <span className={"logo-name"}>Books online</span>

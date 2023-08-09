@@ -46,7 +46,7 @@ const BookModal: React.FC<BookModalProps> = ({
                 .then(getBooksFromServer);
             handleClose();
         } else {
-            alert("Invalid input. Only English and Russian characters are allowed.");
+            alert(t('editBookError'));
         }
     };
 

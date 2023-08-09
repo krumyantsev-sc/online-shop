@@ -3,6 +3,7 @@ import {Avatar, Button} from "@mui/material";
 import ProfileService from "../../API/ProfileService";
 import Loading from "../Loading";
 import avatarDefault from "../../assets/img/avatarDefault.png"
+import {useTranslation} from "react-i18next";
 
 
 const ProfileAvatar = () => {
@@ -11,6 +12,7 @@ const ProfileAvatar = () => {
     const handleMouseOver = () => setIsHovered(true);
     const handleMouseOut = () => setIsHovered(false);
     const inputFileRef = useRef<HTMLInputElement>(null);
+    const {t} = useTranslation();
 
     useEffect(() => {
         loadAvatarFromServer();
@@ -41,7 +43,7 @@ const ProfileAvatar = () => {
             ProfileService.uploadAvatar(formData).then(() => {
                 loadAvatarFromServer();
             }).catch((error) => {
-                console.log('Upload error:', error);
+                console.log(t('uploadError'), error);
             });
         }
     };

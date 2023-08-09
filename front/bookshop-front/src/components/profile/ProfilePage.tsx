@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import Header from "../Header";
-import BookService from "../../API/BookService";
 import ProfileService from "../../API/ProfileService";
 import {UserInfo} from "./UserInfo";
 import {useNavigate} from "react-router-dom";
@@ -13,7 +12,7 @@ import {useTranslation} from "react-i18next";
 const ProfilePage = () => {
     const [displayInfo, setDisplayInfo] = useState<boolean>(true);
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [userInfo, setUserInfo] = useState<UserInfo|null>(null);
+    const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
     const navigate = useNavigate();
     const {t} = useTranslation();
 
@@ -26,7 +25,7 @@ const ProfilePage = () => {
                 setUserInfo(response.data);
             }
         } catch (error) {
-            console.error('Ошибка при получении данных:', error);
+            console.error(t('getProfileDataError'), error);
             navigate('/');
         }
     }
@@ -44,10 +43,13 @@ const ProfilePage = () => {
             <Header/>
             <div className="profile-page">
                 <div className="profile-container">
-                        {userInfo && (displayInfo ? <ProfileInfo profileInfo={userInfo}/> : <UserForm initialEmail={userInfo.email}/>)}
+                    {userInfo && (displayInfo ? <ProfileInfo profileInfo={userInfo}/> :
+                        <UserForm initialEmail={userInfo.email}/>)}
                     <div
                         className="profile-switch-button"
-                        onClick={() => {setDisplayInfo(!displayInfo)}}>
+                        onClick={() => {
+                            setDisplayInfo(!displayInfo)
+                        }}>
                         {displayInfo ? t('changeCreds') : t('viewProfile')}
                     </div>
                 </div>

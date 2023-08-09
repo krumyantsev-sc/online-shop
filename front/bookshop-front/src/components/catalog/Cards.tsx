@@ -50,7 +50,7 @@ const Cards = () => {
                 setIsLoading(false);
             }
         } catch (error) {
-            console.error('Ошибка при получении книг:', error);
+            console.error(t('getBooksError'), error);
             navigate('/');
         } finally {
             setIsLoading(false);

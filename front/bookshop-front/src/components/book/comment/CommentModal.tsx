@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import {Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle} from '@mui/material';
+import {useTranslation} from "react-i18next";
 
 interface MyDialogProps {
     onSave: (comment: string) => void;
@@ -8,8 +9,9 @@ interface MyDialogProps {
     handleClose: () => void;
 }
 
-const CommentModal: React.FC<MyDialogProps> = ({ onSave, defaultComment, open, handleClose }) => {
+const CommentModal: React.FC<MyDialogProps> = ({onSave, defaultComment, open, handleClose}) => {
     const [comment, setComment] = React.useState<string>(defaultComment);
+    const {t} = useTranslation();
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setComment(event.target.value);
@@ -22,12 +24,12 @@ const CommentModal: React.FC<MyDialogProps> = ({ onSave, defaultComment, open, h
 
     return (
         <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>Введите комментарий</DialogTitle>
+            <DialogTitle>{t('commentDialogTitle')}</DialogTitle>
             <DialogContent>
                 <TextField
                     autoFocus
                     margin="dense"
-                    label="Комментарий"
+                    label={t('commentFormLabel')}
                     type="text"
                     fullWidth
                     value={comment}
@@ -35,8 +37,8 @@ const CommentModal: React.FC<MyDialogProps> = ({ onSave, defaultComment, open, h
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose}>Отмена</Button>
-                <Button onClick={handleSave}>Сохранить</Button>
+                <Button onClick={handleClose}>{t('cancel')}</Button>
+                <Button onClick={handleSave}>{t('save')}</Button>
             </DialogActions>
         </Dialog>
     );

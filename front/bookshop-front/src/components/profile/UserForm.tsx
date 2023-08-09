@@ -33,7 +33,7 @@ const UserForm: React.FC<Props> = ({initialEmail}) => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (password !== confirmPassword) {
-            setErrorMessage("Passwords do not match!");
+            setErrorMessage(t('confirmPassError'));
         } else {
             setErrorMessage("");
             try {

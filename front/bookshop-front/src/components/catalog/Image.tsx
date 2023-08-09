@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import BookService from "../../API/BookService";
 import cardImgPlaceholder from "../../assets/img/question.jpg"
+import {useTranslation} from "react-i18next";
 
 interface ImageProps {
     uuid: string;
@@ -8,6 +9,7 @@ interface ImageProps {
 
 const ImageComponent: React.FC<ImageProps> = ({uuid}) => {
     const [imageData, setImageData] = useState<string | null>(null);
+    const {t} = useTranslation();
 
     useEffect(() => {
         const fetchImageData = async () => {
@@ -18,7 +20,7 @@ const ImageComponent: React.FC<ImageProps> = ({uuid}) => {
                 setImageData(imageSrc);
             } catch (error) {
                 setImageData(cardImgPlaceholder);
-                console.error('Ошибка при загрузке изображения:', error);
+                console.error(t('getImageError'), error);
             }
         };
 
@@ -30,7 +32,7 @@ const ImageComponent: React.FC<ImageProps> = ({uuid}) => {
             {imageData ? (
                 <img src={imageData} alt="book cover" />
             ) : (
-                <span>Загрузка изображения...</span>
+                <span>{t('loadingImage')}</span>
             )}
         </div>
     );
