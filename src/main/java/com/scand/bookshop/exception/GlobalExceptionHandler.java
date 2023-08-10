@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity<ServerMessage> UserAlreadyExistsException(PropertyValueException e) {
-        return ResponseEntity.badRequest().body(new ServerMessage("error",e.getMessage()));
+    public ResponseEntity<String> UserAlreadyExistsException(UserAlreadyExistsException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 }

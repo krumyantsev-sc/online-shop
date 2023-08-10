@@ -1,14 +1,21 @@
 package com.scand.bookshop.service.metadataextractor;
 
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
 @Component
+@RequiredArgsConstructor
 public class PdfExtractor implements Extractor {
+    private final MessageSource messageSource;
+    private final HttpServletRequest request;
+
     @Override
     public String getExtension() {
         return "pdf";
@@ -34,7 +41,8 @@ public class PdfExtractor implements Extractor {
         try {
             return file.getBytes();
         } catch (IOException e) {
-            throw new RuntimeException("Could not extract content");
+            throw new RuntimeException(messageSource.getMessage(
+                    "could_not_extract", null, request.getLocale()));
         }
     }
 
@@ -42,7 +50,8 @@ public class PdfExtractor implements Extractor {
         try {
             return PDDocument.load(file.getInputStream());
         } catch (IOException e) {
-            throw new RuntimeException("Error loading document");
+            throw new RuntimeException(messageSource.getMessage(
+                    "error_loading_doc", null, request.getLocale()));
         }
     }
 
@@ -50,7 +59,8 @@ public class PdfExtractor implements Extractor {
         try {
             document.close();
         } catch (IOException e) {
-            throw new RuntimeException("Error closing document");
+            throw new RuntimeException(messageSource.getMessage(
+                    "error_loading_doc", null, request.getLocale()));
         }
     }
 

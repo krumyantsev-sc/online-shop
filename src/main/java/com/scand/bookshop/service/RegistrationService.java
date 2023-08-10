@@ -12,9 +12,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class RegistrationService {
     private final UserRepository userRepository;
-
+    private static final org.apache.logging.log4j.Logger logger =
+            org.apache.logging.log4j.LogManager.getLogger(RegistrationService.class);
     public User register(String username, String hashPassword, String email, LocalDateTime regDate, User.Role role) {
-        return userRepository.save(new User(
+        logger.info("Starting registration process for user: " + username);
+        User newUser = userRepository.save(new User(
                 null,
                 java.util.UUID.randomUUID(),
                 username,
@@ -23,5 +25,7 @@ public class RegistrationService {
                 regDate,
                 role,
                 null));
+        logger.info("User: " + username + " registered successfully.");
+        return newUser;
     }
 }
