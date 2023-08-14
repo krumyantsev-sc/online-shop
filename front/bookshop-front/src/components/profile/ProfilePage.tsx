@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import Header from "../Header";
-import BookService from "../../API/BookService";
 import ProfileService from "../../API/ProfileService";
 import {UserInfo} from "./UserInfo";
 import {useNavigate} from "react-router-dom";
@@ -8,12 +7,14 @@ import Loading from "../Loading";
 import ProfileInfo from "./ProfileInfo";
 import "../../styles/Profile.css"
 import UserForm from "./UserForm";
+import {useTranslation} from "react-i18next";
 
 const ProfilePage = () => {
     const [displayInfo, setDisplayInfo] = useState<boolean>(true);
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [userInfo, setUserInfo] = useState<UserInfo|null>(null);
+    const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
     const navigate = useNavigate();
+    const {t: i18n} = useTranslation();
 
     async function getProfileFromServer() {
         try {
@@ -24,7 +25,7 @@ const ProfilePage = () => {
                 setUserInfo(response.data);
             }
         } catch (error) {
-            console.error('Ошибка при получении данных:', error);
+            console.error(i18n('getProfileDataError'), error);
             navigate('/');
         }
     }
@@ -42,11 +43,14 @@ const ProfilePage = () => {
             <Header/>
             <div className="profile-page">
                 <div className="profile-container">
-                        {userInfo && (displayInfo ? <ProfileInfo profileInfo={userInfo}/> : <UserForm initialEmail={userInfo.email}/>)}
+                    {userInfo && (displayInfo ? <ProfileInfo profileInfo={userInfo}/> :
+                        <UserForm initialEmail={userInfo.email}/>)}
                     <div
                         className="profile-switch-button"
-                        onClick={() => {setDisplayInfo(!displayInfo)}}>
-                        {displayInfo ? "CHANGE CREDENTIALS" : "VIEW PROFILE"}
+                        onClick={() => {
+                            setDisplayInfo(!displayInfo)
+                        }}>
+                        {displayInfo ? i18n('changeCreds') : i18n('viewProfile')}
                     </div>
                 </div>
             </div>

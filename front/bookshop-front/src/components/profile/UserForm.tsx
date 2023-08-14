@@ -4,12 +4,14 @@ import "../../styles/Profile.css"
 import ProfileService from "../../API/ProfileService";
 import {useNavigate} from "react-router-dom";
 import {useAuth} from "../auth/context/AuthContextProvider";
+import {useTranslation} from "react-i18next";
 
 interface Props {
     initialEmail: string;
 }
 
 const UserForm: React.FC<Props> = ({initialEmail}) => {
+    const {t: i18n} = useTranslation();
     const [email, setEmail] = useState(initialEmail);
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -31,7 +33,7 @@ const UserForm: React.FC<Props> = ({initialEmail}) => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (password !== confirmPassword) {
-            setErrorMessage("Passwords do not match!");
+            setErrorMessage(i18n('confirmPassError'));
         } else {
             setErrorMessage("");
             try {
@@ -53,26 +55,26 @@ const UserForm: React.FC<Props> = ({initialEmail}) => {
             <div className={"user-form-fields-container"}>
                 <TextField
                     className={"user-from-input"}
-                    label="Email"
+                    label={i18n('email')}
                     value={email}
                     onChange={handleEmailChange}
                     type="email"
                 />
                 <TextField
-                    label="Password"
+                    label={i18n('password')}
                     value={password}
                     onChange={handlePasswordChange}
                     type="password"
                 />
                 <TextField
-                    label="Confirm Password"
+                    label={i18n('confirmPass')}
                     value={confirmPassword}
                     onChange={handleConfirmPasswordChange}
                     type="password"
                     error={!!errorMessage}
                     helperText={errorMessage}
                 />
-                <Button type="submit">Submit</Button>
+                <Button type="submit">{i18n('submit')}</Button>
             </div>
         </form>
     );

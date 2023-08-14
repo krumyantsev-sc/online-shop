@@ -9,7 +9,9 @@ import com.scand.bookshop.service.BookService;
 import com.scand.bookshop.service.FileService;
 import com.scand.bookshop.service.metadataextractor.Extractor;
 import com.scand.bookshop.service.metadataextractor.Metadata;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,16 +34,22 @@ public class BookFacade {
     private final BookService bookService;
     private final List<Extractor> extractors;
     private final FileService fileService;
+    private final MessageSource messageSource;
+    private final HttpServletRequest request;
 
     public BookResponseDTO uploadBook(MultipartFile file) {
         if (file.isEmpty()) {
-            throw new IllegalArgumentException("File is empty");
+            throw new IllegalArgumentException(messageSource.getMessage("file_empty", null, request.getLocale()));
         }
         String extension = fileService.getExtension(file);
         Extractor extractor = extractors.stream()
                 .filter(fileExtractor -> fileExtractor.getExtension().equals(extension))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("No extractor found for the extension"));
+                .orElseThrow(() ->
+                        new IllegalArgumentException(messageSource.getMessage(
+                                "extractor_not_found",
+                                null,
+                                request.getLocale())));
         Metadata metadata = extractor.extractMetaData(file);
         Book book = bookService.createBook(metadata.getTitle(),
                 metadata.getAuthor(),
@@ -100,7 +108,7 @@ public class BookFacade {
         return DTOConverter.toDTO(book);
     }
 
-    public ResponseEntity<byte[]> downloadBook(String uuid){
+    public ResponseEntity<byte[]> downloadBook(String uuid) {
         Book book = bookService.getBookByUuid(uuid);
         byte[] content = bookService.downloadBook(book);
         HttpHeaders headers = new HttpHeaders();

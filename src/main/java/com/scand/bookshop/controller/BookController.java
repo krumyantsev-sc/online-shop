@@ -69,7 +69,6 @@ public class BookController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/{uuid}/update")
     public BookResponseDTO updateBook(@PathVariable String uuid, @RequestBody @Valid BookRequestDTO updatedBook) {
-        System.out.println(updatedBook);
         return bookFacade.updateBook(uuid, updatedBook);
     }
 }

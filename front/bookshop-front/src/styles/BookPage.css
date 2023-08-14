@@ -45,3 +45,54 @@
 .book-page-desc-container {
     height: 450px;
 }
+
+.comment-container {
+    display: flex;
+    justify-content: center;
+    background-color: #f5f7f5;
+    width: 100%;
+    border-radius: 10px;
+    min-height: 45px;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.comment-credentials {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.comment-text {
+    width: 60%;
+}
+
+.comments-container {
+    max-height: 200px;
+    overflow-y: auto;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.add-comment-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.comment-controls {
+    width: 10%;
+}
+
+.comment-controls svg {
+    cursor: pointer;
+}
+
+.comment-controls svg:hover {
+    color: deepskyblue;
+}
+

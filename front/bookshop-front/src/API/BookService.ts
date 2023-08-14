@@ -25,7 +25,6 @@ export default class BookService {
     }
 
     static updateBook = async (bookData: BookData, uuid: string) => {
-        console.log(bookData)
         return await axiosInstance.post(`${process.env.REACT_APP_API_URL}/books/${uuid}/update`, bookData, {withCredentials: true});
     }
 

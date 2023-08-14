@@ -2,18 +2,20 @@ import React, {createContext, useContext, useState} from 'react';
 
 interface AuthContextInterface {
     isAuthenticated: boolean;
-    login: (roles: string[]) => void;
+    login: (roles: string[], login: string) => void;
     logout: () => void;
     roles: string[];
+    username: string;
 }
 
 const AuthContext = createContext<AuthContextInterface>({
     isAuthenticated: false,
-    login: (roles: string[]) => {
+    login: (roles: string[], login: string) => {
     },
     logout: () => {
     },
-    roles: []
+    roles: [],
+    username: ""
 });
 
 export const useAuth = () => {
@@ -25,6 +27,7 @@ interface AuthProviderProps extends React.PropsWithChildren<{}> {
 
 const TOKEN_KEY = "token";
 const ROLES_KEY = "roles";
+const USERNAME_KEY = "username";
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
@@ -32,10 +35,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     );
     const rolesString = localStorage.getItem(ROLES_KEY);
     const [roles, setRoles] = useState<string[]>(rolesString ? rolesString.split(",") : []);
+    const usernameString = localStorage.getItem(USERNAME_KEY);
+    const [username, setUsername] = useState<string>(usernameString ? usernameString : "")
 
-
-    const login = (roles: string[]) => {
+    const login = (roles: string[], login: string) => {
         setIsAuthenticated(true);
+        setUsername(login);
         setRoles(roles);
     };
 
@@ -48,7 +53,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
 
     return (
         <AuthContext.Provider
-            value={{isAuthenticated, login, logout, roles}}>
+            value={{isAuthenticated, login, logout, roles, username}}>
             {children}
         </AuthContext.Provider>
     );

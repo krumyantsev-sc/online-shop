@@ -2,12 +2,14 @@ import React, {Dispatch, SetStateAction, useState} from 'react';
 import {Button, Grid, Paper, TextField, Typography} from '@mui/material';
 import AuthService from "../../API/AuthService";
 import Modal from "../util/Modal";
+import {useTranslation} from "react-i18next";
 
 interface RegisterFormProps {
     setIsLoginForm: Dispatch<SetStateAction<boolean>>;
 }
 
 const RegisterForm: React.FC<RegisterFormProps> = ({setIsLoginForm}) => {
+    const {t} = useTranslation();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -83,7 +85,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({setIsLoginForm}) => {
                     <form onSubmit={handleSubmit} noValidate autoComplete="off">
                         <TextField
                             error={usernameError}
-                            helperText={usernameError ? "Please enter only English alphabets and numbers" : ""}
+                            helperText={usernameError ? t('usernameError') : ""}
                             fullWidth
                             margin="normal"
                             label="Username"
@@ -92,7 +94,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({setIsLoginForm}) => {
                         />
                         <TextField
                             error={passwordError}
-                            helperText={passwordError ? "Symbols in password are not allowed" : ""}
+                            helperText={passwordError ? t('passwordError') : ""}
                             fullWidth
                             margin="normal"
                             type="password"
@@ -102,7 +104,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({setIsLoginForm}) => {
                         />
                         <TextField
                             error={confirmPasswordError}
-                            helperText={confirmPasswordError ? "Passwords do not match" : ""}
+                            helperText={confirmPasswordError ? t('confirmPassError') : ""}
                             fullWidth
                             margin="normal"
                             type="password"
@@ -112,7 +114,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({setIsLoginForm}) => {
                         />
                         <TextField
                             error={emailError}
-                            helperText={emailError ? "Invalid email address" : ""}
+                            helperText={emailError ? t('emailError') : ""}
                             fullWidth
                             margin="normal"
                             label="Email"

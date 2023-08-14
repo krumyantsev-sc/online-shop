@@ -2,7 +2,10 @@ package com.scand.bookshop.service;
 
 import com.scand.bookshop.entity.Book;
 import com.scand.bookshop.repository.BookRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,11 +20,14 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BookService {
 
     private final BookRepository bookRepository;
     private final FileService fileService;
     private final BookCoverService bookCoverService;
+    private final MessageSource messageSource;
+    private final HttpServletRequest request;
 
     @Transactional
     public Book createBook(String title, String author, String subject, String extension, byte[] content) {
@@ -32,30 +38,41 @@ public class BookService {
         fileService.writeFile(Paths.get(book.getFilePath()), content);
         String coverPath = "uploads/covers/" + uniqueFilename + ".png";
         fileService.writeFile(Paths.get(coverPath), bookCoverService.generateCover(content, 0));
+        log.info("Book with id '{}' created", book.getId());
         return book;
     }
 
     public byte[] downloadBook(Book book) {
+        log.info("Attempting to download book with UUID '{}'", book.getUuid());
         Path path = Paths.get(book.getFilePath());
         if (!Files.exists(path)) {
-            throw new IllegalArgumentException("ERROR! file not found");
+            log.error("File of the book with UUID '{}' not found", book.getUuid());
+            throw new IllegalArgumentException(messageSource.getMessage(
+                    "file_not_found", null, request.getLocale()));
         }
-        return fileService.readFile(book.getFilePath());
+        byte[] content = fileService.readFile(book.getFilePath());
+        log.info("Successfully downloaded book with UUID '{}'", book.getUuid());
+        return content;
     }
 
     public Resource getCover(Book book) {
+        log.info("Attempting to fetch cover for book with UUID '{}'", book.getUuid());
         String coverFilePath = "uploads/covers/" + book.getUuid() + ".png";
         Path coverPath = Paths.get(coverFilePath);
         if (!Files.exists(coverPath)) {
-            throw new IllegalArgumentException("ERROR! File not found");
+            log.error("Cover file for book with UUID '{}' not found", book.getUuid());
+            throw new IllegalArgumentException(messageSource.getMessage(
+                    "file_not_found", null, request.getLocale()));
         }
+        log.info("Successfully fetched cover for book with UUID '{}'", book.getUuid());
         return new org.springframework.core.io.PathResource(coverPath);
     }
 
     public List<String> getPreviewImages(Book book) {
         Path path = Paths.get(book.getFilePath());
         if (!Files.exists(path)) {
-            throw new IllegalArgumentException("ERROR! file not found");
+            throw new IllegalArgumentException(messageSource.getMessage(
+                    "file_not_found", null, request.getLocale()));
         }
         List<String> previewImages = new ArrayList<>();
         byte[] fileContent = fileService.readFile(book.getFilePath());
@@ -72,11 +89,13 @@ public class BookService {
 
     public Book getBookByUuid(String uuid) {
         return findBookByUuid(uuid)
-                .orElseThrow(() -> new NoSuchElementException("Book not found"));
+                .orElseThrow(() -> new NoSuchElementException(messageSource.getMessage(
+                        "book_not_found", null, request.getLocale())));
     }
 
     public void deleteBook(Book book) {
         bookRepository.delete(book);
+        log.info("Book with UUID '{}' deleted", book.getUuid());
     }
 
     @Transactional
@@ -86,6 +105,7 @@ public class BookService {
         book.setGenre(genre);
         book.setAuthor(author);
         book.setDescription(description);
+        log.info("Book with UUID '{}' updated", book.getUuid());
         return book;
     }
 

@@ -13,12 +13,19 @@ java {
 	sourceCompatibility = '17'
 }
 
+task runBashScript(type: Exec) {
+	workingDir './src/L5zero/'
+	commandLine 'wsl', 'sh', './L5zero.sh', './localization.xlsx', 'java', '../main/resources/'
+}
+
+build.dependsOn runBashScript
+
 repositories {
 	mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation('org.springframework.boot:spring-boot-starter-web')
 	implementation 'junit:junit:4.13.1'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.boot:spring-boot-starter-security:3.0.4'
@@ -51,8 +58,11 @@ liquibase {
 
 test {
 	maxParallelForks = 1
+	mustRunAfter ':runBashScript'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+
