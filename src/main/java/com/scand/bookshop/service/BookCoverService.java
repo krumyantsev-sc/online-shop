@@ -2,6 +2,7 @@ package com.scand.bookshop.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.springframework.context.MessageSource;
@@ -14,14 +15,13 @@ import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BookCoverService {
-    private static final org.apache.logging.log4j.Logger logger =
-            org.apache.logging.log4j.LogManager.getLogger(BookCoverService.class);
     private final MessageSource messageSource;
     private final HttpServletRequest request;
 
     public byte[] generateCover(byte[] data, int pageNum) {
-        logger.info("Generating cover for page number: " + pageNum);
+        log.info("Generating cover for page number: " + pageNum);
         PDDocument document = getDocumentFromBytes(data);
         PDFRenderer pdfRenderer = new PDFRenderer(document);
         BufferedImage image = getCoverBufferedImage(pdfRenderer, pageNum);
@@ -30,7 +30,7 @@ public class BookCoverService {
         try {
             document.close();
         } catch (IOException e) {
-            logger.error("Error while closing the document", e);
+            log.error("Error while closing the document", e);
             throw new RuntimeException(messageSource.getMessage(
                     "error_closing_doc", null, request.getLocale()));
         }
@@ -41,7 +41,7 @@ public class BookCoverService {
         try {
             return PDDocument.load(data);
         } catch (IOException e) {
-            logger.error("Error while loading document from bytes", e);
+            log.error("Error while loading document from bytes", e);
             throw new RuntimeException(messageSource.getMessage(
                     "error_loading_doc", null, request.getLocale()));
         }
@@ -51,7 +51,7 @@ public class BookCoverService {
         try {
             return pdfRenderer.renderImage(pageNum);
         } catch (IOException e) {
-            logger.error("Error while rendering image for page: " + pageNum, e);
+            log.error("Error while rendering image for page: " + pageNum, e);
             throw new RuntimeException(messageSource.getMessage(
                     "error_cover_image", null, request.getLocale()));
         }
@@ -61,7 +61,7 @@ public class BookCoverService {
         try {
             ImageIO.write(image, "png", baos);
         } catch (IOException e) {
-            logger.error("Error while writing image to stream", e);
+            log.error("Error while writing image to stream", e);
             throw new RuntimeException(messageSource.getMessage(
                     "error_writing_img", null, request.getLocale()));
         }

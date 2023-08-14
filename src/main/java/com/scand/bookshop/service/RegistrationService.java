@@ -3,6 +3,7 @@ package com.scand.bookshop.service;
 import com.scand.bookshop.entity.User;
 import com.scand.bookshop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -10,12 +11,11 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RegistrationService {
     private final UserRepository userRepository;
-    private static final org.apache.logging.log4j.Logger logger =
-            org.apache.logging.log4j.LogManager.getLogger(RegistrationService.class);
     public User register(String username, String hashPassword, String email, LocalDateTime regDate, User.Role role) {
-        logger.info("Starting registration process for user: " + username);
+        log.info("Starting registration process for user: " + username);
         User newUser = userRepository.save(new User(
                 null,
                 java.util.UUID.randomUUID(),
@@ -25,7 +25,7 @@ public class RegistrationService {
                 regDate,
                 role,
                 null));
-        logger.info("User: " + username + " registered successfully.");
+        log.info("User: " + username + " registered successfully.");
         return newUser;
     }
 }

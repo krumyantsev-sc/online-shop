@@ -1,0 +1,1 @@
+15:07:23.003 [http-nio-8054-exec-2] ERROR c.scand.bookshop.service.BookService - Cover file for book with UUID 'ccdddff1-ff8a-400c-b49c-7681a7319eab' not found
