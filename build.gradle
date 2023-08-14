@@ -15,11 +15,7 @@ java {
 
 task runBashScript(type: Exec) {
 	workingDir './src/L5zero/'
-	commandLine 'wsl', 'sh', './L5zero.sh', './localization.xlsx', '1', '../main/resources/'
-}
-
-build.doFirst {
-	println "Starting build task"
+	commandLine 'wsl', 'sh', './L5zero.sh', './localization.xlsx', 'java', '../main/resources/'
 }
 
 build.dependsOn runBashScript

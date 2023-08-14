@@ -1,1 +1,32 @@
 15:07:23.003 [http-nio-8054-exec-2] ERROR c.scand.bookshop.service.BookService - Cover file for book with UUID 'ccdddff1-ff8a-400c-b49c-7681a7319eab' not found
+15:33:27.881 [http-nio-8054-exec-5] ERROR c.scand.bookshop.service.BookService - Cover file for book with UUID 'ccdddff1-ff8a-400c-b49c-7681a7319eab' not found
+15:34:00.839 [http-nio-8054-exec-10] ERROR c.scand.bookshop.service.BookService - Cover file for book with UUID 'ccdddff1-ff8a-400c-b49c-7681a7319eab' not found
+15:35:05.840 [http-nio-8054-exec-10] ERROR c.scand.bookshop.service.BookService - Cover file for book with UUID 'ccdddff1-ff8a-400c-b49c-7681a7319eab' not found
+15:35:38.943 [http-nio-8054-exec-4] ERROR c.scand.bookshop.service.BookService - Cover file for book with UUID 'ccdddff1-ff8a-400c-b49c-7681a7319eab' not found
+15:36:07.822 [http-nio-8054-exec-8] ERROR c.scand.bookshop.service.BookService - Cover file for book with UUID 'ccdddff1-ff8a-400c-b49c-7681a7319eab' not found
+15:36:53.860 [http-nio-8054-exec-10] ERROR c.scand.bookshop.service.BookService - Cover file for book with UUID 'ccdddff1-ff8a-400c-b49c-7681a7319eab' not found
+15:37:18.825 [http-nio-8054-exec-3] ERROR c.scand.bookshop.service.BookService - Cover file for book with UUID 'ccdddff1-ff8a-400c-b49c-7681a7319eab' not found
+15:39:37.831 [http-nio-8054-exec-5] ERROR c.scand.bookshop.service.BookService - Cover file for book with UUID 'ccdddff1-ff8a-400c-b49c-7681a7319eab' not found
+15:40:26.134 [http-nio-8054-exec-7] ERROR c.scand.bookshop.service.BookService - Cover file for book with UUID 'ccdddff1-ff8a-400c-b49c-7681a7319eab' not found
+15:46:07.499 [http-nio-8054-exec-9] ERROR c.scand.bookshop.service.BookService - Cover file for book with UUID 'ccdddff1-ff8a-400c-b49c-7681a7319eab' not found
+16:13:20.410 [http-nio-8054-exec-1] ERROR c.s.bookshop.security.jwt.JwtUtils - JWT token is expired: JWT expired at 2023-08-14T13:04:03Z. Current time: 2023-08-14T13:13:20Z, a difference of 557408 milliseconds.  Allowed clock skew: 0 milliseconds.
+16:13:23.871 [http-nio-8054-exec-5] ERROR c.scand.bookshop.service.BookService - Cover file for book with UUID 'ccdddff1-ff8a-400c-b49c-7681a7319eab' not found
+16:15:18.986 [http-nio-8054-exec-9] ERROR c.scand.bookshop.service.BookService - Cover file for book with UUID 'ccdddff1-ff8a-400c-b49c-7681a7319eab' not found
+16:18:15.704 [http-nio-auto-1-exec-1] ERROR c.s.bookshop.security.jwt.JwtUtils - Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+16:18:16.418 [http-nio-auto-1-exec-2] ERROR c.s.bookshop.security.jwt.JwtUtils - Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+16:18:16.698 [http-nio-auto-1-exec-3] ERROR c.s.bookshop.security.jwt.JwtUtils - Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+16:18:16.819 [http-nio-auto-1-exec-4] ERROR c.s.bookshop.security.jwt.JwtUtils - Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+16:18:22.416 [Test worker] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - ОШИБКА: значение NULL в столбце "title" отношения "book" нарушает ограничение NOT NULL
+  Detail: Ошибочная строка содержит (2, John Doe, 62e2ce81-792b-4185-bbae-56ef2f3715fc, null, uploads/62e2ce81-792b-4185-bbae-56ef2f3715fc.pdf, Computer Science, null).
+16:19:08.826 [http-nio-auto-1-exec-1] ERROR c.s.bookshop.security.jwt.JwtUtils - Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+16:19:09.510 [http-nio-auto-1-exec-2] ERROR c.s.bookshop.security.jwt.JwtUtils - Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+16:19:09.783 [http-nio-auto-1-exec-3] ERROR c.s.bookshop.security.jwt.JwtUtils - Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+16:19:09.905 [http-nio-auto-1-exec-4] ERROR c.s.bookshop.security.jwt.JwtUtils - Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+16:19:14.540 [Test worker] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - ОШИБКА: значение NULL в столбце "title" отношения "book" нарушает ограничение NOT NULL
+  Detail: Ошибочная строка содержит (2, John Doe, 97bbe1cb-811f-43b6-813a-0d11fe8287cc, null, uploads/97bbe1cb-811f-43b6-813a-0d11fe8287cc.pdf, Computer Science, null).
+16:23:58.230 [http-nio-auto-1-exec-1] ERROR c.s.bookshop.security.jwt.JwtUtils - Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+16:23:58.970 [http-nio-auto-1-exec-2] ERROR c.s.bookshop.security.jwt.JwtUtils - Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+16:23:59.255 [http-nio-auto-1-exec-3] ERROR c.s.bookshop.security.jwt.JwtUtils - Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+16:23:59.376 [http-nio-auto-1-exec-4] ERROR c.s.bookshop.security.jwt.JwtUtils - Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+16:24:04.211 [Test worker] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - ОШИБКА: значение NULL в столбце "title" отношения "book" нарушает ограничение NOT NULL
+  Detail: Ошибочная строка содержит (2, John Doe, e0048462-845e-4472-872a-59e2001c2ec9, null, uploads/e0048462-845e-4472-872a-59e2001c2ec9.pdf, Computer Science, null).

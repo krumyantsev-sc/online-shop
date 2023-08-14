@@ -39,4 +39,6 @@ out/
 ### VS Code ###
 .vscode/
 /uploads/
+/front/bookshop-front/src/L5zero/
+/src/L5zero/
 errors.log
