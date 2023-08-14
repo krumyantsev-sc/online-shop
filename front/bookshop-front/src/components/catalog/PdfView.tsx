@@ -14,7 +14,7 @@ const PdfPreview: React.FC<PdfPreviewProps> = ({uuid}) => {
     const [previewImages, setPreviewImages] = useState([]);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const {t} = useTranslation();
+    const {t: i18n} = useTranslation();
 
     useEffect(() => {
         const loadPreviewImages = async () => {
@@ -24,7 +24,7 @@ const PdfPreview: React.FC<PdfPreviewProps> = ({uuid}) => {
                 setPreviewImages(data);
                 setIsLoading(false);
             } catch (error) {
-                console.error(t('getPreviewError'), error);
+                console.error(i18n('getPreviewError'), error);
             }
         };
 

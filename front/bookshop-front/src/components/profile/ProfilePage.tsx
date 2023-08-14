@@ -14,7 +14,7 @@ const ProfilePage = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
     const navigate = useNavigate();
-    const {t} = useTranslation();
+    const {t: i18n} = useTranslation();
 
     async function getProfileFromServer() {
         try {
@@ -25,7 +25,7 @@ const ProfilePage = () => {
                 setUserInfo(response.data);
             }
         } catch (error) {
-            console.error(t('getProfileDataError'), error);
+            console.error(i18n('getProfileDataError'), error);
             navigate('/');
         }
     }
@@ -50,7 +50,7 @@ const ProfilePage = () => {
                         onClick={() => {
                             setDisplayInfo(!displayInfo)
                         }}>
-                        {displayInfo ? t('changeCreds') : t('viewProfile')}
+                        {displayInfo ? i18n('changeCreds') : i18n('viewProfile')}
                     </div>
                 </div>
             </div>

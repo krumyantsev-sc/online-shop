@@ -13,7 +13,7 @@ interface SearchBarProps {
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
     const [searchTerm, setSearchTerm] = useState('');
-    const {t} = useTranslation();
+    const {t: i18n} = useTranslation();
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
@@ -25,7 +25,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
 
     return (
         <TextField
-            label={t('search')}
+            label={i18n('search')}
             variant="outlined"
             size="small"
             value={searchTerm}

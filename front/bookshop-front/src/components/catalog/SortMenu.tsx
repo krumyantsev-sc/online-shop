@@ -10,7 +10,7 @@ interface SortSelectProps {
 }
 
 const SortMenu: React.FC<SortSelectProps> = ({sortField, sortDirection, onSortChange}) => {
-    const {t} = useTranslation();
+    const {t: i18n} = useTranslation();
     const handleSortChange = (event: SelectChangeEvent<`${string}:${string}`>) => {
         const value = event.target.value;
         onSortChange(value);
@@ -19,10 +19,10 @@ const SortMenu: React.FC<SortSelectProps> = ({sortField, sortDirection, onSortCh
     return (
         <FormControl>
             <Select value={`${sortField}:${sortDirection}`} onChange={handleSortChange}>
-                <MenuItem value={`${Column.Id}:${Order.Asc}`}>{t('sortingOldest')}</MenuItem>
-                <MenuItem value={`${Column.Id}:${Order.Desc}`}>{t('sortingNewest')}</MenuItem>
-                <MenuItem value={`${Column.Title}:${Order.Asc}`}>{t('sortByTitle')}</MenuItem>
-                <MenuItem value={`${Column.Author}:${Order.Asc}`}>{t('sortByAuthor')}</MenuItem>
+                <MenuItem value={`${Column.Id}:${Order.Asc}`}>{i18n('sortingOldest')}</MenuItem>
+                <MenuItem value={`${Column.Id}:${Order.Desc}`}>{i18n('sortingNewest')}</MenuItem>
+                <MenuItem value={`${Column.Title}:${Order.Asc}`}>{i18n('sortByTitle')}</MenuItem>
+                <MenuItem value={`${Column.Author}:${Order.Asc}`}>{i18n('sortByAuthor')}</MenuItem>
             </Select>
         </FormControl>
     );

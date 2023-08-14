@@ -18,7 +18,7 @@ const BookPage = () => {
     const [bookInfo, setBookInfo] = useState<IBook>();
     const [comments, setComments] = useState<IComment[]>();
     const [open, setOpen] = useState(false);
-    const {t} = useTranslation();
+    const {t: i18n} = useTranslation();
 
     const handleClose = () => {
         setOpen(false);
@@ -52,7 +52,6 @@ const BookPage = () => {
             let response = await CommentService.getComments(bookUuid!);
             let data = await response.data;
             setComments(data);
-            console.log(data);
         } catch (e) {
             console.log(e);
         }
@@ -74,7 +73,7 @@ const BookPage = () => {
                     />
                     <div className="book-page-desc-container">
                         <div className={"desc"}>
-                            {bookInfo.description ? bookInfo.description : t('emptyDescription')}
+                            {bookInfo.description ? bookInfo.description : i18n('emptyDescription')}
                         </div>
                         <div className="comments-container">
                             {
@@ -97,7 +96,7 @@ const BookPage = () => {
                                 style={{marginTop: 10}}
                                 onClick={handleClickOpen}
                             >
-                                {t('addComment')}
+                                {i18n('addComment')}
                             </div>
                         </div>
                         }

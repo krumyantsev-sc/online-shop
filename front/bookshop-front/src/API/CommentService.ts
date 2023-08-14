@@ -10,8 +10,6 @@ export default class CommentService {
     };
 
     static updateComment = async (uuid: string, text: string) => {
-        console.log(text);
-        console.log("!!!!!!")
         return await axiosInstance.post(`/comments/${uuid}/update`, {text: text}, {withCredentials: true});
     };
 

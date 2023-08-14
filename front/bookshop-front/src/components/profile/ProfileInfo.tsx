@@ -9,7 +9,7 @@ interface ProfileInfoProps {
 }
 
 const ProfileInfo: React.FC<ProfileInfoProps> = ({profileInfo}) => {
-    const {t} =useTranslation();
+    const {t: i18n} =useTranslation();
     return (
         <div className={"info-container"}>
             <div className="avatar-container">
@@ -17,15 +17,15 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({profileInfo}) => {
             </div>
             <div className="credentials">
                 <div className={"credentials-info"}>
-                    <b>{t('username')}:</b> <br/>
+                    <b>{i18n('username')}:</b> <br/>
                     {profileInfo.username}<br/>
                 </div>
                 <div className={"credentials-info"}>
-                    <b> {t('email')}:</b> <br/>
+                    <b> {i18n('email')}:</b> <br/>
                     {profileInfo.email}<br/>
                 </div>
                 <div className={"credentials-info"}>
-                    <b>{t('regDate')}: </b> <br/>
+                    <b>{i18n('regDate')}: </b> <br/>
                     {profileInfo.regDate}<br/>
                 </div>
             </div>

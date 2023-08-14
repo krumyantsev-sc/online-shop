@@ -9,7 +9,7 @@ interface ImageProps {
 
 const ImageComponent: React.FC<ImageProps> = ({uuid}) => {
     const [imageData, setImageData] = useState<string | null>(null);
-    const {t} = useTranslation();
+    const {t: i18n} = useTranslation();
 
     useEffect(() => {
         const fetchImageData = async () => {
@@ -20,7 +20,7 @@ const ImageComponent: React.FC<ImageProps> = ({uuid}) => {
                 setImageData(imageSrc);
             } catch (error) {
                 setImageData(cardImgPlaceholder);
-                console.error(t('getImageError'), error);
+                console.error(i18n('getImageError'), error);
             }
         };
 
@@ -32,7 +32,7 @@ const ImageComponent: React.FC<ImageProps> = ({uuid}) => {
             {imageData ? (
                 <img src={imageData} alt="book cover" />
             ) : (
-                <span>{t('loadingImage')}</span>
+                <span>{i18n('loadingImage')}</span>
             )}
         </div>
     );

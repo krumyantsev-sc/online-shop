@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import LoginForm from "./LoginForm";
 import "../../styles/Auth.css"
 import RegistrationForm from "./RegistrationForm";
-import {AuthProvider} from "./context/AuthContextProvider";
 
 const AuthPage = () => {
     const [isLoginForm, setIsLoginForm] = useState<boolean>(true);

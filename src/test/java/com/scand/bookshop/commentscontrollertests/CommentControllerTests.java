@@ -81,7 +81,6 @@ public class CommentControllerTests extends BaseTest {
     @Test
     public void addComment_shouldCreateComment() {
         CommentRequestDTO requestDTO = new CommentRequestDTO("test", book.getUuid());
-        System.out.println(requestDTO.getBookUuid() + requestDTO.getText());
         ResponseEntity<String> response = makePostRequestWithToken(jwtToken, "/comments/add", requestDTO, String.class);
         assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
         assertThat(commentRepository.findByBook(book)).isNotNull();
@@ -90,7 +89,6 @@ public class CommentControllerTests extends BaseTest {
     @Test
     public void addComment_shouldNotCreateCommentWithEmptyText() {
         CommentRequestDTO requestDTO = new CommentRequestDTO("", book.getUuid());
-        System.out.println(requestDTO.getBookUuid() + requestDTO.getText());
         ResponseEntity<String> response = makePostRequestWithToken(jwtToken, "/comments/add", requestDTO, String.class);
         assertThat(response.getStatusCode().is4xxClientError()).isTrue();
         assertThat(commentRepository.findByBook(book)).isEmpty();

@@ -11,7 +11,7 @@ interface MyDialogProps {
 
 const CommentModal: React.FC<MyDialogProps> = ({onSave, defaultComment, open, handleClose}) => {
     const [comment, setComment] = React.useState<string>(defaultComment);
-    const {t} = useTranslation();
+    const {t: i18n} = useTranslation();
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setComment(event.target.value);
@@ -24,12 +24,12 @@ const CommentModal: React.FC<MyDialogProps> = ({onSave, defaultComment, open, ha
 
     return (
         <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>{t('commentDialogTitle')}</DialogTitle>
+            <DialogTitle>{i18n('commentDialogTitle')}</DialogTitle>
             <DialogContent>
                 <TextField
                     autoFocus
                     margin="dense"
-                    label={t('commentFormLabel')}
+                    label={i18n('commentFormLabel')}
                     type="text"
                     fullWidth
                     value={comment}
@@ -37,8 +37,8 @@ const CommentModal: React.FC<MyDialogProps> = ({onSave, defaultComment, open, ha
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose}>{t('cancel')}</Button>
-                <Button onClick={handleSave}>{t('save')}</Button>
+                <Button onClick={handleClose}>{i18n('cancel')}</Button>
+                <Button onClick={handleSave}>{i18n('save')}</Button>
             </DialogActions>
         </Dialog>
     );

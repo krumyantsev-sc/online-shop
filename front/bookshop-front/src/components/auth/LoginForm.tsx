@@ -31,9 +31,6 @@ const LoginForm: React.FC<LoginFormProps> = ({setIsLoginForm}) => {
             setUsernameError(true);
         }
     };
-    useEffect(() => {
-        console.log(isAuthenticated);
-    }, [isAuthenticated]);
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();

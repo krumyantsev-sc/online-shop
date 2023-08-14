@@ -39,7 +39,6 @@ public class AuthControllerTests extends BaseTest {
                 "usertest@test.com");
         ResponseEntity<String> response =
                 makePostRequestWithToken(null, "/auth/register", regDto, String.class);
-        System.out.println(response);
         Optional<User> user = userRepository.findByLogin("usertest");
         assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
         assertThat(response.getBody()).isNotNull();

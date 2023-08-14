@@ -12,7 +12,7 @@ import {useTranslation} from "react-i18next";
 
 const Header = () => {
     const {isAuthenticated, logout} = useAuth();
-    const {t} = useTranslation();
+    const {t: i18n} = useTranslation();
 
     return (
         <div className={"header-container"}>
@@ -29,21 +29,21 @@ const Header = () => {
                     <div className="menu-item-container">
                         <Link to={"/profile"}>
                             <PersonIcon fontSize={"large"}/>
-                            <span className={"menu-item-name"}>{t("profile")}</span>
+                            <span className={"menu-item-name"}>{i18n("profile")}</span>
                         </Link>
                     </div>
                     }
                     <div className="menu-item-container">
                         <Link to={"/catalog"}>
                             <AutoStoriesIcon fontSize={"large"}/>
-                            <span className={"menu-item-name"}>{t("catalog")}</span>
+                            <span className={"menu-item-name"}>{i18n("catalog")}</span>
                         </Link>
                     </div>
                     {!isAuthenticated ?
                         <div className="menu-item-container">
                             <Link to={"/login"}>
                                 <LoginIcon fontSize={"large"}/>
-                                <span className={"menu-item-name"}>{t("login")}</span>
+                                <span className={"menu-item-name"}>{i18n("login")}</span>
                             </Link>
                         </div>
                         :
@@ -52,7 +52,7 @@ const Header = () => {
                         >
                             <Link to={"/"}>
                                 <LogoutIcon fontSize={"large"}/>
-                                <span className={"menu-item-name"}>{t("logout")}</span>
+                                <span className={"menu-item-name"}>{i18n("logout")}</span>
                             </Link>
                         </div>
                     }

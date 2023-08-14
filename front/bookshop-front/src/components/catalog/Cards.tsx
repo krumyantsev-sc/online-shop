@@ -15,7 +15,7 @@ import {useTranslation} from "react-i18next";
 
 const Cards = () => {
     const {roles} = useAuth();
-    const {t} = useTranslation();
+    const {t: i18n} = useTranslation();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [books, setBooks] = useState<IBook[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -50,7 +50,7 @@ const Cards = () => {
                 setIsLoading(false);
             }
         } catch (error) {
-            console.error(t('getBooksError'), error);
+            console.error(i18n('getBooksError'), error);
             navigate('/');
         } finally {
             setIsLoading(false);
@@ -92,14 +92,14 @@ const Cards = () => {
                     disabled={currentPage === 1}
                     onClick={() => setCurrentPage(currentPage - 1)}
                 >
-                    {t('prev')}
+                    {i18n('prev')}
                 </button>
                 <span>{currentPage} / {totalPages}</span>
                 <button
                     disabled={currentPage === totalPages}
                     onClick={() => setCurrentPage(currentPage + 1)}
                 >
-                    {t('next')}
+                    {i18n('next')}
                 </button>
             </div>
         </div>

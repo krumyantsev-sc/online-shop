@@ -22,7 +22,7 @@ const Card: React.FC<CardBookProps> = ({
                                            getBooksFromServer,
                                            description
                                        }) => {
-    const {t} = useTranslation();
+    const {t: i18n} = useTranslation();
     const {roles} = useAuth();
     const [openEdit, setOpenEdit] = React.useState(false);
     const [openPreview, setOpenPreview] = React.useState(false);
@@ -69,9 +69,9 @@ const Card: React.FC<CardBookProps> = ({
                      navigate(`/catalog/${uuid}`)
                  }}
             >
-                <span>{t('title')}: {title}</span><br/>
-                <span>{t('author')}: {author}</span><br/>
-                <span>{t('genre')}: {genre}</span><br/>
+                <span>{i18n('title')}: {title}</span><br/>
+                <span>{i18n('author')}: {author}</span><br/>
+                <span>{i18n('genre')}: {genre}</span><br/>
             </div>
             {bookUuid &&
             <div className="card-buttons-container">
@@ -79,7 +79,7 @@ const Card: React.FC<CardBookProps> = ({
                      onClick={() => {
                          downloadFile(`${process.env.REACT_APP_API_URL}/books/${uuid}/download`, title)
                      }}>
-                    {t('download')}
+                    {i18n('download')}
                 </div>
                 {roles.includes(Roles.Admin) && <div className="edit-button">
                     <SettingsIcon

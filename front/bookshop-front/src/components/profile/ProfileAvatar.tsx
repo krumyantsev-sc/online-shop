@@ -12,7 +12,7 @@ const ProfileAvatar = () => {
     const handleMouseOver = () => setIsHovered(true);
     const handleMouseOut = () => setIsHovered(false);
     const inputFileRef = useRef<HTMLInputElement>(null);
-    const {t} = useTranslation();
+    const {t: i18n} = useTranslation();
 
     useEffect(() => {
         loadAvatarFromServer();
@@ -43,7 +43,7 @@ const ProfileAvatar = () => {
             ProfileService.uploadAvatar(formData).then(() => {
                 loadAvatarFromServer();
             }).catch((error) => {
-                console.log(t('uploadError'), error);
+                console.log(i18n('uploadError'), error);
             });
         }
     };

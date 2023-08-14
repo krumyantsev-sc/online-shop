@@ -11,7 +11,7 @@ interface Props {
 }
 
 const UserForm: React.FC<Props> = ({initialEmail}) => {
-    const {t} = useTranslation();
+    const {t: i18n} = useTranslation();
     const [email, setEmail] = useState(initialEmail);
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -33,7 +33,7 @@ const UserForm: React.FC<Props> = ({initialEmail}) => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (password !== confirmPassword) {
-            setErrorMessage(t('confirmPassError'));
+            setErrorMessage(i18n('confirmPassError'));
         } else {
             setErrorMessage("");
             try {
@@ -55,26 +55,26 @@ const UserForm: React.FC<Props> = ({initialEmail}) => {
             <div className={"user-form-fields-container"}>
                 <TextField
                     className={"user-from-input"}
-                    label={t('email')}
+                    label={i18n('email')}
                     value={email}
                     onChange={handleEmailChange}
                     type="email"
                 />
                 <TextField
-                    label={t('password')}
+                    label={i18n('password')}
                     value={password}
                     onChange={handlePasswordChange}
                     type="password"
                 />
                 <TextField
-                    label={t('confirmPass')}
+                    label={i18n('confirmPass')}
                     value={confirmPassword}
                     onChange={handleConfirmPasswordChange}
                     type="password"
                     error={!!errorMessage}
                     helperText={errorMessage}
                 />
-                <Button type="submit">{t('submit')}</Button>
+                <Button type="submit">{i18n('submit')}</Button>
             </div>
         </form>
     );

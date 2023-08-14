@@ -12,7 +12,7 @@ interface FileUploadDialogProps {
 
 export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({open, handleClose, getBooksFromServer}) => {
     const formRef = useRef<HTMLFormElement>(null);
-    const {t} = useTranslation();
+    const {t: i18n} = useTranslation();
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         if (formRef.current) {
@@ -29,7 +29,7 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({open, handleC
     return (
         <Dialog open={open} onClose={handleClose}>
             <form onSubmit={handleSubmit} ref={formRef}>
-                <DialogTitle>{t("uploadDialogTitle")}</DialogTitle>
+                <DialogTitle>{i18n("uploadDialogTitle")}</DialogTitle>
                 <DialogContent>
                     <TextField
                         variant="outlined"
@@ -39,8 +39,8 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({open, handleC
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>{t('cancel')}</Button>
-                    <Button type="submit">{t('upload')}</Button>
+                    <Button onClick={handleClose}>{i18n('cancel')}</Button>
+                    <Button type="submit">{i18n('upload')}</Button>
                 </DialogActions>
             </form>
         </Dialog>
