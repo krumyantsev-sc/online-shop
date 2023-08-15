@@ -43,19 +43,11 @@ public class CommentFacade {
 
     public void deleteComment(String uuid, UserDetailsImpl userPrincipal) {
         Comment comment = commentService.getCommentByUuid(uuid);
-        if (!Objects.equals(comment.getUser().getId(), userPrincipal.getId()) && userPrincipal.getAuthorities().stream()
-                .noneMatch(auth -> auth.getAuthority().equals("ADMIN"))) {
-            throw new RuntimeException(messageSource.getMessage("no_access", null, request.getLocale()));
-        }
         commentService.deleteComment(comment);
     }
 
     public void updateComment(String uuid, String newText, UserDetailsImpl userPrincipal) {
         Comment comment = commentService.getCommentByUuid(uuid);
-        if (!Objects.equals(comment.getUser().getId(), userPrincipal.getId()) && userPrincipal.getAuthorities().stream()
-                .noneMatch(auth -> auth.getAuthority().equals("ADMIN"))) {
-            throw new RuntimeException(messageSource.getMessage("no_access", null, request.getLocale()));
-        }
         commentService.updateComment(comment, newText);
     }
 }

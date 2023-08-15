@@ -40,3 +40,4 @@ out/
 .vscode/
 /uploads/
 errors.log
+general.log

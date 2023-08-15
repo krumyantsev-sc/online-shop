@@ -7,6 +7,7 @@ import com.scand.bookshop.facade.CommentFacade;
 import com.scand.bookshop.security.service.UserDetailsImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,11 +30,13 @@ public class CommentController {
     }
 
     @DeleteMapping(value = "/{uuid}")
+    @PreAuthorize("hasAuthority('ADMIN') or @commentPermissionEvaluator.hasPermission(authentication, #uuid)")
     public void deleteComment(@PathVariable String uuid, @AuthenticationPrincipal UserDetailsImpl userPrincipal) {
         commentFacade.deleteComment(uuid, userPrincipal);
     }
 
     @PostMapping(value = "/{uuid}/update")
+    @PreAuthorize("hasAuthority('ADMIN') or @commentPermissionEvaluator.hasPermission(authentication, #uuid)")
     public void updateComment(@PathVariable String uuid,
                               @AuthenticationPrincipal UserDetailsImpl userPrincipal,
                               @RequestBody CommentUpdateDTO newText) {
