@@ -11,3 +11,7 @@ databaseChangeLog:
       file: db/changelog/changes/add_description_to_books.yaml
   - include:
       file: db/changelog/changes/create-comment-table.yaml
+  - include:
+      file: db/changelog/changes/add-column-parent-id-comment.yaml
+  - include:
+      file: db/changelog/changes/add-column-isremoved.yaml

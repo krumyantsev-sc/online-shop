@@ -6,6 +6,7 @@ import com.scand.bookshop.entity.User;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class DTOConverter {
     public static BookResponseDTO toDTO(Book book) {
@@ -19,15 +20,29 @@ public class DTOConverter {
     }
 
     public static UserResponseDTO toUserDTO(User user) {
-        return  new UserResponseDTO(user.getLogin(), user.getEmail(), user.getRegistrationDate().toLocalDate().toString());
+        return new UserResponseDTO(user.getLogin(), user.getEmail(), user.getRegistrationDate().toLocalDate().toString());
     }
 
     public static CommentResponseDTO toDTO(Comment comment) {
-        CommentResponseDTO responseDTO = new CommentResponseDTO();
-        responseDTO.setText(comment.getText());
-        responseDTO.setUsername(comment.getUser().getLogin());
-        responseDTO.setTimestamp(comment.getTimestamp().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
-        responseDTO.setUuid(comment.getUuid());
+        CommentResponseDTO responseDTO;
+        if (!comment.isRemoved()) {
+            responseDTO = new CommentResponseDTO();
+            responseDTO.setText(comment.getText());
+            responseDTO.setUsername(comment.getUser().getLogin());
+            responseDTO.setTimestamp(comment.getTimestamp().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+            responseDTO.setUuid(comment.getUuid());
+            responseDTO.setReplies(comment.getReplies().stream().map(DTOConverter::toDTO).collect(Collectors.toList()));
+            responseDTO.setRemoved(comment.isRemoved());
+        } else {
+            responseDTO = new CommentResponseDTO(
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    comment.isRemoved());
+            responseDTO.setReplies(comment.getReplies().stream().map(DTOConverter::toDTO).collect(Collectors.toList()));
+        }
         return responseDTO;
     }
 }

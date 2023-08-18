@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -14,4 +16,6 @@ public class CommentResponseDTO {
     private String timestamp;
     private String text;
     private String uuid;
+    private List<CommentResponseDTO> replies;
+    private boolean isRemoved;
 }

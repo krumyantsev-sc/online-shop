@@ -31,7 +31,7 @@ public class CommentFacade {
     public void addComment(CommentRequestDTO comment, UserDetailsImpl userPrincipal) {
         User user = userService.getUserById(userPrincipal.getId());
         Book book = bookService.getBookByUuid(comment.getBookUuid());
-        commentService.add(comment.getText(), book, user);
+        commentService.add(comment.getText(), book, user, comment.getParentUuid());
     }
 
     public List<CommentResponseDTO> getComments(String uuid) {

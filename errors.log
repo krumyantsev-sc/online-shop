@@ -107,3 +107,52 @@ ERROR in ch.qos.logback.core.pattern.parser.Compiler@3bd418e4 - Failed to create
 	at org.springframework.boot.logging.logback.LogbackLoggingSystem.initialize(LogbackLoggingSystem.java:187)
 	at org.springframework.boot.context.logging.LoggingApplicationListener.initializeSystem(LoggingApplicationListener.java:332)
 	... 19 common frames omitted
+15:38:23.535 [http-nio-8054-exec-1] ERROR c.scand.bookshop.service.BookService - Cover file for book with UUID '6fad391f-0bd7-449c-b8fb-8f442e8c17dc' not found
+09:23:14.751 [http-nio-8054-exec-2] ERROR c.s.bookshop.security.jwt.JwtUtils - JWT token is expired: JWT expired at 2023-08-15T12:53:35Z. Current time: 2023-08-18T06:23:14Z, a difference of 235779749 milliseconds.  Allowed clock skew: 0 milliseconds.
+09:23:18.572 [http-nio-8054-exec-6] ERROR c.scand.bookshop.service.BookService - Cover file for book with UUID '6fad391f-0bd7-449c-b8fb-8f442e8c17dc' not found
+09:28:24.039 [http-nio-8054-exec-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - ОШИБКА: столбец c1_0.parent_comment_id не существует
+  Position: 46
+  Location: File: parse_relation.c, Routine: errorMissingColumn, Line: 3666
+  Server SQLState: 42703
+09:28:24.062 [http-nio-8054-exec-2] ERROR c.scand.bookshop.service.BookService - Cover file for book with UUID '6fad391f-0bd7-449c-b8fb-8f442e8c17dc' not found
+09:28:27.032 [http-nio-8054-exec-4] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - ОШИБКА: столбец "parent_comment_id" в таблице "comment" не существует
+  Position: 80
+  Location: File: parse_target.c, Routine: checkInsertTargets, Line: 1066
+  Server SQLState: 42703
+09:28:54.649 [http-nio-8054-exec-6] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - ОШИБКА: столбец c1_0.parent_comment_id не существует
+  Position: 46
+  Location: File: parse_relation.c, Routine: errorMissingColumn, Line: 3666
+  Server SQLState: 42703
+09:28:54.763 [http-nio-8054-exec-7] ERROR c.scand.bookshop.service.BookService - Cover file for book with UUID '6fad391f-0bd7-449c-b8fb-8f442e8c17dc' not found
+09:29:06.823 [http-nio-8054-exec-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - ОШИБКА: столбец "parent_comment_id" в таблице "comment" не существует
+  Position: 80
+  Location: File: parse_target.c, Routine: checkInsertTargets, Line: 1066
+  Server SQLState: 42703
+10:34:40.193 [http-nio-8054-exec-6] ERROR c.s.bookshop.security.jwt.JwtUtils - JWT token is expired: JWT expired at 2023-08-18T07:32:28Z. Current time: 2023-08-18T07:34:40Z, a difference of 132191 milliseconds.  Allowed clock skew: 0 milliseconds.
+10:34:40.193 [http-nio-8054-exec-5] ERROR c.s.bookshop.security.jwt.JwtUtils - JWT token is expired: JWT expired at 2023-08-18T07:32:28Z. Current time: 2023-08-18T07:34:40Z, a difference of 132191 milliseconds.  Allowed clock skew: 0 milliseconds.
+10:43:18.645 [http-nio-8054-exec-1] ERROR c.s.bookshop.security.jwt.JwtUtils - JWT token is expired: JWT expired at 2023-08-18T07:32:28Z. Current time: 2023-08-18T07:43:18Z, a difference of 650645 milliseconds.  Allowed clock skew: 0 milliseconds.
+10:43:18.650 [http-nio-8054-exec-2] ERROR c.s.bookshop.security.jwt.JwtUtils - JWT token is expired: JWT expired at 2023-08-18T07:32:28Z. Current time: 2023-08-18T07:43:18Z, a difference of 650650 milliseconds.  Allowed clock skew: 0 milliseconds.
+10:43:20.925 [http-nio-8054-exec-4] ERROR c.s.bookshop.security.jwt.JwtUtils - JWT token is expired: JWT expired at 2023-08-18T07:32:28Z. Current time: 2023-08-18T07:43:20Z, a difference of 652925 milliseconds.  Allowed clock skew: 0 milliseconds.
+10:43:21.024 [http-nio-8054-exec-5] ERROR c.s.bookshop.security.jwt.JwtUtils - JWT token is expired: JWT expired at 2023-08-18T07:32:28Z. Current time: 2023-08-18T07:43:21Z, a difference of 653024 milliseconds.  Allowed clock skew: 0 milliseconds.
+10:43:22.422 [http-nio-8054-exec-10] ERROR c.s.bookshop.security.jwt.JwtUtils - JWT token is expired: JWT expired at 2023-08-18T07:32:28Z. Current time: 2023-08-18T07:43:22Z, a difference of 654422 milliseconds.  Allowed clock skew: 0 milliseconds.
+10:43:22.423 [http-nio-8054-exec-8] ERROR c.s.bookshop.security.jwt.JwtUtils - JWT token is expired: JWT expired at 2023-08-18T07:32:28Z. Current time: 2023-08-18T07:43:22Z, a difference of 654422 milliseconds.  Allowed clock skew: 0 milliseconds.
+14:07:00.941 [http-nio-8054-exec-9] ERROR c.s.bookshop.security.jwt.JwtUtils - JWT token is expired: JWT expired at 2023-08-18T10:04:25Z. Current time: 2023-08-18T11:07:00Z, a difference of 3755940 milliseconds.  Allowed clock skew: 0 milliseconds.
+14:07:00.941 [http-nio-8054-exec-10] ERROR c.s.bookshop.security.jwt.JwtUtils - JWT token is expired: JWT expired at 2023-08-18T10:04:25Z. Current time: 2023-08-18T11:07:00Z, a difference of 3755938 milliseconds.  Allowed clock skew: 0 milliseconds.
+14:07:00.941 [http-nio-8054-exec-8] ERROR c.s.bookshop.security.jwt.JwtUtils - JWT token is expired: JWT expired at 2023-08-18T10:04:25Z. Current time: 2023-08-18T11:07:00Z, a difference of 3755936 milliseconds.  Allowed clock skew: 0 milliseconds.
+14:07:00.963 [http-nio-8054-exec-5] ERROR c.s.bookshop.security.jwt.JwtUtils - JWT token is expired: JWT expired at 2023-08-18T10:04:25Z. Current time: 2023-08-18T11:07:00Z, a difference of 3755963 milliseconds.  Allowed clock skew: 0 milliseconds.
+14:07:00.965 [http-nio-8054-exec-7] ERROR c.s.bookshop.security.jwt.JwtUtils - JWT token is expired: JWT expired at 2023-08-18T10:04:25Z. Current time: 2023-08-18T11:07:00Z, a difference of 3755963 milliseconds.  Allowed clock skew: 0 milliseconds.
+14:07:27.298 [http-nio-8054-exec-2] ERROR c.s.bookshop.security.jwt.JwtUtils - JWT token is expired: JWT expired at 2023-08-18T10:04:25Z. Current time: 2023-08-18T11:07:27Z, a difference of 3782296 milliseconds.  Allowed clock skew: 0 milliseconds.
+14:07:27.298 [http-nio-8054-exec-1] ERROR c.s.bookshop.security.jwt.JwtUtils - JWT token is expired: JWT expired at 2023-08-18T10:04:25Z. Current time: 2023-08-18T11:07:27Z, a difference of 3782296 milliseconds.  Allowed clock skew: 0 milliseconds.
+14:26:25.892 [http-nio-8054-exec-1] ERROR c.s.bookshop.security.jwt.JwtUtils - JWT token is expired: JWT expired at 2023-08-09T12:42:01Z. Current time: 2023-08-18T11:26:25Z, a difference of 773064890 milliseconds.  Allowed clock skew: 0 milliseconds.
+14:26:53.788 [http-nio-8054-exec-2] ERROR c.s.bookshop.security.jwt.JwtUtils - JWT token is expired: JWT expired at 2023-08-07T10:08:36Z. Current time: 2023-08-18T11:26:53Z, a difference of 955097788 milliseconds.  Allowed clock skew: 0 milliseconds.
+14:27:06.109 [http-nio-8054-exec-4] ERROR c.s.bookshop.security.jwt.JwtUtils - JWT token is expired: JWT expired at 2023-08-07T10:08:36Z. Current time: 2023-08-18T11:27:06Z, a difference of 955110109 milliseconds.  Allowed clock skew: 0 milliseconds.
+15:11:55.897 [http-nio-8054-exec-10] ERROR c.s.bookshop.security.jwt.JwtUtils - JWT token is expired: JWT expired at 2023-08-18T12:07:38Z. Current time: 2023-08-18T12:11:55Z, a difference of 257892 milliseconds.  Allowed clock skew: 0 milliseconds.
+15:11:55.898 [http-nio-8054-exec-1] ERROR c.s.bookshop.security.jwt.JwtUtils - JWT token is expired: JWT expired at 2023-08-18T12:07:38Z. Current time: 2023-08-18T12:11:55Z, a difference of 257898 milliseconds.  Allowed clock skew: 0 milliseconds.
+15:12:08.510 [http-nio-8054-exec-3] ERROR c.s.bookshop.security.jwt.JwtUtils - JWT token is expired: JWT expired at 2023-08-18T12:07:38Z. Current time: 2023-08-18T12:12:08Z, a difference of 270510 milliseconds.  Allowed clock skew: 0 milliseconds.
+16:00:44.285 [http-nio-8054-exec-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - ОШИБКА: значение NULL в столбце "text" отношения "comment" нарушает ограничение NOT NULL
+  Detail: Ошибочная строка содержит (2, null, 1, 1, 2023-08-18 12:04:36.734982, 9da283fb-eeb4-46e3-82e0-2ef4f82db17f, 1).
+  Location: File: execmain.c, Routine: ExecConstraints, Line: 1974
+  Server SQLState: 23502
+16:37:59.232 [http-nio-8054-exec-4] ERROR c.s.bookshop.security.jwt.JwtUtils - JWT token is expired: JWT expired at 2023-08-18T13:12:08Z. Current time: 2023-08-18T13:37:59Z, a difference of 1551231 milliseconds.  Allowed clock skew: 0 milliseconds.
+16:37:59.232 [http-nio-8054-exec-3] ERROR c.s.bookshop.security.jwt.JwtUtils - JWT token is expired: JWT expired at 2023-08-18T13:12:08Z. Current time: 2023-08-18T13:37:59Z, a difference of 1551230 milliseconds.  Allowed clock skew: 0 milliseconds.
+16:41:38.312 [http-nio-8054-exec-2] ERROR c.s.bookshop.security.jwt.JwtUtils - JWT token is expired: JWT expired at 2023-08-18T13:12:08Z. Current time: 2023-08-18T13:41:38Z, a difference of 1770310 milliseconds.  Allowed clock skew: 0 milliseconds.

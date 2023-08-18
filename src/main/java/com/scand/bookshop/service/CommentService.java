@@ -25,9 +25,18 @@ public class CommentService {
     private final MessageSource messageSource;
     private final HttpServletRequest request;
 
-    public void add(String text, Book book, User user) {
+    public void add(String text, Book book, User user, String parentUuid) {
         log.info("Adding comment for book with ID: " + book.getId() + " by user with ID: " + user.getId());
-        Comment comment = new Comment(null, text, book, user, LocalDateTime.now(), UUID.randomUUID().toString());
+        Optional<Comment> parentComment = findCommentByUuid(parentUuid);
+        Comment comment = new Comment(null,
+                parentComment.orElse(null),
+                null,
+                text,
+                book,
+                user,
+                LocalDateTime.now(),
+                UUID.randomUUID().toString(),
+                false);
         commentRepository.save(comment);
         log.info("Comment saved with UUID: " + comment.getUuid());
     }
@@ -45,10 +54,16 @@ public class CommentService {
                 });
     }
 
+    @Transactional
     public void deleteComment(Comment comment) {
         log.info("Deleting comment with ID: " + comment.getId() + " and UUID: " + comment.getUuid());
-        commentRepository.delete(comment);
-        log.info("Comment deleted");
+        if(comment.getReplies().isEmpty()) {
+            commentRepository.delete(comment);
+            log.info("Comment deleted");
+        } else {
+            comment.setRemoved(true);
+            log.info("Comment marked as removed");
+        }
     }
 
     @Transactional

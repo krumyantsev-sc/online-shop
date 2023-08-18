@@ -58,13 +58,15 @@ public class CommentServiceTests extends BaseTest {
 
     @Test
     public void createComment() {
-        commentService.add("test",book, userRepository.findByLogin("adminCommentService").get());
+        commentService.add("test",book, userRepository.findByLogin("adminCommentService").get(), null);
         assertThat(commentRepository.findByBook(book)).isNotEmpty();
     }
 
     @Test
     public void updateComment() {
         Comment comment = new Comment(null,
+                null,
+                null,
                 "created",
                 book,
                 userService.findUserByUsername("adminCommentService").get(),
@@ -78,6 +80,8 @@ public class CommentServiceTests extends BaseTest {
     @Test
     public void deleteComment() {
         Comment comment = new Comment(null,
+                null,
+                null,
                 "created",
                 book,
                 userService.findUserByUsername("adminCommentService").get(),
