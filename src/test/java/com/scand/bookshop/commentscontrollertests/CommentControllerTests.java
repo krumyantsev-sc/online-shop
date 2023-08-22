@@ -45,9 +45,7 @@ public class CommentControllerTests extends BaseTest {
 
     private Book book;
 
-    @BeforeAll
-    private void setUp() {
-        createAdmin(registrationService, "adminComment", "admin");
+    private Book createBook() {
         book = new Book(null,
                 "test",
                 "test",
@@ -55,7 +53,13 @@ public class CommentControllerTests extends BaseTest {
                 "testpath",
                 UUID.randomUUID().toString(),
                 "desc");
-        book = bookRepository.save(book);
+        return bookRepository.save(book);
+    }
+
+    @BeforeAll
+    private void setUp() {
+        createAdmin(registrationService, "adminComment", "admin");
+        book = createBook();
     }
 
     private String jwtToken;
@@ -87,6 +91,19 @@ public class CommentControllerTests extends BaseTest {
     }
 
     @Test
+    public void addComment_shouldCreateReply() {
+        Book testBook = createBook();
+        CommentRequestDTO requestDTO = new CommentRequestDTO("test", testBook.getUuid(), null);
+        makePostRequestWithToken(jwtToken, "/comments/add", requestDTO, String.class);
+        CommentRequestDTO replyDTO = new CommentRequestDTO("test2",
+                testBook.getUuid(),
+                commentRepository.findByBook(testBook).get(0).getUuid());
+        ResponseEntity<String> response = makePostRequestWithToken(jwtToken, "/comments/add", replyDTO, String.class);
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+        assertThat(commentRepository.findByBook(book).get(1).getParentComment()).isNotNull();
+    }
+
+    @Test
     public void addComment_shouldNotCreateCommentWithEmptyText() {
         CommentRequestDTO requestDTO = new CommentRequestDTO("", book.getUuid(),null);
         ResponseEntity<String> response = makePostRequestWithToken(jwtToken, "/comments/add", requestDTO, String.class);
@@ -103,7 +120,8 @@ public class CommentControllerTests extends BaseTest {
                 book,
                 userService.findUserByUsername("adminComment").get(),
                 LocalDateTime.now(),
-                UUID.randomUUID().toString());
+                UUID.randomUUID().toString(),
+                false);
         comment = commentRepository.save(comment);
         CommentUpdateDTO requestDTO = new CommentUpdateDTO("updated");
         ResponseEntity<String> response =
@@ -126,7 +144,8 @@ public class CommentControllerTests extends BaseTest {
                 book,
                 userService.findUserByUsername("adminComment").get(),
                 LocalDateTime.now(),
-                UUID.randomUUID().toString());
+                UUID.randomUUID().toString(),
+                false);
         comment = commentRepository.save(comment);
         ResponseEntity<String> response = makeDeleteRequestWithToken(jwtToken,
                 "/comments/" + comment.getUuid(),

@@ -53,4 +53,15 @@ export default class BookService {
             withCredentials: true,
         });
     }
+
+    static getRating = async (uuid: string) => {
+        return await axiosInstance.get(`${process.env.REACT_APP_API_URL}/books/${uuid}/rating`, {
+            withCredentials: true,
+        });
+    }
+
+    static setRating = async (uuid: string, value: number) => {
+        return await axiosInstance.post(`${process.env.REACT_APP_API_URL}/books/${uuid}/update-rating`,
+            {ratingValue: value}, {withCredentials: true});
+    }
 }

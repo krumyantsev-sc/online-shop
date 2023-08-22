@@ -3,9 +3,14 @@ package com.scand.bookshop.bookcontrollertests;
 import com.scand.bookshop.BaseTest;
 import com.scand.bookshop.dto.BookRequestDTO;
 import com.scand.bookshop.dto.BookResponseDTO;
+import com.scand.bookshop.dto.RatingRequestDTO;
+import com.scand.bookshop.dto.RatingResponseDTO;
 import com.scand.bookshop.entity.Book;
+import com.scand.bookshop.entity.Rating;
 import com.scand.bookshop.repository.BookRepository;
+import com.scand.bookshop.repository.RatingRepository;
 import com.scand.bookshop.service.RegistrationService;
+import com.scand.bookshop.service.UserService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +22,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,10 +37,16 @@ public class BookControllerTests extends BaseTest {
     private BookRepository bookRepository;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private RegistrationService registrationService;
 
     @Autowired
     private TestRestTemplate testRestTemplate;
+
+    @Autowired
+    private RatingRepository ratingRepository;
 
     @BeforeAll
     void createAdmin() {
@@ -49,7 +61,7 @@ public class BookControllerTests extends BaseTest {
     @Test
     public void shouldUploadBook() {
         HttpEntity<MultiValueMap<String, Object>> requestEntity =
-                createEntityWithFile("src/test/resources/files/book1.pdf", jwtToken,"file");
+                createEntityWithFile("src/test/resources/files/book1.pdf", jwtToken, "file");
         ResponseEntity<BookResponseDTO> response =
                 makePostRequestWithFile("/books/upload", requestEntity, BookResponseDTO.class);
         assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
@@ -61,7 +73,7 @@ public class BookControllerTests extends BaseTest {
     @Test
     void shouldThrowExceptionForWrongExtension() {
         HttpEntity<MultiValueMap<String, Object>> requestEntity =
-                createEntityWithFile("src/test/resources/files/bg.jpg", jwtToken,"file");
+                createEntityWithFile("src/test/resources/files/bg.jpg", jwtToken, "file");
         ResponseEntity<String> stringResponseEntity =
                 makePostRequestWithFile("/books/upload", requestEntity, String.class);
         assertThat(stringResponseEntity.getStatusCode().is4xxClientError()).isTrue();
@@ -102,8 +114,7 @@ public class BookControllerTests extends BaseTest {
         assertThat(updatedBook.get().getGenre()).isEqualTo(bookRequestDto.getGenre());
     }
 
-    @Test
-    void shouldNotUpdateBookWithNotFullData() {
+    private Book createBook() {
         Book book = new Book(null,
                 "old title",
                 "old genre",
@@ -111,7 +122,12 @@ public class BookControllerTests extends BaseTest {
                 "old filepath",
                 UUID.randomUUID().toString(),
                 "description");
-        book = bookRepository.save(book);
+        return bookRepository.save(book);
+    }
+
+    @Test
+    void shouldNotUpdateBookWithNotFullData() {
+        Book book = createBook();
         BookRequestDTO bookRequestDto = new BookRequestDTO("new title",
                 "new genre",
                 null,
@@ -122,5 +138,42 @@ public class BookControllerTests extends BaseTest {
         assertThat(updatedBook).isPresent();
         assertThat(updatedBook.get().getTitle()).isEqualTo("old title");
         assertThat(updatedBook.get().getAuthor()).isEqualTo("old author");
+    }
+
+    @Test
+    public void addRating_shouldAddRating() {
+        Book book = createBook();
+        RatingRequestDTO ratingRequestDTO = new RatingRequestDTO(5);
+        String url = String.format("/books/%s/update-rating", book.getUuid());
+        ResponseEntity<Void> response = makePostRequestWithToken(jwtToken, url, ratingRequestDTO, Void.class);
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+        assertThat(ratingRepository.findByBookAndUser(book, userService.findUserByUsername("admin").get())).isPresent();
+    }
+
+    @Test
+    public void addRating_shouldUpdateOldRating() {
+        Book book = createBook();
+        RatingRequestDTO ratingRequestDTO = new RatingRequestDTO(5);
+        String url = String.format("/books/%s/update-rating", book.getUuid());
+        makePostRequestWithToken(jwtToken, url, ratingRequestDTO, Void.class);
+        ResponseEntity<Void> response =
+                makePostRequestWithToken(jwtToken, url, new RatingRequestDTO(4), Void.class);
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+        assertThat(ratingRepository.findByBookAndUser(book, userService.findUserByUsername("admin").get()).get().getRatingValue()).isEqualTo((4));
+    }
+
+    @Test
+    public void getAverageRating_shouldReturnAverageRating() {
+        createAdmin(registrationService, "admin22", "admin22@mail.ru");
+        Book book = createBook();
+        Rating rating = new Rating(null,book,userService.findUserByUsername("admin22").get(),5);
+        ratingRepository.save(rating);
+        Rating rating2 = new Rating(null,book,userService.findUserByUsername("admin").get(),4);
+        ratingRepository.save(rating2);
+        String url = String.format("/books/%s/rating", book.getUuid());
+        ResponseEntity<RatingResponseDTO> response = makeGetRequestWithToken(jwtToken, url, RatingResponseDTO.class);
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+        assertThat(Objects.requireNonNull(response.getBody()).getRating()).isEqualTo(4.5);
+        assertThat(ratingRepository.findByBookAndUser(book, userService.findUserByUsername("admin").get()).get().getRatingValue()).isEqualTo((4));
     }
 }

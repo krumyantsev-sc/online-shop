@@ -45,4 +45,8 @@ public class DTOConverter {
         }
         return responseDTO;
     }
+
+    public static RatingResponseDTO toDTO(double rating) {
+        return new RatingResponseDTO(rating);
+    }
 }

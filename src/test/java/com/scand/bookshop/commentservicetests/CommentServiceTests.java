@@ -43,9 +43,7 @@ public class CommentServiceTests extends BaseTest {
 
     private Book book;
 
-    @BeforeAll
-    private void setUp() {
-        createAdmin(registrationService, "adminCommentService", "admin");
+    private Book createBook() {
         book = new Book(null,
                 "testService",
                 "test",
@@ -53,17 +51,41 @@ public class CommentServiceTests extends BaseTest {
                 "testpath",
                 UUID.randomUUID().toString(),
                 "desc");
-        book = bookRepository.save(book);
+        return bookRepository.save(book);
+    }
+
+    @BeforeAll
+    private void setUp() {
+        createAdmin(registrationService, "adminCommentService", "admin@mail.ru");
+        book = createBook();
     }
 
     @Test
-    public void createComment() {
-        commentService.add("test",book, userRepository.findByLogin("adminCommentService").get(), null);
+    public void add_shouldAddComment() {
+        commentService.add("test",
+                book,
+                userRepository.findByLogin("adminCommentService").get(),
+                null);
         assertThat(commentRepository.findByBook(book)).isNotEmpty();
     }
 
     @Test
-    public void updateComment() {
+    public void add_shouldAddReply() {
+        Book testBook = createBook();
+        commentService.add("test",
+                testBook,
+                userRepository.findByLogin("adminCommentService").get(),
+                null);
+        commentService.add("test2",
+                testBook,
+                userRepository.findByLogin("adminCommentService").get(),
+                commentRepository.findByBook(book).get(0).getUuid());
+        assertThat(commentRepository.findByBook(book)).isNotEmpty();
+        assertThat(commentRepository.findByBook(book).get(1).getParentComment()).isNotNull();
+    }
+
+    @Test
+    public void updateComment_shouldUpdateComment() {
         Comment comment = new Comment(null,
                 null,
                 null,
@@ -71,14 +93,15 @@ public class CommentServiceTests extends BaseTest {
                 book,
                 userService.findUserByUsername("adminCommentService").get(),
                 LocalDateTime.now(),
-                UUID.randomUUID().toString());
+                UUID.randomUUID().toString(),
+                false);
         comment = commentRepository.save(comment);
-        commentService.updateComment(comment,"testUpdate");
+        commentService.updateComment(comment, "testUpdate");
         assertThat(commentService.getCommentByUuid(comment.getUuid()).getText()).isEqualTo("testUpdate");
     }
 
     @Test
-    public void deleteComment() {
+    public void deleteComment_shouldDeleteComment() {
         Comment comment = new Comment(null,
                 null,
                 null,
@@ -86,7 +109,8 @@ public class CommentServiceTests extends BaseTest {
                 book,
                 userService.findUserByUsername("adminCommentService").get(),
                 LocalDateTime.now(),
-                UUID.randomUUID().toString());
+                UUID.randomUUID().toString(),
+                false);
         comment = commentRepository.save(comment);
         commentService.deleteComment(comment);
         assertThat(commentService.findCommentByUuid(comment.getUuid())).isNotPresent();

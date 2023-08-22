@@ -1,9 +1,8 @@
 package com.scand.bookshop.controller;
 
-import com.scand.bookshop.dto.BookRequestDTO;
-import com.scand.bookshop.dto.BookResponseDTO;
-import com.scand.bookshop.dto.PageResponseDTO;
+import com.scand.bookshop.dto.*;
 import com.scand.bookshop.facade.BookFacade;
+import com.scand.bookshop.security.service.UserDetailsImpl;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +10,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -70,5 +70,17 @@ public class BookController {
     @PostMapping("/{uuid}/update")
     public BookResponseDTO updateBook(@PathVariable String uuid, @RequestBody @Valid BookRequestDTO updatedBook) {
         return bookFacade.updateBook(uuid, updatedBook);
+    }
+
+    @PostMapping("/{uuid}/update-rating")
+    public void addRating(@PathVariable String uuid,
+                          @RequestBody @Valid RatingRequestDTO ratingRequestDTO,
+                          @AuthenticationPrincipal UserDetailsImpl userPrincipal) {
+        bookFacade.addRating(uuid, ratingRequestDTO, userPrincipal);
+    }
+
+    @GetMapping("/{uuid}/rating")
+    public RatingResponseDTO getRating(@PathVariable String uuid) {
+        return bookFacade.getRating(uuid);
     }
 }

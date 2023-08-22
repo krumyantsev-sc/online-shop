@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import IBook from "./IBook";
 import "../../styles/Catalog.css"
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -9,6 +9,8 @@ import ImageComponent from "./Image";
 import PreviewModal from "./PreviewModal";
 import {useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from 'react-i18next';
+import {Rating} from "./Rating";
+import BookService from "../../API/BookService";
 
 interface CardBookProps extends IBook {
     getBooksFromServer: () => {};
@@ -28,6 +30,26 @@ const Card: React.FC<CardBookProps> = ({
     const [openPreview, setOpenPreview] = React.useState(false);
     const navigate = useNavigate();
     let {bookUuid} = useParams();
+    const [rating, setRating] = useState(1.00);
+
+    useEffect(() => {
+        getRating()
+    }, []);
+
+    const getRating = async () => {
+        try {
+            const response = await BookService.getRating(uuid);
+            const data = await response.data;
+            setRating(data.rating);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    const updateRating = async (rating: number) => {
+        BookService.setRating(uuid,rating).then(getRating);
+    }
+
     const handleClickOpenEdit = () => {
         setOpenEdit(true);
     };
@@ -73,6 +95,10 @@ const Card: React.FC<CardBookProps> = ({
                 <span>{i18n('author')}: {author}</span><br/>
                 <span>{i18n('genre')}: {genre}</span><br/>
             </div>
+            <Rating
+                value={rating}
+                onChange={(rating) => updateRating(rating)}
+            />
             {bookUuid &&
             <div className="card-buttons-container">
                 <div className="download-button"

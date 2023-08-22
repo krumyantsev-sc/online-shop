@@ -15,3 +15,5 @@ databaseChangeLog:
       file: db/changelog/changes/add-column-parent-id-comment.yaml
   - include:
       file: db/changelog/changes/add-column-isremoved.yaml
+  - include:
+      file: db/changelog/changes/add-rating-table.yaml

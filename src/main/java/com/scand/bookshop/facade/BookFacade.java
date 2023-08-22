@@ -1,12 +1,13 @@
 package com.scand.bookshop.facade;
 
-import com.scand.bookshop.dto.BookRequestDTO;
-import com.scand.bookshop.dto.BookResponseDTO;
-import com.scand.bookshop.dto.DTOConverter;
-import com.scand.bookshop.dto.PageResponseDTO;
+import com.scand.bookshop.dto.*;
 import com.scand.bookshop.entity.Book;
+import com.scand.bookshop.entity.User;
+import com.scand.bookshop.security.service.UserDetailsImpl;
 import com.scand.bookshop.service.BookService;
 import com.scand.bookshop.service.FileService;
+import com.scand.bookshop.service.RatingService;
+import com.scand.bookshop.service.UserService;
 import com.scand.bookshop.service.metadataextractor.Extractor;
 import com.scand.bookshop.service.metadataextractor.Metadata;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,6 +37,8 @@ public class BookFacade {
     private final FileService fileService;
     private final MessageSource messageSource;
     private final HttpServletRequest request;
+    private final UserService userService;
+    private final RatingService ratingService;
 
     public BookResponseDTO uploadBook(MultipartFile file) {
         if (file.isEmpty()) {
@@ -115,5 +118,16 @@ public class BookFacade {
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDispositionFormData("attachment", "book.pdf");
         return new ResponseEntity<>(content, headers, HttpStatus.OK);
+    }
+
+    public void addRating(String uuid, RatingRequestDTO ratingRequestDTO, UserDetailsImpl userPrincipal) {
+        Book book = bookService.getBookByUuid(uuid);
+        User user = userService.getUserById(userPrincipal.getId());
+        ratingService.addRating(book,user,ratingRequestDTO.getRatingValue());
+    }
+
+    public RatingResponseDTO getRating(String uuid) {
+        Book book = bookService.getBookByUuid(uuid);
+        return DTOConverter.toDTO(ratingService.calculateAverageRating(book));
     }
 }

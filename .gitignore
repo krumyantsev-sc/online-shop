@@ -6,6 +6,8 @@ build/
 !**/src/test/**/build/
 ./front/bookshop-front/.env
 ./uploads/
+errors.log
+general.log
 
 ### STS ###
 .apt_generated
