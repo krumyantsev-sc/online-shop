@@ -11,6 +11,7 @@ import {Roles} from "../../enums/Roles";
 import SortMenu from "./SortMenu";
 import SearchBar from "./SearchBar";
 import {useTranslation} from "react-i18next";
+import Pagination from "../util/Pagination";
 
 
 const Cards = () => {
@@ -79,6 +80,7 @@ const Cards = () => {
                             title={book.title}
                             genre={book.genre}
                             uuid={book.uuid}
+                            price={book.price}
                             description={book.description}
                             getBooksFromServer={() => getBooksFromServer(currentPage, pageSize)}
                         />
@@ -87,21 +89,12 @@ const Cards = () => {
                     <AddCard getBooksFromServer={() => getBooksFromServer(currentPage, pageSize)}/>}
                 </div>
             </div>
-            <div className="pagination">
-                <button
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage(currentPage - 1)}
-                >
-                    {i18n('prev')}
-                </button>
-                <span>{currentPage} / {totalPages}</span>
-                <button
-                    disabled={currentPage === totalPages}
-                    onClick={() => setCurrentPage(currentPage + 1)}
-                >
-                    {i18n('next')}
-                </button>
-            </div>
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPrevPage={() => setCurrentPage(currentPage - 1)}
+                onNextPage={() => setCurrentPage(currentPage + 1)}
+            />
         </div>
     );
 };

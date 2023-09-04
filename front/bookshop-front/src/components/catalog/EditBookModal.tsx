@@ -10,6 +10,7 @@ interface BookModalProps {
     genre: string;
     author: string;
     uuid: string;
+    price: string;
     description: string
     getBooksFromServer: () => {};
 }
@@ -21,6 +22,7 @@ const BookModal: React.FC<BookModalProps> = ({
                                                  genre,
                                                  author,
                                                  uuid,
+                                                 price,
                                                  getBooksFromServer,
                                                  description
                                              }) => {
@@ -28,21 +30,38 @@ const BookModal: React.FC<BookModalProps> = ({
     const [bookTitle, setBookTitle] = useState(title);
     const [bookGenre, setBookGenre] = useState(genre);
     const [bookAuthor, setBookAuthor] = useState(author);
-    const [value, setValue] = React.useState(description);
+    const [bookPrice, setBookPrice] = useState<string>(price);
+    const [value, setValue] = useState(description);
 
     useEffect(() => {
         setBookTitle(title);
         setBookGenre(genre);
         setBookAuthor(author);
-    }, [title, genre, author]);
+        setBookPrice(price);
+    }, [title, genre, author, price]);
 
     const validateInput = (input: string) => {
         return /^[A-Za-zА-Яа-я\s]+$/.test(input);
     };
 
+    const validatePrice = (input: string) => {
+        const priceRegex = /^\d+(\.\d+)?$/;
+        const priceValue = parseFloat(input);
+        return priceRegex.test(input) && priceValue >= 1;
+    };
+
     const handleSaveClick = () => {
-        if (validateInput(bookTitle) && validateInput(bookGenre) && validateInput(bookAuthor)) {
-            BookService.updateBook({title: bookTitle, genre: bookGenre, author: bookAuthor, description: value}, uuid)
+        if (validateInput(bookTitle) &&
+            validateInput(bookGenre) &&
+            validateInput(bookAuthor) &&
+            validatePrice(bookPrice.toString())) {
+            BookService.updateBook({
+                title: bookTitle,
+                genre: bookGenre,
+                author: bookAuthor,
+                price: bookPrice,
+                description: value
+            }, uuid)
                 .then(getBooksFromServer);
             handleClose();
         } else {
@@ -76,6 +95,13 @@ const BookModal: React.FC<BookModalProps> = ({
                     value={bookAuthor}
                     onChange={e => setBookAuthor(e.target.value)}
                     label={i18n("author")}
+                    fullWidth
+                    style={{marginBottom: 10}}
+                />
+                <TextField
+                    value={bookPrice}
+                    onChange={e => setBookPrice(e.target.value)}
+                    label={i18n("price")}
                     fullWidth
                     style={{marginBottom: 10}}
                 />

@@ -11,6 +11,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from 'react-i18next';
 import {Rating} from "./Rating";
 import BookService from "../../API/BookService";
+import OrderService from "../../API/OrderService";
 
 interface CardBookProps extends IBook {
     getBooksFromServer: () => {};
@@ -22,7 +23,8 @@ const Card: React.FC<CardBookProps> = ({
                                            genre,
                                            uuid,
                                            getBooksFromServer,
-                                           description
+                                           description,
+                                           price
                                        }) => {
     const {t: i18n} = useTranslation();
     const {roles} = useAuth();
@@ -47,7 +49,7 @@ const Card: React.FC<CardBookProps> = ({
     }
 
     const updateRating = async (rating: number) => {
-        BookService.setRating(uuid,rating).then(getRating);
+        BookService.setRating(uuid, rating).then(getRating);
     }
 
     const handleClickOpenEdit = () => {
@@ -94,25 +96,38 @@ const Card: React.FC<CardBookProps> = ({
                 <span>{i18n('title')}: {title}</span><br/>
                 <span>{i18n('author')}: {author}</span><br/>
                 <span>{i18n('genre')}: {genre}</span><br/>
+                <span>{i18n('price')}: {price}</span><br/>
             </div>
             <Rating
                 value={rating}
                 onChange={(rating) => updateRating(rating)}
             />
-            {bookUuid &&
-            <div className="card-buttons-container">
-                <div className="download-button"
-                     onClick={() => {
-                         downloadFile(`${process.env.REACT_APP_API_URL}/books/${uuid}/download`, title)
-                     }}>
-                    {i18n('download')}
+            {bookUuid ?
+                <div className="card-buttons-container">
+                    <div className="download-button"
+                         onClick={() => {
+                             downloadFile(`${process.env.REACT_APP_API_URL}/books/${uuid}/download`, title)
+                         }}>
+                        {i18n('download')}
+                    </div>
+                    {roles.includes(Roles.Admin) && <div className="edit-button">
+                        <SettingsIcon
+                            onClick={handleClickOpenEdit}
+                        />
+                    </div>}
                 </div>
-                {roles.includes(Roles.Admin) && <div className="edit-button">
-                    <SettingsIcon
-                        onClick={handleClickOpenEdit}
-                    />
-                </div>}
-            </div>
+                :
+                <div className="card-buttons-container">
+                    <div className="download-button"
+                         onClick={() => {
+                             OrderService.createOrder(uuid)
+                                 .then((res) => {
+                                     navigate(`/order/${res.data.uuid}`)
+                                 });
+                         }}>
+                        {i18n('buy')}
+                    </div>
+                </div>
             }
             <BookModal
                 open={openEdit}
@@ -122,6 +137,7 @@ const Card: React.FC<CardBookProps> = ({
                 genre={genre}
                 title={title}
                 uuid={uuid}
+                price={price}
                 description={description}
             />
             <PreviewModal open={openPreview} handleClose={handleClosePreview} uuid={uuid}/>

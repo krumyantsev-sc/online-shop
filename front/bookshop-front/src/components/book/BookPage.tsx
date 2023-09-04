@@ -51,7 +51,6 @@ const BookPage = () => {
         try {
             let response = await CommentService.getComments(bookUuid!);
             let data = await response.data;
-            console.log(data);
             const nestedUuids = new Set();
             data.forEach((comment: IComment) => {
                 comment.replies?.forEach(reply => {
@@ -60,7 +59,6 @@ const BookPage = () => {
             });
             const filteredComments = data.filter((comment: IComment) => !nestedUuids.has(comment.uuid));
             setComments(filteredComments);
-            console.log(filteredComments)
         } catch (e) {
             console.log(e);
         }
@@ -78,6 +76,7 @@ const BookPage = () => {
                         genre={bookInfo.genre}
                         author={bookInfo.author}
                         uuid={bookInfo.uuid}
+                        price={bookInfo.price}
                         description={bookInfo.description}
                     />
                     <div className="book-page-desc-container">

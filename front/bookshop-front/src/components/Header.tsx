@@ -9,6 +9,7 @@ import {useAuth} from './auth/context/AuthContextProvider';
 import {Link} from "react-router-dom";
 import LanguageSwitcher from "./LanguageSwitcher";
 import {useTranslation} from "react-i18next";
+import HistoryIcon from '@mui/icons-material/History';
 
 const Header = () => {
     const {isAuthenticated, logout} = useAuth();
@@ -26,12 +27,20 @@ const Header = () => {
                 </div>
                 <div className="menu">
                     {isAuthenticated &&
-                    <div className="menu-item-container">
-                        <Link to={"/profile"}>
-                            <PersonIcon fontSize={"large"}/>
-                            <span className={"menu-item-name"}>{i18n("profile")}</span>
-                        </Link>
-                    </div>
+                    <>
+                        <div className="menu-item-container">
+                            <Link to={"/orders"}>
+                                <HistoryIcon fontSize={"large"}/>
+                                <span className={"menu-item-name"}>{i18n('orders')}</span>
+                            </Link>
+                        </div>
+                        <div className="menu-item-container">
+                            <Link to={"/profile"}>
+                                <PersonIcon fontSize={"large"}/>
+                                <span className={"menu-item-name"}>{i18n("profile")}</span>
+                            </Link>
+                        </div>
+                    </>
                     }
                     <div className="menu-item-container">
                         <Link to={"/catalog"}>

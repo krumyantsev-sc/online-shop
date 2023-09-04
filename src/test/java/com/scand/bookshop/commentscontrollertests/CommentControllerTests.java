@@ -52,7 +52,7 @@ public class CommentControllerTests extends BaseTest {
                 "test",
                 "testpath",
                 UUID.randomUUID().toString(),
-                "desc");
+                "desc", 6.0);
         return bookRepository.save(book);
     }
 

@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -30,10 +31,10 @@ public class BookService {
     private final HttpServletRequest request;
 
     @Transactional
-    public Book createBook(String title, String author, String subject, String extension, byte[] content) {
+    public Book createBook(String title, String author, String subject, String extension, byte[] content, double price) {
         String uniqueFilename = UUID.randomUUID().toString();
         String filePath = String.format("uploads/%s.%s", uniqueFilename, extension);
-        Book book = new Book(null, title, subject, author, filePath, uniqueFilename,null);
+        Book book = new Book(null, title, subject, author, filePath, uniqueFilename,null, price);
         book = bookRepository.save(book);
         fileService.writeFile(Paths.get(book.getFilePath()), content);
         String coverPath = "uploads/covers/" + uniqueFilename + ".png";
@@ -99,12 +100,13 @@ public class BookService {
     }
 
     @Transactional
-    public Book updateBook(Book book, String title, String genre, String author, String description) {
+    public Book updateBook(Book book, String title, String genre, String author, String description, double price) {
         book = bookRepository.getReferenceById(book.getId());
         book.setTitle(title);
         book.setGenre(genre);
         book.setAuthor(author);
         book.setDescription(description);
+        book.setPrice(price);
         log.info("Book with UUID '{}' updated", book.getUuid());
         return book;
     }

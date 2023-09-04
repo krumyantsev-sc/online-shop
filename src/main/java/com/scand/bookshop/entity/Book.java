@@ -3,6 +3,7 @@ package com.scand.bookshop.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +41,17 @@ public class Book {
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rating> ratings = new ArrayList<>();
 
-    public Book(Long id, String title, String genre, String author, String filePath, String uuid, String description) {
+    @Column(name = "price", nullable = false)
+    private double price;
+
+    public Book(Long id,
+                String title,
+                String genre,
+                String author,
+                String filePath,
+                String uuid,
+                String description,
+                double price) {
         this.id = id;
         this.title = title;
         this.genre = genre;
@@ -48,5 +59,6 @@ public class Book {
         this.filePath = filePath;
         this.uuid = uuid;
         this.description = description;
+        this.price = price;
     }
 }

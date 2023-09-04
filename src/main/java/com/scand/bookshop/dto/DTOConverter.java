@@ -1,10 +1,9 @@
 package com.scand.bookshop.dto;
 
-import com.scand.bookshop.entity.Book;
-import com.scand.bookshop.entity.Comment;
-import com.scand.bookshop.entity.User;
+import com.scand.bookshop.entity.*;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -16,6 +15,7 @@ public class DTOConverter {
         responseDTO.setAuthor(book.getAuthor());
         responseDTO.setUuid(book.getUuid());
         responseDTO.setDescription(book.getDescription());
+        responseDTO.setPrice(book.getPrice());
         return responseDTO;
     }
 
@@ -44,6 +44,25 @@ public class DTOConverter {
             responseDTO.setReplies(comment.getReplies().stream().map(DTOConverter::toDTO).collect(Collectors.toList()));
         }
         return responseDTO;
+    }
+
+    private static OrderDetailResponseDTO toDTO(OrderDetail orderDetail) {
+        return new OrderDetailResponseDTO(orderDetail.getBook().getUuid(),orderDetail.getUnitPrice());
+    }
+
+    public static OrderResponseDTO toDTO(Order order) {
+        return new OrderResponseDTO(order.getUuid(),
+                order.getUser().getLogin(),
+                order.getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")),
+                order.getTotalPrice(),
+                order.getStatus().toString(),
+                order.getOrderDetails().stream()
+                        .map(DTOConverter::toDTO)
+                        .collect(Collectors.toList()));
+    }
+
+    public static CreateOrderResponseDTO toCreateDTO(Order order) {
+        return new CreateOrderResponseDTO(order.getUuid());
     }
 
     public static RatingResponseDTO toDTO(double rating) {

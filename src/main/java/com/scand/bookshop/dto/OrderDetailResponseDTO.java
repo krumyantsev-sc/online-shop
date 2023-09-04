@@ -5,15 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookResponseDTO {
-    private String title;
-    private String genre;
-    private String author;
+public class OrderDetailResponseDTO {
     private String uuid;
-    private String description;
-    private double price;
+    private BigDecimal unitPrice;
 }

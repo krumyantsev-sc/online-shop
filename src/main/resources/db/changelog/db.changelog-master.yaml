@@ -17,3 +17,5 @@ databaseChangeLog:
       file: db/changelog/changes/add-column-isremoved.yaml
   - include:
       file: db/changelog/changes/add-rating-table.yaml
+  - include:
+      file: db/changelog/changes/add-order-detail-price.yaml

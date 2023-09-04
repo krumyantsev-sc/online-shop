@@ -4,7 +4,8 @@ interface BookData {
     title: string;
     genre: string;
     author: string;
-    description: string
+    description: string;
+    price: string;
 }
 
 export default class BookService {

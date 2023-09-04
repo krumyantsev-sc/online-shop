@@ -94,12 +94,12 @@ public class BookControllerTests extends BaseTest {
                 "old author",
                 "old filepath",
                 UUID.randomUUID().toString(),
-                "description");
+                "description", 6.00);
         book = bookRepository.save(book);
         BookRequestDTO bookRequestDto = new BookRequestDTO("new title",
                 "new genre",
                 "new author",
-                "new filepath");
+                "new filepath", 6.00);
         ResponseEntity<BookResponseDTO> response =
                 makePostRequestWithToken(jwtToken,
                         "/books/" + book.getUuid() + "/update",
@@ -121,7 +121,7 @@ public class BookControllerTests extends BaseTest {
                 "old author",
                 "old filepath",
                 UUID.randomUUID().toString(),
-                "description");
+                "description", 6.00);
         return bookRepository.save(book);
     }
 
@@ -131,7 +131,7 @@ public class BookControllerTests extends BaseTest {
         BookRequestDTO bookRequestDto = new BookRequestDTO("new title",
                 "new genre",
                 null,
-                null);
+                null, 6.00);
         String uuid = book.getUuid();
         makePostRequestWithToken(jwtToken, "/books/" + uuid + "/update", bookRequestDto, BookResponseDTO.class);
         Optional<Book> updatedBook = bookRepository.findByUuid(book.getUuid());

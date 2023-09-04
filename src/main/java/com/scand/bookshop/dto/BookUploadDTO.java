@@ -1,5 +1,6 @@
 package com.scand.bookshop.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,11 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookResponseDTO {
-    private String title;
-    private String genre;
-    private String author;
-    private String uuid;
-    private String description;
+public class BookUploadDTO {
+    @NotNull
     private double price;
 }

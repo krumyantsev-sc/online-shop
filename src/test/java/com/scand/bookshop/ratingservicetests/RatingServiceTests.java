@@ -2,7 +2,6 @@ package com.scand.bookshop.ratingservicetests;
 
 import com.scand.bookshop.BaseTest;
 import com.scand.bookshop.entity.Book;
-import com.scand.bookshop.entity.Rating;
 import com.scand.bookshop.entity.User;
 import com.scand.bookshop.repository.BookRepository;
 import com.scand.bookshop.repository.RatingRepository;
@@ -10,14 +9,11 @@ import com.scand.bookshop.repository.UserRepository;
 import com.scand.bookshop.service.BookService;
 import com.scand.bookshop.service.RatingService;
 import com.scand.bookshop.service.RegistrationService;
-import com.scand.bookshop.service.UserService;
-import org.hibernate.Hibernate;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -55,7 +51,7 @@ public class RatingServiceTests extends BaseTest {
                 "test",
                 "testpathRating",
                 UUID.randomUUID().toString(),
-                "desc");
+                "desc", 6.0);
         book = bookRepository.save(book);
     }
 
@@ -63,7 +59,7 @@ public class RatingServiceTests extends BaseTest {
     public void addRating_shouldAddRating() {
         User user = userRepository.findByLogin("adminRating").get();
         ratingService.addRating(book, user, 4);
-        assertThat(ratingRepository.findByBookAndUser(book,user)).isPresent();
+        assertThat(ratingRepository.findByBookAndUser(book, user)).isPresent();
     }
 
     @Test
