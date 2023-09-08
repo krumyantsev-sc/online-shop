@@ -39,7 +39,7 @@ public class BookFacade {
     private final UserService userService;
     private final RatingService ratingService;
 
-    public BookResponseDTO uploadBook(MultipartFile file, PriceDTO price) {
+    public BookResponseDTO uploadBook(MultipartFile file, PriceDTO priceDTO) {
         if (file.isEmpty()) {
             throw new IllegalArgumentException(messageSource.getMessage("file_empty", null, request.getLocale()));
         }
@@ -58,7 +58,7 @@ public class BookFacade {
                 metadata.getSubject(),
                 extension,
                 metadata.getContent(),
-                price.getPrice());
+                priceDTO.getPrice());
         return DTOConverter.toDTO(book);
     }
 

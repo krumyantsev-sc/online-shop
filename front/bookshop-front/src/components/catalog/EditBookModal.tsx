@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button} from '@mui/material';
 import BookService from "../../API/BookService";
 import {useTranslation} from "react-i18next";
+import {useNavigate} from "react-router-dom";
 
 interface BookModalProps {
     open: boolean;
@@ -33,6 +34,7 @@ const BookModal: React.FC<BookModalProps> = ({
     const [bookPrice, setBookPrice] = useState<number | undefined>(price);
     const [priceInput, setPriceInput] = useState<string>(price !== undefined ? price.toString() : ""); // Для ввода цены пользователем
     const [value, setValue] = useState(description);
+    const nav = useNavigate();
 
     useEffect(() => {
         setBookTitle(title);
@@ -65,18 +67,24 @@ const BookModal: React.FC<BookModalProps> = ({
     };
 
     function handleDelete() {
-        BookService.deleteBook(uuid).then(getBooksFromServer);
+        BookService.deleteBook(uuid).then(() => {
+            nav("/catalog")
+        });
     }
 
     const handleDescChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(e.target.value);
+        if (e.target.value.toString().length < 512) {
+            setValue(e.target.value);
+        }
     }
 
     const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value;
         const isValidPriceInput = /^(\+)?([0-9]*\.?[0-9]*)$/.test(inputValue);
 
-        if (isValidPriceInput) {
+        if (isValidPriceInput &&
+            inputValue.toString().substring(inputValue.toString().indexOf('.')).length < 4 &&
+            inputValue.toString().length < 7) {
             setPriceInput(inputValue);
             const priceValue = parseFloat(inputValue);
             setBookPrice(!isNaN(priceValue) ? priceValue : undefined);
@@ -104,7 +112,7 @@ const BookModal: React.FC<BookModalProps> = ({
                     onChange={handleTitleChange}
                     label={i18n("title")}
                     fullWidth
-                    style={{marginBottom: 10}}
+                    style={{marginBottom: 10, marginTop: 10}}
                 />
                 <TextField
                     value={bookGenre}

@@ -26,8 +26,8 @@ public class BookController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public BookResponseDTO uploadFile(@RequestParam("file") @NotNull MultipartFile file,
-                                      @RequestParam("price") PriceDTO price) {
-        return bookFacade.uploadBook(file, price);
+                                      @RequestParam("price") PriceDTO priceDTO) {
+        return bookFacade.uploadBook(file, priceDTO);
     }
 
     @GetMapping("/list")
