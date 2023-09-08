@@ -31,6 +31,7 @@ const BookModal: React.FC<BookModalProps> = ({
     const [bookGenre, setBookGenre] = useState(genre);
     const [bookAuthor, setBookAuthor] = useState(author);
     const [bookPrice, setBookPrice] = useState<number | undefined>(price);
+    const [priceInput, setPriceInput] = useState<string>(price !== undefined ? price.toString() : ""); // Для ввода цены пользователем
     const [value, setValue] = useState(description);
 
     useEffect(() => {
@@ -38,6 +39,7 @@ const BookModal: React.FC<BookModalProps> = ({
         setBookGenre(genre);
         setBookAuthor(author);
         setBookPrice(price);
+        setPriceInput(price !== undefined ? price.toString() : "");
     }, [title, genre, author, price]);
 
     const validateInput = (input: string) => {
@@ -71,11 +73,13 @@ const BookModal: React.FC<BookModalProps> = ({
     }
 
     const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        const isValidPriceInput = /^(\+)?([0-9]*\.?[0-9]*\.?[0-9]*)$/.test(value);
+        const inputValue = e.target.value;
+        const isValidPriceInput = /^(\+)?([0-9]*\.?[0-9]*)$/.test(inputValue);
 
         if (isValidPriceInput) {
-            setBookPrice(value ? parseFloat(value) : undefined);
+            setPriceInput(inputValue);
+            const priceValue = parseFloat(inputValue);
+            setBookPrice(!isNaN(priceValue) ? priceValue : undefined);
         }
     }
 
@@ -117,7 +121,7 @@ const BookModal: React.FC<BookModalProps> = ({
                     style={{marginBottom: 10}}
                 />
                 <TextField
-                    value={bookPrice !== undefined ? bookPrice.toString() : ""}
+                    value={priceInput}
                     onChange={handlePriceChange}
                     label={i18n("price")}
                     fullWidth

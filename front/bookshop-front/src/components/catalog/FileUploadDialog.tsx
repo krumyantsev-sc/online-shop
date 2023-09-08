@@ -10,6 +10,7 @@ interface FileUploadDialogProps {
     getBooksFromServer: () => {};
 }
 
+
 export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
                                                                       open,
                                                                       handleClose,
@@ -17,14 +18,12 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
                                                                   }) => {
     const formRef = useRef<HTMLFormElement>(null);
     const {t: i18n} = useTranslation();
+    const [priceInput, setPriceInput] = useState<string>("");
     const [price, setPrice] = useState<number | null>(null);
 
-    const validatePrice = (value: string): number | null => {
-        const parsedValue = parseFloat(value);
-        if (isNaN(parsedValue) || parsedValue < 0) {
-            return null;
-        }
-        return parsedValue;
+    const validatePrice = (value: string): boolean => {
+        const regex = /^\d*\.?\d{0,2}$/;
+        return regex.test(value);
     };
 
     const handleSubmit = (event: React.FormEvent) => {
@@ -43,8 +42,12 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
     };
 
     const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const value = e.target.value.replace(/[^0-9.]/g, "");
-        setPrice(validatePrice(value));
+        const value = e.target.value;
+        if (validatePrice(value)) {
+            setPriceInput(value);
+            const priceValue = parseFloat(value);
+            setPrice(isNaN(priceValue) ? null : priceValue);
+        }
     };
 
     return (
@@ -61,7 +64,7 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
                     <TextField
                         variant="outlined"
                         label={i18n("price")}
-                        value={price !== null ? price.toString() : ""}
+                        value={priceInput}
                         onChange={handlePriceChange}
                         error={price === null}
                         helperText={price === null ? i18n("priceValidationError") : ""}
