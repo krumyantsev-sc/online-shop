@@ -6,7 +6,7 @@ interface RatingProps {
     onRatingChange?: (rating: number) => void;
 }
 
-export const Rating: React.FC<{ value: number, onChange: (newValue: number) => void }> = ({ value, onChange }) => {
+export const Rating: React.FC<{ value: number, onChange: (newValue: number) => void }> = ({value, onChange}) => {
     const [highlightedStar, setHighlightedStar] = React.useState<number | null>(null);
 
     return (

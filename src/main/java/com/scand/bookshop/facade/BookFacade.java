@@ -40,7 +40,7 @@ public class BookFacade {
     private final UserService userService;
     private final RatingService ratingService;
 
-    public BookResponseDTO uploadBook(MultipartFile file, double price) {
+    public BookResponseDTO uploadBook(MultipartFile file, Double price) {
         if (file.isEmpty()) {
             throw new IllegalArgumentException(messageSource.getMessage("file_empty", null, request.getLocale()));
         }

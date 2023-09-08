@@ -38,6 +38,10 @@ const ProfilePage = () => {
         return <Loading/>;
     }
 
+    const handleSwitchClick = () => {
+        setDisplayInfo(!displayInfo);
+    }
+
     return (
         <div>
             <Header/>
@@ -47,9 +51,7 @@ const ProfilePage = () => {
                         <UserForm initialEmail={userInfo.email}/>)}
                     <div
                         className="profile-switch-button"
-                        onClick={() => {
-                            setDisplayInfo(!displayInfo)
-                        }}>
+                        onClick={handleSwitchClick}>
                         {displayInfo ? i18n('changeCreds') : i18n('viewProfile')}
                     </div>
                 </div>

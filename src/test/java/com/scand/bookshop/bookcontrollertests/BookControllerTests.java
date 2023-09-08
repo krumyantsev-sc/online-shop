@@ -62,6 +62,7 @@ public class BookControllerTests extends BaseTest {
     public void shouldUploadBook() {
         HttpEntity<MultiValueMap<String, Object>> requestEntity =
                 createEntityWithFile("src/test/resources/files/book1.pdf", jwtToken, "file");
+        Objects.requireNonNull(requestEntity.getBody()).add("price", 3.0);
         ResponseEntity<BookResponseDTO> response =
                 makePostRequestWithFile("/books/upload", requestEntity, BookResponseDTO.class);
         assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();

@@ -4,5 +4,5 @@ export default interface IBook {
     author: string,
     uuid: string,
     description: string,
-    price: string,
+    price: number,
 }

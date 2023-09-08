@@ -45,7 +45,6 @@ const UserForm: React.FC<Props> = ({initialEmail}) => {
             } catch (e) {
                 console.log(e);
             }
-
         }
     };
 

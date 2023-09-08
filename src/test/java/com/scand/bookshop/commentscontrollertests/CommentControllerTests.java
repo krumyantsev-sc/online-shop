@@ -59,6 +59,10 @@ public class CommentControllerTests extends BaseTest {
     @BeforeAll
     private void setUp() {
         createAdmin(registrationService, "adminComment", "admin");
+    }
+
+    @BeforeEach
+    private void createBookForEveryTest() {
         book = createBook();
     }
 

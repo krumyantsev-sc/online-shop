@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -104,7 +105,7 @@ public class CommentServiceTests extends BaseTest {
     public void deleteComment_shouldDeleteComment() {
         Comment comment = new Comment(null,
                 null,
-                null,
+                new ArrayList<Comment>(),
                 "created",
                 book,
                 userService.findUserByUsername("adminCommentService").get(),

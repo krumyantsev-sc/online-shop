@@ -32,6 +32,10 @@ const LoginForm: React.FC<LoginFormProps> = ({setIsLoginForm}) => {
         }
     };
 
+    const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPassword(event.target.value);
+    }
+
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         try {
@@ -48,6 +52,10 @@ const LoginForm: React.FC<LoginFormProps> = ({setIsLoginForm}) => {
             setModalText(e.response.data);
             setOpen(true);
         }
+    }
+
+    const handleChangeFormClick = () => {
+        setIsLoginForm(false);
     }
 
     return (
@@ -73,7 +81,7 @@ const LoginForm: React.FC<LoginFormProps> = ({setIsLoginForm}) => {
                             type="password"
                             label="Password"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={handlePasswordChange}
                         />
                         <Button
                             fullWidth
@@ -90,7 +98,7 @@ const LoginForm: React.FC<LoginFormProps> = ({setIsLoginForm}) => {
                             variant="contained"
                             color="primary"
                             type="button"
-                            onClick={() => setIsLoginForm(false)}
+                            onClick={handleChangeFormClick}
                             style={{marginTop: 16}}
                         >
                             Register

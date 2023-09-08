@@ -75,6 +75,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({setIsLoginForm}) => {
         }
     };
 
+    const handleChangeFormCLick = () => {
+        setIsLoginForm(true);
+    }
+
     return (
         <Grid container justifyContent="center">
             <Grid item xs={12} sm={8} md={6} lg={4}>
@@ -138,15 +142,13 @@ const RegisterForm: React.FC<RegisterFormProps> = ({setIsLoginForm}) => {
                         color="primary"
                         type="button"
                         style={{marginTop: 16}}
-                        onClick={() => {
-                            setIsLoginForm(true);
-                        }}
+                        onClick={handleChangeFormCLick}
                     >
                         LOGIN
                     </Button>
                 </Paper>
             </Grid>
-            <Modal open={open} modalText={modalText}  handleClose={handleClose}/>
+            <Modal open={open} modalText={modalText} handleClose={handleClose}/>
         </Grid>
     );
 };

@@ -61,6 +61,14 @@ const Cards = () => {
         getBooksFromServer(currentPage, pageSize, sortField, sortDirection);
     }, [searchTerm, currentPage, pageSize, sortField, sortDirection]);
 
+    const incPage = () => {
+        setCurrentPage(currentPage + 1);
+    }
+
+    const decPage = () => {
+        setCurrentPage(currentPage - 1);
+    }
+
     if (isLoading) {
         return <Loading/>;
     }
@@ -92,8 +100,8 @@ const Cards = () => {
             <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}
-                onPrevPage={() => setCurrentPage(currentPage - 1)}
-                onNextPage={() => setCurrentPage(currentPage + 1)}
+                onPrevPage={decPage}
+                onNextPage={incPage}
             />
         </div>
     );

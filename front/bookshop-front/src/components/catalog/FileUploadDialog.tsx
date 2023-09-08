@@ -10,34 +10,41 @@ interface FileUploadDialogProps {
     getBooksFromServer: () => {};
 }
 
-export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({open, handleClose, getBooksFromServer}) => {
+export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
+                                                                      open,
+                                                                      handleClose,
+                                                                      getBooksFromServer
+                                                                  }) => {
     const formRef = useRef<HTMLFormElement>(null);
     const {t: i18n} = useTranslation();
-    const [price, setPrice] = useState<string>("");
-    const [isPriceValid, setIsPriceValid] = useState<boolean>(true);
+    const [price, setPrice] = useState<number | null>(null);
 
-    const validatePrice = (value: string) => {
+    const validatePrice = (value: string): number | null => {
         const parsedValue = parseFloat(value);
         if (isNaN(parsedValue) || parsedValue < 0) {
-            setIsPriceValid(false);
-        } else {
-            setIsPriceValid(true);
+            return null;
         }
-    }
+        return parsedValue;
+    };
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
-        if (!isPriceValid) return;
+        if (price === null) return;
         if (formRef.current) {
             const formData = new FormData();
             const fileField = formRef.current.elements.namedItem('file') as HTMLInputElement;
             if (fileField.files) {
                 formData.append('file', fileField.files[0]);
             }
-            formData.append('price', price);
+            formData.append('price', price.toFixed(2));
             BookService.uploadBook(formData).then(getBooksFromServer);
         }
         handleClose();
+    };
+
+    const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const value = e.target.value.replace(/[^0-9.]/g, "");
+        setPrice(validatePrice(value));
     };
 
     return (
@@ -54,14 +61,10 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({open, handleC
                     <TextField
                         variant="outlined"
                         label={i18n("price")}
-                        value={price}
-                        onChange={(e) => {
-                            const value = e.target.value;
-                            setPrice(value);
-                            validatePrice(value);
-                        }}
-                        error={!isPriceValid}
-                        helperText={isPriceValid ? "" : i18n("priceValidationError")}
+                        value={price !== null ? price.toString() : ""}
+                        onChange={handlePriceChange}
+                        error={price === null}
+                        helperText={price === null ? i18n("priceValidationError") : ""}
                     />
                 </DialogContent>
                 <DialogActions>

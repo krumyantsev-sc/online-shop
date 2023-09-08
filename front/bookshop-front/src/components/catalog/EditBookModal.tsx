@@ -10,8 +10,8 @@ interface BookModalProps {
     genre: string;
     author: string;
     uuid: string;
-    price: string;
-    description: string
+    price?: number;
+    description: string;
     getBooksFromServer: () => {};
 }
 
@@ -30,7 +30,7 @@ const BookModal: React.FC<BookModalProps> = ({
     const [bookTitle, setBookTitle] = useState(title);
     const [bookGenre, setBookGenre] = useState(genre);
     const [bookAuthor, setBookAuthor] = useState(author);
-    const [bookPrice, setBookPrice] = useState<string>(price);
+    const [bookPrice, setBookPrice] = useState<number | undefined>(price);
     const [value, setValue] = useState(description);
 
     useEffect(() => {
@@ -44,17 +44,10 @@ const BookModal: React.FC<BookModalProps> = ({
         return /^[A-Za-zА-Яа-я\s]+$/.test(input);
     };
 
-    const validatePrice = (input: string) => {
-        const priceRegex = /^\d+(\.\d+)?$/;
-        const priceValue = parseFloat(input);
-        return priceRegex.test(input) && priceValue >= 1;
-    };
-
     const handleSaveClick = () => {
         if (validateInput(bookTitle) &&
             validateInput(bookGenre) &&
-            validateInput(bookAuthor) &&
-            validatePrice(bookPrice.toString())) {
+            validateInput(bookAuthor)) {
             BookService.updateBook({
                 title: bookTitle,
                 genre: bookGenre,
@@ -73,34 +66,59 @@ const BookModal: React.FC<BookModalProps> = ({
         BookService.deleteBook(uuid).then(getBooksFromServer);
     }
 
+    const handleDescChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setValue(e.target.value);
+    }
+
+    const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        const isValidPriceInput = /^(\+)?([0-9]*\.?[0-9]*\.?[0-9]*)$/.test(value);
+
+        if (isValidPriceInput) {
+            setBookPrice(value ? parseFloat(value) : undefined);
+        }
+    }
+
+    const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setBookTitle(e.target.value);
+    }
+
+    const handleGenreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setBookGenre(e.target.value);
+    }
+
+    const handleAuthorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setBookAuthor(e.target.value);
+    }
+
     return (
         <Dialog open={open} onClose={handleClose}>
             <DialogTitle>{i18n("editBook")}</DialogTitle>
             <DialogContent>
                 <TextField
                     value={bookTitle}
-                    onChange={e => setBookTitle(e.target.value)}
+                    onChange={handleTitleChange}
                     label={i18n("title")}
                     fullWidth
                     style={{marginBottom: 10}}
                 />
                 <TextField
                     value={bookGenre}
-                    onChange={e => setBookGenre(e.target.value)}
+                    onChange={handleGenreChange}
                     label={i18n("genre")}
                     fullWidth
                     style={{marginBottom: 10}}
                 />
                 <TextField
                     value={bookAuthor}
-                    onChange={e => setBookAuthor(e.target.value)}
+                    onChange={handleAuthorChange}
                     label={i18n("author")}
                     fullWidth
                     style={{marginBottom: 10}}
                 />
                 <TextField
-                    value={bookPrice}
-                    onChange={e => setBookPrice(e.target.value)}
+                    value={bookPrice !== undefined ? bookPrice.toString() : ""}
+                    onChange={handlePriceChange}
                     label={i18n("price")}
                     fullWidth
                     style={{marginBottom: 10}}
@@ -114,7 +132,7 @@ const BookModal: React.FC<BookModalProps> = ({
                     fullWidth
                     multiline
                     value={value}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
+                    onChange={handleDescChange}
                 />
             </DialogContent>
             <DialogActions>

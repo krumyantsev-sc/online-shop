@@ -22,6 +22,18 @@ const Order: React.FC<IOrder> = ({
         setPrice(prevPrice => prevPrice + bookPrice);
     };
 
+    const handleCancelClick = () => {
+        OrderService.cancelOrder(uuid).then(() => {
+            navigate("/catalog")
+        })
+    }
+
+    const handlePayClick = () => {
+        OrderService.payOrder(uuid).then(() => {
+            navigate("/catalog")
+        })
+    }
+
     return (
         <div className={"order-info-container"}>
             {i18n('orderId')}: {uuid} <br/>
@@ -40,19 +52,11 @@ const Order: React.FC<IOrder> = ({
             <div className="order-buttons-container">
                 <div
                     className="cancel-button"
-                    onClick={() => {
-                        OrderService.cancelOrder(uuid).then(() => {
-                            navigate("/catalog")
-                        })
-                    }}>{i18n("cancel")}
+                    onClick={handleCancelClick}>{i18n("cancel")}
                 </div>
                 <div
                     className="pay-button"
-                    onClick={() => {
-                        OrderService.payOrder(uuid).then(() => {
-                            navigate("/catalog")
-                        })
-                    }}
+                    onClick={handlePayClick}
                 >{i18n('pay')}
                 </div>
             </div>

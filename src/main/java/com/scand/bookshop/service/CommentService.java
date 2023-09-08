@@ -12,10 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +27,7 @@ public class CommentService {
         Optional<Comment> parentComment = findCommentByUuid(parentUuid);
         Comment comment = new Comment(null,
                 parentComment.orElse(null),
-                null,
+                new ArrayList<Comment>(),
                 text,
                 book,
                 user,

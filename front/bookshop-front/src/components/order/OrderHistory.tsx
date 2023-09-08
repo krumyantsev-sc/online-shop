@@ -5,7 +5,6 @@ import OrderService from "../../API/OrderService";
 import Order from "./Order";
 import "../../styles/Order.css"
 import Pagination from "../util/Pagination";
-import {eventWrapper} from "@testing-library/user-event/dist/utils";
 
 const OrderHistory = () => {
     const [orders, setOrders] = useState<IOrder[]>([]);

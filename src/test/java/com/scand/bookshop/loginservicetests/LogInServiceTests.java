@@ -24,7 +24,7 @@ public class LogInServiceTests extends BaseTest {
 
     @BeforeAll
     private void registerUser() {
-        createAdmin(registrationService,"admin","admin@mail.ru");
+        createAdmin(registrationService,"admin","adminLogin@mail.ru");
     }
 
     @Test

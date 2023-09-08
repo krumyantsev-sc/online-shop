@@ -12,6 +12,7 @@ import {useTranslation} from 'react-i18next';
 import {Rating} from "./Rating";
 import BookService from "../../API/BookService";
 import OrderService from "../../API/OrderService";
+import {AxiosResponse} from "axios";
 
 interface CardBookProps extends IBook {
     getBooksFromServer: () => {};
@@ -77,6 +78,22 @@ const Card: React.FC<CardBookProps> = ({
         document.body.removeChild(link);
     }
 
+    const handleDescriptionClick = () => {
+        navigate(`/catalog/${uuid}`)
+    }
+
+    const handleRatingChange = (rating: number) => {
+        updateRating(rating);
+    }
+
+    const handleDownloadClick = () => {
+        downloadFile(`${process.env.REACT_APP_API_URL}/books/${uuid}/download`, title)
+    }
+
+    const navigateToOrderPage = (res: AxiosResponse<any>) => {
+        navigate(`/order/${res.data.uuid}`)
+    }
+
     return (
         <div className={"card"}>
             <div
@@ -89,9 +106,7 @@ const Card: React.FC<CardBookProps> = ({
                 />
             </div>
             <div className="desc-container"
-                 onClick={() => {
-                     navigate(`/catalog/${uuid}`)
-                 }}
+                 onClick={handleDescriptionClick}
             >
                 <span>{i18n('title')}: {title}</span><br/>
                 <span>{i18n('author')}: {author}</span><br/>
@@ -100,14 +115,12 @@ const Card: React.FC<CardBookProps> = ({
             </div>
             <Rating
                 value={rating}
-                onChange={(rating) => updateRating(rating)}
+                onChange={handleRatingChange}
             />
             {bookUuid ?
                 <div className="card-buttons-container">
                     <div className="download-button"
-                         onClick={() => {
-                             downloadFile(`${process.env.REACT_APP_API_URL}/books/${uuid}/download`, title)
-                         }}>
+                         onClick={handleDownloadClick}>
                         {i18n('download')}
                     </div>
                     {roles.includes(Roles.Admin) && <div className="edit-button">
@@ -121,9 +134,7 @@ const Card: React.FC<CardBookProps> = ({
                     <div className="download-button"
                          onClick={() => {
                              OrderService.createOrder(uuid)
-                                 .then((res) => {
-                                     navigate(`/order/${res.data.uuid}`)
-                                 });
+                                 .then(navigateToOrderPage);
                          }}>
                         {i18n('buy')}
                     </div>

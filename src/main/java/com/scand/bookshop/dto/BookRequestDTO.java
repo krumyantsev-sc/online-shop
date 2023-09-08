@@ -20,5 +20,5 @@ public class BookRequestDTO {
     private String author;
     private String description;
     @NotNull
-    private double price;
+    private Double price;
 }
