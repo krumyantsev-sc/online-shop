@@ -26,7 +26,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Component
@@ -40,7 +39,7 @@ public class BookFacade {
     private final UserService userService;
     private final RatingService ratingService;
 
-    public BookResponseDTO uploadBook(MultipartFile file, Double price) {
+    public BookResponseDTO uploadBook(MultipartFile file, PriceDTO price) {
         if (file.isEmpty()) {
             throw new IllegalArgumentException(messageSource.getMessage("file_empty", null, request.getLocale()));
         }
@@ -59,7 +58,7 @@ public class BookFacade {
                 metadata.getSubject(),
                 extension,
                 metadata.getContent(),
-                price);
+                price.getPrice());
         return DTOConverter.toDTO(book);
     }
 

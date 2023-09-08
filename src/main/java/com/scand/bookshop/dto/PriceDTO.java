@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UploadFileDTO {
+public class PriceDTO {
   @NotNull
   private Double price;
 }
