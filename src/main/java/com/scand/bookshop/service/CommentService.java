@@ -71,6 +71,10 @@ public class CommentService {
         log.info("Comment updated");
     }
 
+    public void clearComments(List<Comment> comments) {
+        commentRepository.deleteAll(comments);
+    }
+
     public List<Comment> getComments(Book book) {
         log.info("Fetching comments for book with ID: " + book.getId());
         return commentRepository.findByBook(book);

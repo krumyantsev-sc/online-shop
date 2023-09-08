@@ -1,16 +1,27 @@
 package com.scand.bookshop.facade;
 
-import com.scand.bookshop.dto.*;
+import com.scand.bookshop.dto.BookRequestDTO;
+import com.scand.bookshop.dto.BookResponseDTO;
+import com.scand.bookshop.dto.DTOConverter;
+import com.scand.bookshop.dto.PageResponseDTO;
+import com.scand.bookshop.dto.PriceDTO;
+import com.scand.bookshop.dto.RatingRequestDTO;
+import com.scand.bookshop.dto.RatingResponseDTO;
 import com.scand.bookshop.entity.Book;
+import com.scand.bookshop.entity.Comment;
 import com.scand.bookshop.entity.User;
 import com.scand.bookshop.security.service.UserDetailsImpl;
 import com.scand.bookshop.service.BookService;
+import com.scand.bookshop.service.CommentService;
 import com.scand.bookshop.service.FileService;
 import com.scand.bookshop.service.RatingService;
 import com.scand.bookshop.service.UserService;
 import com.scand.bookshop.service.metadataextractor.Extractor;
 import com.scand.bookshop.service.metadataextractor.Metadata;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
@@ -25,9 +36,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Component
 @RequiredArgsConstructor
 public class BookFacade {
@@ -38,6 +46,7 @@ public class BookFacade {
     private final HttpServletRequest request;
     private final UserService userService;
     private final RatingService ratingService;
+    private final CommentService commentService;
 
     public BookResponseDTO uploadBook(MultipartFile file, PriceDTO priceDTO) {
         if (file.isEmpty()) {
@@ -97,6 +106,7 @@ public class BookFacade {
 
     public void deleteBook(String uuid) {
         Book book = bookService.getBookByUuid(uuid);
+        commentService.clearComments(commentService.getComments(book));
         bookService.deleteBook(book);
     }
 
