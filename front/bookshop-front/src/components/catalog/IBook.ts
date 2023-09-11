@@ -5,4 +5,5 @@ export default interface IBook {
     uuid: string,
     description: string,
     price: number,
+    isPaid?: boolean
 }

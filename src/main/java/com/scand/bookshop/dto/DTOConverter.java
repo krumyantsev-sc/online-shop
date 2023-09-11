@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class DTOConverter {
-    public static BookResponseDTO toDTO(Book book) {
+    public static BookResponseDTO toDTO(Book book, Boolean isPaid) {
         BookResponseDTO responseDTO = new BookResponseDTO();
         responseDTO.setTitle(book.getTitle());
         responseDTO.setGenre(book.getGenre());
@@ -16,6 +16,7 @@ public class DTOConverter {
         responseDTO.setUuid(book.getUuid());
         responseDTO.setDescription(book.getDescription());
         responseDTO.setPrice(book.getPrice());
+        responseDTO.setIsPaid(isPaid);
         return responseDTO;
     }
 

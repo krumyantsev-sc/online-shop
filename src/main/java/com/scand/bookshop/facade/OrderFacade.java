@@ -45,7 +45,7 @@ public class OrderFacade {
     public OrderPageResponseDTO getOrderHistoryPage(int pageNumber, int pageSize, UserDetailsImpl userDetails) {
         User user = userService.getUserById(userDetails.getId());
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<Order> orderPage = orderService.getAllOrders(pageable, user);
+        Page<Order> orderPage = orderService.getAllOrdersPage(pageable, user);
         int totalPages = orderPage.getTotalPages();
         return new OrderPageResponseDTO(orderPage.map(DTOConverter::toDTO).getContent(), totalPages);
     }

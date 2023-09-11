@@ -7,11 +7,13 @@ import ProfilePage from "./components/profile/ProfilePage";
 import BookPage from "./components/book/BookPage";
 import OrderPage from "./components/order/OrderPage";
 import OrderHistoryPage from "./components/order/OrderHistoryPage";
+import MainPage from "./components/MainPage";
 
 function App() {
     return (
         <BrowserRouter>
             <Routes>
+                <Route path="/" element={<MainPage/>}/>
                 <Route path="/catalog" element={<Catalog/>}/>
                 <Route path="/login" element={<AuthPage/>}/>
                 <Route path="/profile" element={<ProfilePage/>}/>

@@ -25,10 +25,11 @@ const Card: React.FC<CardBookProps> = ({
                                            uuid,
                                            getBooksFromServer,
                                            description,
-                                           price
+                                           price,
+                                           isPaid
                                        }) => {
     const {t: i18n} = useTranslation();
-    const {roles} = useAuth();
+    const {roles, isAuthenticated} = useAuth();
     const [openEdit, setOpenEdit] = React.useState(false);
     const [openPreview, setOpenPreview] = React.useState(false);
     const navigate = useNavigate();
@@ -117,29 +118,29 @@ const Card: React.FC<CardBookProps> = ({
                 value={rating}
                 onChange={handleRatingChange}
             />
-            {bookUuid ?
-                <div className="card-buttons-container">
+            <div className="card-buttons-container">
+                {(isAuthenticated && isPaid) ?
                     <div className="download-button"
                          onClick={handleDownloadClick}>
                         {i18n('download')}
                     </div>
-                    {roles.includes(Roles.Admin) && <div className="edit-button">
-                        <SettingsIcon
-                            onClick={handleClickOpenEdit}
-                        />
-                    </div>}
-                </div>
-                :
-                <div className="card-buttons-container">
-                    <div className="download-button"
-                         onClick={() => {
-                             OrderService.createOrder(uuid)
-                                 .then(navigateToOrderPage);
-                         }}>
-                        {i18n('buy')}
+                    :
+                    <div className="card-buttons-container">
+                        <div className="download-button"
+                             onClick={() => {
+                                 OrderService.createOrder(uuid)
+                                     .then(navigateToOrderPage);
+                             }}>
+                            {i18n('buy')}
+                        </div>
                     </div>
-                </div>
-            }
+                }
+                {roles.includes(Roles.Admin) && bookUuid && <div className="edit-button">
+                    <SettingsIcon
+                        onClick={handleClickOpenEdit}
+                    />
+                </div>}
+            </div>
             <BookModal
                 open={openEdit}
                 handleClose={handleCloseEdit}

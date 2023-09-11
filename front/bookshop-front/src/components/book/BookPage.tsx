@@ -78,6 +78,7 @@ const BookPage = () => {
                         uuid={bookInfo.uuid}
                         price={bookInfo.price}
                         description={bookInfo.description}
+                        isPaid={bookInfo.isPaid}
                     />
                     <div className="book-page-desc-container">
                         <div className={"desc"}>

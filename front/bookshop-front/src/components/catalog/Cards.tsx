@@ -21,7 +21,7 @@ const Cards = () => {
     const [books, setBooks] = useState<IBook[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [pageSize, setPageSize] = useState<number>(10);
-    const [totalPages, setTotalPages] = useState<number>(0);
+    const [totalPages, setTotalPages] = useState<number>(1);
     const navigate = useNavigate();
     const [sortField, setSortField] = useState<string>("id");
     const [sortDirection, setSortDirection] = useState<string>("ASC");
@@ -47,7 +47,9 @@ const Cards = () => {
             const data = await response.data;
             if (data) {
                 setBooks(response.data.books);
-                setTotalPages(response.data.totalPages);
+                if (response.data.totalPages > 0)
+                    setTotalPages(response.data.totalPages);
+                console.log(response.data.totalPages);
                 setIsLoading(false);
             }
         } catch (error) {
@@ -57,6 +59,7 @@ const Cards = () => {
             setIsLoading(false);
         }
     }
+
     useEffect(() => {
         getBooksFromServer(currentPage, pageSize, sortField, sortDirection);
     }, [searchTerm, currentPage, pageSize, sortField, sortDirection]);
@@ -77,7 +80,8 @@ const Cards = () => {
         <div className={"cards-container-wrapper"}>
             <div className="cards-sort-container">
                 <div className="sort-search-container">
-                    <SortMenu sortField={sortField} sortDirection={sortDirection} onSortChange={handleSortChange}/>
+                    <SortMenu sortField={sortField} sortDirection={sortDirection}
+                              onSortChange={handleSortChange}/>
                     <SearchBar onSearch={handleSearch}/>
                 </div>
                 <div className={"cards-container"}>
@@ -90,6 +94,7 @@ const Cards = () => {
                             uuid={book.uuid}
                             price={book.price}
                             description={book.description}
+                            isPaid={book.isPaid}
                             getBooksFromServer={() => getBooksFromServer(currentPage, pageSize)}
                         />
                     ))}
