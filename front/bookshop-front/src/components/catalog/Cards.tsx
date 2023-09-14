@@ -49,7 +49,6 @@ const Cards = () => {
                 setBooks(response.data.books);
                 if (response.data.totalPages > 0)
                     setTotalPages(response.data.totalPages);
-                console.log(response.data.totalPages);
                 setIsLoading(false);
             }
         } catch (error) {

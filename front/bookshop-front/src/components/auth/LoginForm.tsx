@@ -40,9 +40,7 @@ const LoginForm: React.FC<LoginFormProps> = ({setIsLoginForm}) => {
         event.preventDefault();
         try {
             let response = await AuthService.login({username, password});
-            console.log(response.data)
             let data = await response.data;
-            console.log(response.data)
             localStorage.setItem('token', data.accessToken);
             localStorage.setItem('roles', data.roles);
             localStorage.setItem('username', data.username);
@@ -51,7 +49,6 @@ const LoginForm: React.FC<LoginFormProps> = ({setIsLoginForm}) => {
                 navigate('/catalog');
             }, 3000);
         } catch (e: any) {
-            console.log(e.response)
             setModalText(e.response.data);
             setOpen(true);
         }

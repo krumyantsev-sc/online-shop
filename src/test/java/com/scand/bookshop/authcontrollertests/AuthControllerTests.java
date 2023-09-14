@@ -51,7 +51,7 @@ public class AuthControllerTests extends BaseTest {
         UserRegistrationDTO regDto = new UserRegistrationDTO("usertest123",
                 "s",
                 "usertest123.com");
-        makePostRequestWithToken(null, "/auth/register", regDto, ServerMessage.class);
+        makePostRequestWithToken(null, "/auth/register", regDto, String.class);
         Optional<User> user = userRepository.findByLogin("usertest123");
         assertThat(user).isNotPresent();
     }

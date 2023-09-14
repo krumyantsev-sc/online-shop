@@ -51,6 +51,18 @@ public class OrderService {
     return order;
   }
 
+  @Transactional
+  public Order createOrderFromCart(List<CartItem> cartItems, User user) {
+    Order order = createEmptyOrder(user);
+    orderRepository.save(order);
+    cartItems.forEach((item) -> {
+      OrderDetail orderDetail = new OrderDetail(null, order, item.getBook(), null);
+      orderDetailRepository.save(orderDetail);
+      order.getOrderDetails().add(orderDetail);
+    });
+    return order;
+  }
+
   public Optional<Order> findOrderByUuid(String uuid) {
     return orderRepository.findByUuid(uuid);
   }

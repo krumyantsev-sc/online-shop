@@ -19,3 +19,7 @@ databaseChangeLog:
       file: db/changelog/changes/add-rating-table.yaml
   - include:
       file: db/changelog/changes/add-order-detail-price.yaml
+  - include:
+      file: db/changelog/changes/create-cart.yaml
+  - include:
+      file: db/changelog/changes/create-cart-for-admin.yaml

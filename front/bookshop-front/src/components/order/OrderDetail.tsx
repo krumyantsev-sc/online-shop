@@ -1,16 +1,12 @@
-import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import IBook from "../catalog/IBook";
 import BookService from "../../API/BookService";
 import "../../styles/Order.css"
 import ImageComponent from "../catalog/Image";
+import {IOrderDetail} from "../catalog/IOrderDetail";
 
-interface OrderDetailProps {
-    uuid: string,
-    unitPrice: number,
-    updateTotalPrice: (bookPrice: number) => void
-}
 
-const OrderDetail: React.FC<OrderDetailProps> = ({uuid, unitPrice, updateTotalPrice}) => {
+const OrderDetail: React.FC<IOrderDetail> = ({uuid, unitPrice, updateTotalPrice}) => {
     const [bookInfo, setBookInfo] = useState<IBook>();
     const quantity = 1;
 
@@ -19,7 +15,7 @@ const OrderDetail: React.FC<OrderDetailProps> = ({uuid, unitPrice, updateTotalPr
         const data = await response.data;
 
         setBookInfo(data);
-        if(data?.price) {
+        if (data?.price) {
             updateTotalPrice(data.price);
         }
     }

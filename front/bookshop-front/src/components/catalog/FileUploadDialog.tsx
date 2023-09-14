@@ -72,6 +72,7 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
                             type="file"
                             inputProps={{accept: '.pdf,.epub'}}
                             name="file"
+                            style={{marginTop: 10}}
                         />
                         <TextField
                             variant="outlined"

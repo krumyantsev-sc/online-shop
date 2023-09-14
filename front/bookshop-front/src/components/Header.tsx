@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import "../styles/Header.css"
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -10,6 +10,7 @@ import {Link} from "react-router-dom";
 import LanguageSwitcher from "./LanguageSwitcher";
 import {useTranslation} from "react-i18next";
 import HistoryIcon from '@mui/icons-material/History';
+import CartDialog from "./catalog/CartDialog";
 
 const Header = () => {
     const {isAuthenticated, logout} = useAuth();
@@ -28,6 +29,7 @@ const Header = () => {
                 <div className="menu">
                     {isAuthenticated &&
                     <>
+                        <CartDialog/>
                         <div className="menu-item-container">
                             <Link to={"/orders"}>
                                 <HistoryIcon fontSize={"large"}/>

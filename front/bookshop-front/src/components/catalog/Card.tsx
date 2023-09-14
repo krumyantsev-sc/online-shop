@@ -13,6 +13,8 @@ import {Rating} from "./Rating";
 import BookService from "../../API/BookService";
 import OrderService from "../../API/OrderService";
 import {AxiosResponse} from "axios";
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import CartService from "../../API/CartService";
 
 interface CardBookProps extends IBook {
     getBooksFromServer: () => {};
@@ -69,6 +71,10 @@ const Card: React.FC<CardBookProps> = ({
     const handleClosePreview = () => {
         setOpenPreview(false);
     };
+
+    const handleAddToCart = () => {
+        CartService.addItem(uuid);
+    }
 
     function downloadFile(url: string, filename: string) {
         let link = document.createElement('a');
@@ -133,6 +139,8 @@ const Card: React.FC<CardBookProps> = ({
                              }}>
                             {i18n('buy')}
                         </div>
+                        {!bookUuid &&
+                        <AddShoppingCartIcon onClick={handleAddToCart}/>}
                     </div>
                 }
                 {roles.includes(Roles.Admin) && bookUuid && <div className="edit-button">

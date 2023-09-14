@@ -69,6 +69,8 @@ public class WebSecurityConfig {
                                 .requestMatchers("/books/*/cover").permitAll()
                                 .requestMatchers("/books/*/preview").permitAll()
                                 .requestMatchers("/books/*/download").permitAll()
+                                .requestMatchers("/comments/{uuid}").permitAll()
+                                .requestMatchers("/books/{uuid}").permitAll()
                                 .anyRequest().authenticated()
                 );
         http.authenticationProvider(authenticationProvider());

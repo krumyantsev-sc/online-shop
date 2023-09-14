@@ -86,10 +86,8 @@ public class OrderControllerTests extends BaseTest {
         for (int i = 0; i < 100; i++) {
             executorService.submit(() -> {
                 try {
-                    System.out.println("da1");;
                     ResponseEntity<String> response =
                             makeGetRequestWithToken(jwtToken, "/order/" + order.getUuid() + statusUrlPart, String.class);
-                    System.out.println("da2");
                     if (requestCount.incrementAndGet() == 1) {
                         successCounter.getAndIncrement();
                         assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();

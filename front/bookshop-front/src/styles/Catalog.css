@@ -81,6 +81,15 @@
     width: 105%;
 }
 
+.card-buttons-container svg {
+    font-size: 26px;
+    cursor: pointer;
+}
+
+.card-buttons-container svg:hover {
+    color: deepskyblue;
+}
+
 .edit-button svg {
     cursor: pointer;
 }
@@ -140,6 +149,29 @@
     cursor: pointer;
 }
 
-.desc-container:hover {
+.desc-container:hover, .cart-order-detail-wrapper svg:hover{
     color: deepskyblue;
+}
+
+.cart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cart-order-detail-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-order-detail-wrapper svg{
+    font-size: 50px;
+    cursor: pointer;
+}
+
+.total-price-container-cart {
+    width: 620px;
+    display: flex;
+    justify-content: right;
 }
