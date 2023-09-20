@@ -21,6 +21,16 @@ public class DTOConverter {
     return responseDTO;
   }
 
+  public static AdminPanelUserResponseDTO toDTO(User user) {
+    return new AdminPanelUserResponseDTO(
+        user.getUuid().toString(),
+        user.getLogin(),
+        user.getEmail(),
+        user.getRegistrationDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")),
+        user.getRole()
+    );
+  }
+
   public static UserResponseDTO toUserDTO(User user) {
     return new UserResponseDTO(user.getLogin(),
         user.getEmail(),

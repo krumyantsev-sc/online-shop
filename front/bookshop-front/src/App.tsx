@@ -8,6 +8,7 @@ import BookPage from "./components/book/BookPage";
 import OrderPage from "./components/order/OrderPage";
 import OrderHistoryPage from "./components/order/OrderHistoryPage";
 import MainPage from "./components/MainPage";
+import AdminPage from "./components/admin/AdminPage";
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<MainPage/>}/>
                 <Route path="/catalog" element={<Catalog/>}/>
+                <Route path="/admin" element={<AdminPage/>}/>
                 <Route path="/login" element={<AuthPage/>}/>
                 <Route path="/profile" element={<ProfilePage/>}/>
                 <Route path="/catalog/:bookUuid" element={<BookPage/>}/>

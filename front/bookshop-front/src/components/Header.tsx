@@ -11,9 +11,11 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import {useTranslation} from "react-i18next";
 import HistoryIcon from '@mui/icons-material/History';
 import CartDialog from "./catalog/CartDialog";
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import {Roles} from "../enums/Roles";
 
 const Header = () => {
-    const {isAuthenticated, logout} = useAuth();
+    const {isAuthenticated, logout, roles} = useAuth();
     const {t: i18n} = useTranslation();
 
     return (
@@ -29,6 +31,13 @@ const Header = () => {
                 <div className="menu">
                     {isAuthenticated &&
                     <>
+                        {roles.includes(Roles.Admin) &&
+                        <div className="menu-item-container">
+                            <Link to={"/admin"}>
+                                <AdminPanelSettingsIcon fontSize={"large"}/>
+                                <span className={"menu-item-name"}>{i18n('adminPanel')}</span>
+                            </Link>
+                        </div>}
                         <CartDialog/>
                         <div className="menu-item-container">
                             <Link to={"/orders"}>

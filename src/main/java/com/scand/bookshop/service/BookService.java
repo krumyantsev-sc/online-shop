@@ -5,6 +5,7 @@ import com.scand.bookshop.repository.BookRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -30,14 +31,17 @@ public class BookService {
     private final MessageSource messageSource;
     private final HttpServletRequest request;
 
+    @Value("${scand.bookshop.outputPath}")
+    private String outFolder;
+
     @Transactional
     public Book createBook(String title, String author, String subject, String extension, byte[] content, double price) {
         String uniqueFilename = UUID.randomUUID().toString();
-        String filePath = String.format("uploads/%s.%s", uniqueFilename, extension);
+        String filePath = String.format("%s/%s.%s", outFolder, uniqueFilename, extension);
         Book book = new Book(null, title, subject, author, filePath, uniqueFilename,null, price);
         book = bookRepository.save(book);
         fileService.writeFile(Paths.get(book.getFilePath()), content);
-        String coverPath = "uploads/covers/" + uniqueFilename + ".png";
+        String coverPath = outFolder + "/covers/" + uniqueFilename + ".png";
         fileService.writeFile(Paths.get(coverPath), bookCoverService.generateCover(content, 0));
         log.info("Book with id '{}' created", book.getId());
         return book;
@@ -49,7 +53,7 @@ public class BookService {
         if (!Files.exists(path)) {
             log.error("File of the book with UUID '{}' not found", book.getUuid());
             throw new IllegalArgumentException(messageSource.getMessage(
-                    "file_not_found", null, request.getLocale()));
+                "file_not_found", null, request.getLocale()));
         }
         byte[] content = fileService.readFile(book.getFilePath());
         log.info("Successfully downloaded book with UUID '{}'", book.getUuid());
@@ -58,12 +62,12 @@ public class BookService {
 
     public Resource getCover(Book book) {
         log.info("Attempting to fetch cover for book with UUID '{}'", book.getUuid());
-        String coverFilePath = "uploads/covers/" + book.getUuid() + ".png";
+        String coverFilePath = outFolder + "/covers/" + book.getUuid() + ".png";
         Path coverPath = Paths.get(coverFilePath);
         if (!Files.exists(coverPath)) {
             log.error("Cover file for book with UUID '{}' not found", book.getUuid());
             throw new IllegalArgumentException(messageSource.getMessage(
-                    "file_not_found", null, request.getLocale()));
+                "file_not_found", null, request.getLocale()));
         }
         log.info("Successfully fetched cover for book with UUID '{}'", book.getUuid());
         return new org.springframework.core.io.PathResource(coverPath);
@@ -73,7 +77,7 @@ public class BookService {
         Path path = Paths.get(book.getFilePath());
         if (!Files.exists(path)) {
             throw new IllegalArgumentException(messageSource.getMessage(
-                    "file_not_found", null, request.getLocale()));
+                "file_not_found", null, request.getLocale()));
         }
         List<String> previewImages = new ArrayList<>();
         byte[] fileContent = fileService.readFile(book.getFilePath());
@@ -90,8 +94,8 @@ public class BookService {
 
     public Book getBookByUuid(String uuid) {
         return findBookByUuid(uuid)
-                .orElseThrow(() -> new NoSuchElementException(messageSource.getMessage(
-                        "book_not_found", null, request.getLocale())));
+            .orElseThrow(() -> new NoSuchElementException(messageSource.getMessage(
+                "book_not_found", null, request.getLocale())));
     }
 
     public void deleteBook(Book book) {
