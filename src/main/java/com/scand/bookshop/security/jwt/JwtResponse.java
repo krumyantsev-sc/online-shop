@@ -1,17 +1,20 @@
 package com.scand.bookshop.security.jwt;
 
-import lombok.AllArgsConstructor;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @NoArgsConstructor
 public class JwtResponse {
     @Getter
     @Setter
     private String accessToken;
+
+    @Getter
+    @Setter
+    private String refreshToken;
+
     private final String tokenType = "Bearer";
 
     @Getter
@@ -30,8 +33,9 @@ public class JwtResponse {
     @Setter
     private List<String> roles;
 
-    public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles) {
+    public JwtResponse(String accessToken, String refreshToken, Long id, String username, String email, List<String> roles) {
         this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
         this.id = id;
         this.username = username;
         this.email = email;

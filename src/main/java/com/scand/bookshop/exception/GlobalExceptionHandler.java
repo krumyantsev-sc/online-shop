@@ -45,6 +45,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(org.springframework.security.authentication.LockedException.class)
     public ResponseEntity<String> LockedException(LockedException e) {
-        return ResponseEntity.status(401).body(e.getMessage());
+        return ResponseEntity.status(403).body(e.getMessage());
     }
 }

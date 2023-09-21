@@ -1,5 +1,7 @@
 package com.scand.bookshop.facade;
 
+import com.scand.bookshop.dto.JwtDTO;
+import com.scand.bookshop.dto.RefreshTokenDTO;
 import com.scand.bookshop.dto.UserLoginDTO;
 import com.scand.bookshop.dto.UserRegistrationDTO;
 import com.scand.bookshop.entity.User;
@@ -12,12 +14,10 @@ import com.scand.bookshop.service.RegistrationService;
 import com.scand.bookshop.service.UserService;
 import com.scand.bookshop.utility.ServerMessage;
 import jakarta.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
@@ -46,5 +46,9 @@ public class AuthFacade {
 
     public JwtResponse authenticateUser(UserLoginDTO loginRequest) {
         return logInService.logIn(loginRequest.getUsername(), loginRequest.getPassword());
+    }
+
+    public JwtDTO refreshToken(RefreshTokenDTO refreshTokenDTO) {
+        return new JwtDTO(logInService.refreshToken(refreshTokenDTO.getRefreshToken()));
     }
 }

@@ -23,3 +23,5 @@ databaseChangeLog:
       file: db/changelog/changes/create-cart.yaml
   - include:
       file: db/changelog/changes/create-cart-for-admin.yaml
+  - include:
+      file: db/changelog/changes/add-refresh-token-table.yaml

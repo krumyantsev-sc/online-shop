@@ -44,6 +44,7 @@ const LoginForm: React.FC<LoginFormProps> = ({setIsLoginForm}) => {
             localStorage.setItem('token', data.accessToken);
             localStorage.setItem('roles', data.roles);
             localStorage.setItem('username', data.username);
+            localStorage.setItem('refreshToken', data.refreshToken);
             login(data.roles, data.username);
             setTimeout(() => {
                 navigate('/catalog');
