@@ -5,17 +5,23 @@ import OrderService from "../../API/OrderService";
 import Order from "./Order";
 import "../../styles/Order.css"
 import Pagination from "../util/Pagination";
+import {useTranslation} from "react-i18next";
 
 const OrderHistory = () => {
     const [orders, setOrders] = useState<IOrder[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalPages, setTotalPages] = useState<number>(0);
+    const {t: i18n} = useTranslation();
 
     const getOrders = async () => {
-        const response = await OrderService.getOrderPage(currentPage - 1);
-        const data = await response.data.orders;
-        setTotalPages(response.data.totalPages);
-        setOrders(data);
+        try {
+            const response = await OrderService.getOrderPage(currentPage - 1);
+            const data = await response.data.orders;
+            setTotalPages(response.data.totalPages);
+            setOrders(data);
+        } catch (e) {
+            console.error(i18n('dataLoadingError'));
+        }
     }
 
     const handlePrevPage = () => {

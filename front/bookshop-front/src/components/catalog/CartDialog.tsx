@@ -33,11 +33,16 @@ function CartDialog() {
 
     const getItemsInfo = async () => {
         setIsLoading(true);
-        const response = await CartService.getItems();
-        const data = await response.data;
-        setCartItemsInfo(data);
-        setPrice(0);
-        setIsLoading(false);
+        try {
+            const response = await CartService.getItems();
+            const data = await response.data;
+            setCartItemsInfo(data);
+            setPrice(0);
+            setIsLoading(false);
+        } catch (e) {
+            console.error(i18n('dataLoadingError'));
+        }
+
     }
 
 

@@ -5,11 +5,13 @@ import AdminService from "../../API/AdminService";
 import Pagination from "../util/Pagination";
 import SearchBar from "../catalog/SearchBar";
 import "../../styles/Admin.css"
+import {useTranslation} from "react-i18next";
 
 const AdminPage = () => {
     const [users, setUsers] = useState(null);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalPages, setTotalPages] = useState<number>(0);
+    const {t: i18n} = useTranslation();
 
     const handlePrevPage = () => {
         setCurrentPage(prev => Math.max(prev - 1, 1));
@@ -20,10 +22,14 @@ const AdminPage = () => {
     }
 
     const fetchUsers = async (searchTerm?: string) => {
-        const response = await AdminService.getUsers(currentPage - 1, searchTerm);
-        const data = await response.data;
-        setUsers(data.users);
-        setTotalPages(response.data.totalPages);
+        try {
+            const response = await AdminService.getUsers(currentPage - 1, searchTerm);
+            const data = await response.data;
+            setUsers(data.users);
+            setTotalPages(response.data.totalPages);
+        } catch (e) {
+            console.error(i18n('dataLoadingError'));
+        }
     }
 
     useEffect(() => {

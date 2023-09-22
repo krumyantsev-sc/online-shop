@@ -56,7 +56,7 @@ public class LogInService {
       throw new LockedException("Refresh token expired or invalid");
     }
     Optional<Token> refreshToken = tokenRepository.findByValue(token);
-    User user = userService.getUserById(refreshToken.get().getId());
+    User user = userService.getUserById(refreshToken.get().getUserId());
     UserDetails userDetails = UserDetailsImpl.build(user);
     Authentication authentication = new UsernamePasswordAuthenticationToken(
         userDetails, null, userDetails.getAuthorities());

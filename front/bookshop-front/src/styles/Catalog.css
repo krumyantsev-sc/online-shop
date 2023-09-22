@@ -51,9 +51,13 @@
     height: 200px;
 }
 
-.desc-container {
+.cards-container .desc-container {
     padding-top: 10px;
     padding-bottom: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 180px;
 }
 
 .add-card-icon-container {
