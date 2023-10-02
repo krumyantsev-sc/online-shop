@@ -60,7 +60,7 @@ public class WebSecurityConfig {
         .authorizeHttpRequests(auth ->
             auth.requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/books/list").permitAll()
-
+                .requestMatchers("/activate/**").permitAll()
                 .requestMatchers("/books/*/cover").permitAll()
                 .requestMatchers("/books/*/preview").permitAll()
                 .requestMatchers("/comments/{uuid}").permitAll()

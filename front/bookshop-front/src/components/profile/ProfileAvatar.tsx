@@ -52,7 +52,6 @@ const ProfileAvatar = () => {
         return <Loading/>;
     }
 
-
     return (
         <div
             onMouseOver={handleMouseOver}

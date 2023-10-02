@@ -9,6 +9,8 @@ import com.scand.bookshop.security.jwt.JwtResponse;
 import com.scand.bookshop.utility.ServerMessage;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,5 +37,10 @@ public class AuthController {
     @PostMapping(value = "/refresh")
     public JwtDTO refreshToken(@Valid @RequestBody RefreshTokenDTO refreshTokenDTO) {
         return authFacade.refreshToken(refreshTokenDTO);
+    }
+
+    @GetMapping(value = "/activate/{activationCode}")
+    public void activateAccount(@PathVariable String activationCode) {
+        authFacade.activate(activationCode);
     }
 }

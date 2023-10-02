@@ -51,6 +51,21 @@ public class UserService {
     return userRepository.findByLogin(username);
   }
 
+  public Optional<User> findUserByActivationCode(String activationCode) {
+    return userRepository.findByActivationCode(activationCode);
+  }
+
+  public User getUserByActivationCode(String activationCode) {
+    log.info("Retrieving user with activation code: " + activationCode);
+    return findUserByActivationCode(activationCode)
+        .orElseThrow(() -> {
+          log.warn("User with activation code " + activationCode + " not found.");
+          return new NoSuchElementException(messageSource.getMessage("user_not_found",
+              null,
+              request.getLocale()));
+        });
+  }
+
   public Page<User> searchUsersPage(String searchTerm, Pageable pageable) {
     return userRepository.findByLoginContainingIgnoreCaseOrEmailContainingIgnoreCase(searchTerm,
         searchTerm,

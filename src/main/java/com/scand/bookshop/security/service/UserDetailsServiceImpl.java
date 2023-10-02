@@ -35,6 +35,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     if (user.get().getRole().equals(Role.BANNED)) {
       throw new LockedException("User is blocked");
     }
+    if (!user.get().isActive()) {
+      throw new LockedException("This account is not activated yet. Check your email.");
+    }
     return UserDetailsImpl.build(user.get());
   }
 

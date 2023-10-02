@@ -68,6 +68,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({setIsLoginForm}) => {
             try {
                 let response = await AuthService.register({username, password, email});
                 let data = await response.data;
+                setModalText(data.message);
+                setOpen(true);
             } catch (e: any) {
                 setModalText(e.response.data);
                 setOpen(true);

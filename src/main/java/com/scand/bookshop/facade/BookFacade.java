@@ -8,11 +8,11 @@ import com.scand.bookshop.dto.PriceDTO;
 import com.scand.bookshop.dto.RatingRequestDTO;
 import com.scand.bookshop.dto.RatingResponseDTO;
 import com.scand.bookshop.entity.Book;
-import com.scand.bookshop.entity.Comment;
 import com.scand.bookshop.entity.User;
 import com.scand.bookshop.security.service.UserDetailsImpl;
 import com.scand.bookshop.service.BookService;
 import com.scand.bookshop.service.CommentService;
+import com.scand.bookshop.service.EmailService;
 import com.scand.bookshop.service.FileService;
 import com.scand.bookshop.service.OrderService;
 import com.scand.bookshop.service.RatingService;
@@ -20,7 +20,6 @@ import com.scand.bookshop.service.UserService;
 import com.scand.bookshop.service.metadataextractor.Extractor;
 import com.scand.bookshop.service.metadataextractor.Metadata;
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -51,6 +50,7 @@ public class BookFacade {
   private final RatingService ratingService;
   private final CommentService commentService;
   private final OrderService orderService;
+  private final EmailService emailService;
 
   public BookResponseDTO uploadBook(MultipartFile file, PriceDTO priceDTO) {
     if (file.isEmpty()) {
@@ -86,7 +86,6 @@ public class BookFacade {
     Sort.Direction direction = Sort.Direction.valueOf(sortDirection.toUpperCase());
     Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(direction, sortField));
     Page<Book> bookPage;
-
     Optional<User> userOptional = Optional.ofNullable(userDetails)
         .map(UserDetailsImpl::getId)
         .map(userService::getUserById);
