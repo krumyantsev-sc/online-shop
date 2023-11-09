@@ -12,16 +12,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailService {
 
-  @Value("email.from")
+  @Value("${email.from}")
   private String fromEmail;
 
-  @Value("email.password")
+  @Value("${email.password}")
   private String emailPassword;
 
-  @Value("smtp.server")
+  @Value("${smtp.server}")
   private String smtpServer;
 
-  @Value("smtp.port")
+  @Value("${smtp.port}")
   private int smtpPort;
 
   public void sendEmail(String to, String subject, String body) {
