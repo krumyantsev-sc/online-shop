@@ -47,6 +47,12 @@
   align-items: center;
   font-size: 16px;
   color: #3D3C3C;
+  cursor: pointer;
+}
+
+.main-page-catalog-button:hover {
+  background-color: darkorange;
+  transition: 0.5s;
 }
 
 .explore-catalog-sign {

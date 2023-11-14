@@ -46,23 +46,31 @@ const OrderHistory = () => {
     return (
         <div className={"orders-history-container-wrapper"}>
             <div className={"orders-history-container"}>
-                {orders.map(order => (
-                    <Order
-                        key={order.uuid}
-                        uuid={order.uuid}
-                        orderDate={order.orderDate}
-                        orderDetails={order.orderDetails}
-                        status={order.status}
-                        totalPrice={order.totalPrice}
-                        username={order.username}
+                {orders.length > 0 ?
+                <>
+                    {
+                        orders.map(order => (
+                            <Order
+                                key={order.uuid}
+                                uuid={order.uuid}
+                                orderDate={order.orderDate}
+                                orderDetails={order.orderDetails}
+                                status={order.status}
+                                totalPrice={order.totalPrice}
+                                username={order.username}
+                            />
+                        ))
+                    }
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPrevPage={handlePrevPage}
+                        onNextPage={handleNextPage}
                     />
-                ))}
-                <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPrevPage={handlePrevPage}
-                    onNextPage={handleNextPage}
-                />
+                </>
+                    :
+                    <span>ORDER HISTORY IS EMPTY</span>
+                }
             </div>
         </div>
     );

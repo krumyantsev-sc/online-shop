@@ -13,6 +13,7 @@ import HistoryIcon from '@mui/icons-material/History';
 import CartDialog from "./catalog/CartDialog";
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import {Roles} from "../enums/Roles";
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 
 const Header = () => {
     const {isAuthenticated, logout, roles} = useAuth();
@@ -31,6 +32,12 @@ const Header = () => {
                 <div className="menu">
                     {isAuthenticated &&
                     <>
+                        <div className="menu-item-container">
+                            <Link to={"/support"}>
+                                <SupportAgentIcon fontSize={"large"}/>
+                                <span className={"menu-item-name"}>{i18n('support')}</span>
+                            </Link>
+                        </div>
                         {roles.includes(Roles.Admin) &&
                         <div className="menu-item-container">
                             <Link to={"/admin"}>

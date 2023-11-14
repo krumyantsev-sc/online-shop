@@ -79,7 +79,6 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
                             label={i18n("price")}
                             value={priceInput}
                             onChange={handlePriceChange}
-                            error={price === null}
                             helperText={price === null ? i18n("priceValidationError") : ""}
                             style={{marginTop: 10}}
                         />

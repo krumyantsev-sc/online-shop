@@ -10,6 +10,7 @@ import OrderHistoryPage from "./components/order/OrderHistoryPage";
 import MainPage from "./components/MainPage";
 import AdminPage from "./components/admin/AdminPage";
 import NotFoundPage from "./components/util/NotFoundPage";
+import SupportPage from "./components/support/SupportPage";
 
 function App() {
     return (
@@ -23,6 +24,7 @@ function App() {
                 <Route path="/catalog/:bookUuid" element={<BookPage/>}/>
                 <Route path="/order/:orderId" element={<OrderPage/>}/>
                 <Route path="/orders" element={<OrderHistoryPage/>}/>
+                <Route path="/support" element={<SupportPage/>}/>
                 <Route path="*" element={<NotFoundPage/>}/>
             </Routes>
         </BrowserRouter>

@@ -2,6 +2,7 @@ package com.scand.bookshop.entity;
 
 
 import jakarta.persistence.*;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -57,4 +58,10 @@ public class User {
 
   @Column(name = "activation_code")
   private String activationCode;
+
+//  @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//  private List<Ticket> tickets;
+//
+//  @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//  private List<Message> messages;
 }

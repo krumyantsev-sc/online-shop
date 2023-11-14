@@ -27,3 +27,7 @@ databaseChangeLog:
       file: db/changelog/changes/add-refresh-token-table.yaml
   - include:
       file: db/changelog/changes/add-user-active-column.yaml
+  - include:
+      file: db/changelog/changes/create-ticket-table.yaml
+  - include:
+      file: db/changelog/changes/create-message-table.yaml
