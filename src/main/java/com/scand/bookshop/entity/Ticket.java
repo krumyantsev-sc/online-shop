@@ -27,8 +27,8 @@ public class Ticket {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ticket_id", nullable = false)
-  private Long cartId;
+  @Column(name = "ticket_id")
+  private Long ticketId;
 
   @ManyToOne
   @JoinColumn(name = "user_id")
@@ -45,5 +45,8 @@ public class Ticket {
 
   @Column(name = "status", nullable = false)
   private TicketStatus status;
+
+  @Column(name = "uuid", nullable = false)
+  private String uuid;
 
 }

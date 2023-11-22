@@ -4,10 +4,17 @@ import com.scand.bookshop.entity.*;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class DTOConverter {
+
+  private static final DateTimeFormatter messageDateFormatter = DateTimeFormatter.ofPattern(
+          "dd MMM HH:mm")
+      .withLocale(Locale.ENGLISH);
+  private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(
+      "dd-MM-yyyy HH:mm:ss");
 
   public static BookResponseDTO toDTO(Book book, Boolean isPaid) {
     BookResponseDTO responseDTO = new BookResponseDTO();
@@ -26,7 +33,7 @@ public class DTOConverter {
         user.getUuid().toString(),
         user.getLogin(),
         user.getEmail(),
-        user.getRegistrationDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")),
+        user.getRegistrationDate().format(dateFormatter),
         user.getRole()
     );
   }
@@ -44,7 +51,7 @@ public class DTOConverter {
       responseDTO.setText(comment.getText());
       responseDTO.setUsername(comment.getUser().getLogin());
       responseDTO.setTimestamp(comment.getTimestamp()
-          .format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+          .format(dateFormatter));
       responseDTO.setUuid(comment.getUuid());
       responseDTO.setReplies(comment.getReplies()
           .stream()
@@ -74,7 +81,7 @@ public class DTOConverter {
   public static OrderResponseDTO toDTO(Order order) {
     return new OrderResponseDTO(order.getUuid(),
         order.getUser().getLogin(),
-        order.getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")),
+        order.getOrderDate().format(dateFormatter),
         order.getTotalPrice(),
         order.getStatus().toString(),
         order.getOrderDetails().stream()
@@ -91,6 +98,27 @@ public class DTOConverter {
     cartBookResponseDTO.setPrice(cartItem.getBook().getPrice());
     cartBookResponseDTO.setUuid(cartItem.getBook().getUuid());
     return cartBookResponseDTO;
+  }
+
+  public static TicketResponseDTO toDTO(Ticket ticket) {
+    TicketResponseDTO ticketResponseDTO = new TicketResponseDTO();
+    ticketResponseDTO.setUsername(ticket.getUser().getLogin());
+    ticketResponseDTO.setTitle(ticket.getTitle());
+    Message lastMessage = ticket.getMessages()
+        .get(ticket.getMessages().size() - 1);
+    ticketResponseDTO.setLastMessage(lastMessage.getContent());
+    ticketResponseDTO.setIsRead(ticket.getIsRead());
+    ticketResponseDTO.setTimestamp(lastMessage.getTimestamp().format(messageDateFormatter));
+    ticketResponseDTO.setUuid(ticket.getUuid());
+    return ticketResponseDTO;
+  }
+
+  public static MessageResponseDTO toDTO(Message message) {
+    MessageResponseDTO messageResponseDTO = new MessageResponseDTO();
+    messageResponseDTO.setContent(message.getContent());
+    messageResponseDTO.setUsername(message.getUser().getLogin());
+    messageResponseDTO.setTimestamp(message.getTimestamp().format(messageDateFormatter));
+    return messageResponseDTO;
   }
 
   public static RatingResponseDTO toDTO(double rating) {

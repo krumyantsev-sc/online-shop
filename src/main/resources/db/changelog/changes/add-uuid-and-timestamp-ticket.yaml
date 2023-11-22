@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-uuid-to-ticket
+      author: krumyantsev-sc
+      changes:
+        - addColumn:
+            tableName: ticket
+            columns:
+              - column:
+                  name: uuid
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: add-timestamp-to-message
+      author: krumyantsev-sc
+      changes:
+        - addColumn:
+            tableName: message
+            columns:
+              - column:
+                  name: timestamp
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
