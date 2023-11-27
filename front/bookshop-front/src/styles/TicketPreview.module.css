@@ -37,7 +37,7 @@
 }
 
 .glowingDot {
-  margin-top: 45px;
+  margin-top: 50px;
   position: absolute;
   width: 5px;
   height: 5px;
@@ -52,4 +52,24 @@
   justify-content: center;
   flex-direction: column;
   align-items: center;
+}
+
+.statusContainer {
+  color: orangered;
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.statusDotContainer {
+  position: absolute;
+  z-index: 999;
+  width: 400px;
+  display: flex;
+}
+
+.previewMessageContainer {
+  width: 200px;
+  overflow: hidden;
 }

@@ -1,8 +1,9 @@
 package com.scand.bookshop.facade;
 
+import com.scand.bookshop.dto.CreateMessageRequestDTO;
 import com.scand.bookshop.dto.DTOConverter;
 import com.scand.bookshop.dto.MessageResponseDTO;
-import com.scand.bookshop.dto.ReadTicketRequestDTO;
+import com.scand.bookshop.dto.TicketUuidRequestDTO;
 import com.scand.bookshop.dto.TicketRequestDTO;
 import com.scand.bookshop.dto.TicketResponseDTO;
 import com.scand.bookshop.entity.Ticket;
@@ -13,7 +14,6 @@ import com.scand.bookshop.service.UserService;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -34,15 +34,34 @@ public class TicketFacade {
         .collect(Collectors.toList());
   }
 
-  public void read(ReadTicketRequestDTO readTicketRequestDTO) {
-    Ticket ticket = ticketService.getTicketByUuid(readTicketRequestDTO.getUuid());
+  public List<TicketResponseDTO> getUserChats(UserDetailsImpl userDetails) {
+    User user = userService.getUserById(userDetails.getId());
+    return ticketService.findTicketsByUser(user).stream()
+        .map(DTOConverter::toDTO)
+        .collect(Collectors.toList());
+  }
+
+  public void read(TicketUuidRequestDTO ticketUuidRequestDTO) {
+    Ticket ticket = ticketService.getTicketByUuid(ticketUuidRequestDTO.getUuid());
     ticketService.readTicket(ticket);
   }
 
-  public List<MessageResponseDTO> getTicketMessages(ReadTicketRequestDTO readTicketRequestDTO) {
-    Ticket ticket = ticketService.getTicketByUuid(readTicketRequestDTO.getUuid());
+  public List<MessageResponseDTO> getTicketMessages(TicketUuidRequestDTO ticketUuidRequestDTO) {
+    Ticket ticket = ticketService.getTicketByUuid(ticketUuidRequestDTO.getUuid());
     return ticketService.getTicketMessages(ticket).stream()
         .map(DTOConverter::toDTO)
         .collect(Collectors.toList());
+  }
+
+  public void closeTicket(TicketUuidRequestDTO ticketUuidRequestDTO) {
+    Ticket ticket = ticketService.getTicketByUuid(ticketUuidRequestDTO.getUuid());
+    ticketService.closeTicket(ticket);
+  }
+
+  public void createMessage(CreateMessageRequestDTO createMessageRequestDTO,
+                            UserDetailsImpl userDetails) {
+    ticketService.createMessage(ticketService.getTicketByUuid(createMessageRequestDTO.getUuid()),
+        createMessageRequestDTO.getMessage(),
+        userService.getUserById(userDetails.getId()));
   }
 }

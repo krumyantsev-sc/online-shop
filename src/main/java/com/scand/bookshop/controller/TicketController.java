@@ -1,7 +1,8 @@
 package com.scand.bookshop.controller;
 
+import com.scand.bookshop.dto.CreateMessageRequestDTO;
 import com.scand.bookshop.dto.MessageResponseDTO;
-import com.scand.bookshop.dto.ReadTicketRequestDTO;
+import com.scand.bookshop.dto.TicketUuidRequestDTO;
 import com.scand.bookshop.dto.TicketRequestDTO;
 import com.scand.bookshop.dto.TicketResponseDTO;
 import com.scand.bookshop.facade.TicketFacade;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/ticket")
 @RequiredArgsConstructor
 public class TicketController {
+
   private final TicketFacade ticketFacade;
 
   @PostMapping("/create")
@@ -35,13 +37,33 @@ public class TicketController {
     return ticketFacade.getAllChats();
   }
 
+  @GetMapping("/all")
+  public List<TicketResponseDTO> getUserChats(
+      @AuthenticationPrincipal UserDetailsImpl userPrincipal) {
+    return ticketFacade.getUserChats(userPrincipal);
+  }
+
+  @PreAuthorize("hasAuthority('ADMIN')")
+  @PostMapping("/close")
+  public void closeChat(
+      @RequestBody @Valid TicketUuidRequestDTO ticketUuidRequestDTO) {
+    ticketFacade.closeTicket(ticketUuidRequestDTO);
+  }
+
   @PostMapping("/read")
-  public void read(@RequestBody ReadTicketRequestDTO readTicketRequestDTO) {
-    ticketFacade.read(readTicketRequestDTO);
+  public void read(@RequestBody @Valid TicketUuidRequestDTO ticketUuidRequestDTO) {
+    ticketFacade.read(ticketUuidRequestDTO);
   }
 
   @PostMapping("/messages")
-  public List<MessageResponseDTO> getTicketMessages(@RequestBody ReadTicketRequestDTO readTicketRequestDTO) {
-    return ticketFacade.getTicketMessages(readTicketRequestDTO);
+  public List<MessageResponseDTO> getTicketMessages(
+      @RequestBody TicketUuidRequestDTO ticketUuidRequestDTO) {
+    return ticketFacade.getTicketMessages(ticketUuidRequestDTO);
+  }
+
+  @PostMapping("/messages/send")
+  public void createMessage(@RequestBody @Valid CreateMessageRequestDTO createMessageRequestDTO,
+                            @AuthenticationPrincipal UserDetailsImpl userPrincipal) {
+    ticketFacade.createMessage(createMessageRequestDTO, userPrincipal);
   }
 }

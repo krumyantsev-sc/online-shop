@@ -5,6 +5,7 @@ import com.scand.bookshop.entity.Ticket;
 import com.scand.bookshop.entity.TicketStatus;
 import com.scand.bookshop.entity.User;
 import com.scand.bookshop.repository.TicketRepository;
+import com.scand.bookshop.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TicketService {
 
   private final TicketRepository ticketRepository;
+  private final UserRepository userRepository;
   private final MessageService messageService;
   private final MessageSource messageSource;
   private final HttpServletRequest request;
@@ -44,6 +46,10 @@ public class TicketService {
     return ticketRepository.findByUuid(uuid);
   }
 
+  public List<Ticket> findTicketsByUser(User user) {
+    return ticketRepository.findByUser(user);
+  }
+
   public Ticket getTicketByUuid(String uuid) {
     return findTicketByUuid(uuid)
         .orElseThrow(() -> new NoSuchElementException(messageSource.getMessage(
@@ -56,11 +62,24 @@ public class TicketService {
     ticket.setIsRead(true);
   }
 
+  @Transactional
+  public void closeTicket(Ticket ticket) {
+    ticket = ticketRepository.getReferenceById(ticket.getTicketId());
+    ticket.setStatus(TicketStatus.CLOSED);
+  }
+
   public List<Message> getTicketMessages(Ticket ticket) {
     return ticket.getMessages();
   }
 
   public List<Ticket> findAllTickets() {
     return ticketRepository.findAll();
+  }
+
+  @Transactional
+  public void createMessage(Ticket ticket, String content, User user) {
+    ticket = ticketRepository.getReferenceById(ticket.getTicketId());
+    user = userRepository.getReferenceById(user.getId());
+    messageService.createMessage(user, content, ticket);
   }
 }

@@ -110,6 +110,7 @@ public class DTOConverter {
     ticketResponseDTO.setIsRead(ticket.getIsRead());
     ticketResponseDTO.setTimestamp(lastMessage.getTimestamp().format(messageDateFormatter));
     ticketResponseDTO.setUuid(ticket.getUuid());
+    ticketResponseDTO.setStatus(ticket.getStatus());
     return ticketResponseDTO;
   }
 

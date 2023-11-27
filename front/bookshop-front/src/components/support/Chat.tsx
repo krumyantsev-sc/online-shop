@@ -21,8 +21,10 @@ const Chat: React.FC<ChatProps> = ({activeChat}) => {
 
     const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        console.log(message);
-        setMessage('');
+        TicketService.sendMessage({message, uuid: activeChat!}).then(() => {
+            setMessage('');
+            fetchMessages();
+        });
     };
 
     useEffect(() => {
@@ -49,6 +51,7 @@ const Chat: React.FC<ChatProps> = ({activeChat}) => {
                 )}
             </div>
             <div className={styles.chatControlsContainerWrapper}>
+                {activeChat &&
                 <div className={styles.chatControlsContainer}>
                     <TextField
                         label="Введите сообщение"
@@ -67,6 +70,7 @@ const Chat: React.FC<ChatProps> = ({activeChat}) => {
                         Отправить
                     </Button>
                 </div>
+                }
             </div>
         </div>
     );

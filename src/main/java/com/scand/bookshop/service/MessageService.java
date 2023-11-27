@@ -12,11 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class MessageService {
+
   private final MessageRepository messageRepository;
 
   @Transactional
   public Message createMessage(User user, String messageText, Ticket ticket) {
-    Message message = new Message(null,messageText, ticket, user, LocalDateTime.now());
+    Message message = new Message(null, messageText, ticket, user, LocalDateTime.now());
     return messageRepository.save(message);
   }
 }

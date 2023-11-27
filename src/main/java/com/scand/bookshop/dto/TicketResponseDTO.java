@@ -1,5 +1,6 @@
 package com.scand.bookshop.dto;
 
+import com.scand.bookshop.entity.TicketStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,4 +18,5 @@ public class TicketResponseDTO {
   private String timestamp;
   private String uuid;
   private Boolean isRead;
+  private TicketStatus status;
 }

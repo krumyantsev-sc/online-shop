@@ -14,13 +14,15 @@
   margin-bottom: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   background-color: #f2f9fa;
+  display: flex;
 }
 
 .chatMessagesContainer {
   height: 80%;
   width: 100%;
   display: flex;
-  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .chatControlsContainer {
@@ -39,4 +41,31 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.messageAvatarNameContainer {
+  width: 90px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-weight: 500;
+}
+
+.messageTimeContainer {
+  color: #676767;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  display: flex;
+  justify-content: right;
+  width: 97%;
+}
+
+.messageTimeContentContainer {
+  width: 100%;
+}
+
+.messageContentContainer {
+  font-family: 'Syne', sans-serif;
 }

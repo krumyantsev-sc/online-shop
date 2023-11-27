@@ -2,6 +2,7 @@ import React from 'react';
 import ITicket from "./ITicket";
 import {Avatar} from "@mui/material";
 import styles from "../../styles/TicketPreview.module.css"
+import {TicketStatus} from "../../enums/TicketStatus";
 
 const TicketPreview: React.FC<ITicket> = ({
                                               username,
@@ -10,13 +11,16 @@ const TicketPreview: React.FC<ITicket> = ({
                                               uuid,
                                               isRead,
                                               timestamp,
-                                              setActiveChat
+                                              setActiveChat,
+                                              status
                                           }) => {
 
     return (
         <div
             className={styles.ticketPreviewContainer}
-            onClick={() => {setActiveChat(uuid)}}
+            onClick={() => {
+                setActiveChat(uuid)
+            }}
         >
             <div className={styles.credsContainer}>
                 <Avatar>
@@ -29,12 +33,18 @@ const TicketPreview: React.FC<ITicket> = ({
                     <span className={styles.title}>{title}</span>
                     <div className={styles.dotTime}>
                         <span className={styles.timestamp}>{timestamp}</span>
-                        {!isRead &&
+                        {isRead &&
                         <div className={styles.glowingDot}>
+                        </div>}
+                        {status == TicketStatus.Closed &&
+                        <div className={styles.statusContainer}>
+                            {status}
                         </div>}
                     </div>
                 </div>
+                <div className={styles.previewMessageContainer}>
                 {lastMessage}
+                </div>
             </div>
         </div>
     );
