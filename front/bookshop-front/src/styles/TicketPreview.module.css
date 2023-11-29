@@ -37,13 +37,12 @@
 }
 
 .glowingDot {
-  margin-top: 50px;
-  position: absolute;
+  margin-top: 10px;
   width: 5px;
   height: 5px;
   border-radius: 50%;
   background-color: skyblue;
-  box-shadow: 0 0 8px 3px rgba(255, 0, 0, 0.6);
+  box-shadow: 0 0 5px 2px rgba(255, 0, 0, 0.6);
   margin-left: 45px;
 }
 
@@ -60,11 +59,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 15px;
 }
 
 .statusDotContainer {
   position: absolute;
-  z-index: 999;
   width: 400px;
   display: flex;
 }

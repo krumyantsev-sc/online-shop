@@ -33,3 +33,5 @@ databaseChangeLog:
       file: db/changelog/changes/create-message-table.yaml
   - include:
       file: db/changelog/changes/add-uuid-and-timestamp-ticket.yaml
+  - include:
+      file: db/changelog/changes/refactor-isread-columns.yaml

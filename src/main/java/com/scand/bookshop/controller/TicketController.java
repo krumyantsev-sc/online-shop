@@ -33,8 +33,9 @@ public class TicketController {
 
   @PreAuthorize("hasAuthority('ADMIN')")
   @GetMapping("/list")
-  public List<TicketResponseDTO> getAllChats() {
-    return ticketFacade.getAllChats();
+  public List<TicketResponseDTO> getAllChats(
+      @AuthenticationPrincipal UserDetailsImpl userPrincipal) {
+    return ticketFacade.getAllChats(userPrincipal);
   }
 
   @GetMapping("/all")
@@ -51,8 +52,9 @@ public class TicketController {
   }
 
   @PostMapping("/read")
-  public void read(@RequestBody @Valid TicketUuidRequestDTO ticketUuidRequestDTO) {
-    ticketFacade.read(ticketUuidRequestDTO);
+  public void read(@RequestBody @Valid TicketUuidRequestDTO ticketUuidRequestDTO,
+                   @AuthenticationPrincipal UserDetailsImpl userPrincipal) {
+    ticketFacade.read(ticketUuidRequestDTO, userPrincipal);
   }
 
   @PostMapping("/messages")

@@ -3,24 +3,33 @@ import ITicket from "./ITicket";
 import {Avatar} from "@mui/material";
 import styles from "../../styles/TicketPreview.module.css"
 import {TicketStatus} from "../../enums/TicketStatus";
+import TicketService from "../../API/TicketService";
 
-const TicketPreview: React.FC<ITicket> = ({
-                                              username,
-                                              title,
-                                              lastMessage,
-                                              uuid,
-                                              isRead,
-                                              timestamp,
-                                              setActiveChat,
-                                              status
-                                          }) => {
+interface TicketPreviewProps extends ITicket {
+    fetchTickets: () => {};
+}
+
+const TicketPreview: React.FC<TicketPreviewProps> = ({
+                                                         username,
+                                                         title,
+                                                         lastMessage,
+                                                         uuid,
+                                                         isRead,
+                                                         timestamp,
+                                                         setActiveChat,
+                                                         status,
+                                                         fetchTickets
+                                                     }) => {
+
+    const handlePreviewClick = () => {
+        setActiveChat(uuid);
+        TicketService.readTicket(uuid).then(fetchTickets);
+    }
 
     return (
         <div
             className={styles.ticketPreviewContainer}
-            onClick={() => {
-                setActiveChat(uuid)
-            }}
+            onClick={handlePreviewClick}
         >
             <div className={styles.credsContainer}>
                 <Avatar>
@@ -33,7 +42,7 @@ const TicketPreview: React.FC<ITicket> = ({
                     <span className={styles.title}>{title}</span>
                     <div className={styles.dotTime}>
                         <span className={styles.timestamp}>{timestamp}</span>
-                        {isRead &&
+                        {!isRead &&
                         <div className={styles.glowingDot}>
                         </div>}
                         {status == TicketStatus.Closed &&
@@ -43,7 +52,7 @@ const TicketPreview: React.FC<ITicket> = ({
                     </div>
                 </div>
                 <div className={styles.previewMessageContainer}>
-                {lastMessage}
+                    {lastMessage}
                 </div>
             </div>
         </div>

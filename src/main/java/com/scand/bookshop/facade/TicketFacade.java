@@ -28,22 +28,24 @@ public class TicketFacade {
     ticketService.createTicket(user, ticketRequestDTO.getTitle(), ticketRequestDTO.getMessage());
   }
 
-  public List<TicketResponseDTO> getAllChats() {
+  public List<TicketResponseDTO> getAllChats(UserDetailsImpl userDetails) {
+    User user = userService.getUserById(userDetails.getId());
     return ticketService.findAllTickets().stream()
-        .map(DTOConverter::toDTO)
+        .map(ticket -> DTOConverter.toDTO(ticket, user))
         .collect(Collectors.toList());
   }
 
   public List<TicketResponseDTO> getUserChats(UserDetailsImpl userDetails) {
     User user = userService.getUserById(userDetails.getId());
     return ticketService.findTicketsByUser(user).stream()
-        .map(DTOConverter::toDTO)
+        .map(ticket -> DTOConverter.toDTO(ticket, user))
         .collect(Collectors.toList());
   }
 
-  public void read(TicketUuidRequestDTO ticketUuidRequestDTO) {
+  public void read(TicketUuidRequestDTO ticketUuidRequestDTO, UserDetailsImpl userDetails) {
+    User user = userService.getUserById(userDetails.getId());
     Ticket ticket = ticketService.getTicketByUuid(ticketUuidRequestDTO.getUuid());
-    ticketService.readTicket(ticket);
+    ticketService.readTicket(ticket, user);
   }
 
   public List<MessageResponseDTO> getTicketMessages(TicketUuidRequestDTO ticketUuidRequestDTO) {

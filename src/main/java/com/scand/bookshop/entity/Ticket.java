@@ -40,8 +40,11 @@ public class Ticket {
   @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<Message> messages;
 
-  @Column(name = "is_read", nullable = false)
-  private Boolean isRead;
+  @Column(name = "is_read_by_user", nullable = false)
+  private Boolean isReadByUser;
+
+  @Column(name = "is_read_by_admin", nullable = false)
+  private Boolean isReadByAdmin;
 
   @Column(name = "status", nullable = false)
   private TicketStatus status;

@@ -9,12 +9,29 @@ import Chat from "./Chat";
 import {useAuth} from "../auth/context/AuthContextProvider";
 import {Roles} from "../../enums/Roles";
 import ClearIcon from '@mui/icons-material/Clear';
+import {io} from "socket.io-client";
+import {useSocket} from "../socket/SocketContext";
 
 const UserSupportPage = () => {
+    const socket = useSocket();
     const [isModalOpen, setModalOpen] = useState(false);
     const [tickets, setTickets] = useState<ITicket[]>([]);
     const [activeChat, setActiveChat] = useState<string | null>(null);
     const {roles} = useAuth();
+
+    const newMessageHandler = () => {
+        fetchTickets()
+    }
+
+    useEffect(() => {
+        if (socket) {
+            socket.on('newMessage', newMessageHandler);
+
+            return () => {
+                socket.off('newMessage');
+            };
+        }
+    }, [socket]);
 
     const fetchTickets = async () => {
         const response = roles.includes(Roles.Admin) ?
@@ -42,6 +59,10 @@ const UserSupportPage = () => {
 
     useEffect(() => {
         fetchTickets();
+    }, [activeChat])
+
+    useEffect(() => {
+        fetchTickets();
     }, [])
 
     return (
@@ -60,6 +81,7 @@ const UserSupportPage = () => {
                         isRead={ticket.isRead}
                         status={ticket.status}
                         setActiveChat={setActiveChat}
+                        fetchTickets={fetchTickets}
                     />
                 )}
             </div>

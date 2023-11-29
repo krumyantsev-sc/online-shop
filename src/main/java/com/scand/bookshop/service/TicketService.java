@@ -1,9 +1,11 @@
 package com.scand.bookshop.service;
 
+import com.corundumstudio.socketio.SocketIOServer;
 import com.scand.bookshop.entity.Message;
 import com.scand.bookshop.entity.Ticket;
 import com.scand.bookshop.entity.TicketStatus;
 import com.scand.bookshop.entity.User;
+import com.scand.bookshop.entity.User.Role;
 import com.scand.bookshop.repository.TicketRepository;
 import com.scand.bookshop.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,11 +23,15 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class TicketService {
 
+  private static final String ADMINS_ROOM_NAME = "admins";
+  private static final String NEW_MESSAGE_EVENT = "newMessage";
+
   private final TicketRepository ticketRepository;
   private final UserRepository userRepository;
   private final MessageService messageService;
   private final MessageSource messageSource;
   private final HttpServletRequest request;
+  private final SocketIOServer server;
 
   @Transactional
   public void createTicket(User user, String title, String messageText) {
@@ -34,12 +40,14 @@ public class TicketService {
         user,
         title,
         new ArrayList<Message>(),
-        true,
+        user.getRole().equals(Role.USER),
+        user.getRole().equals(Role.ADMIN),
         TicketStatus.OPEN,
         UUID.randomUUID().toString());
     ticketRepository.save(ticket);
     Message message = messageService.createMessage(user, messageText, ticket);
     ticket.getMessages().add(message);
+    server.getRoomOperations(ADMINS_ROOM_NAME).sendEvent(NEW_MESSAGE_EVENT);
   }
 
   public Optional<Ticket> findTicketByUuid(String uuid) {
@@ -57,9 +65,13 @@ public class TicketService {
   }
 
   @Transactional
-  public void readTicket(Ticket ticket) {
+  public void readTicket(Ticket ticket, User user) {
     ticket = ticketRepository.getReferenceById(ticket.getTicketId());
-    ticket.setIsRead(true);
+    if (user.getRole().equals(Role.USER)) {
+      ticket.setIsReadByUser(true);
+    } else {
+      ticket.setIsReadByAdmin(true);
+    }
   }
 
   @Transactional
@@ -78,8 +90,21 @@ public class TicketService {
 
   @Transactional
   public void createMessage(Ticket ticket, String content, User user) {
-    ticket = ticketRepository.getReferenceById(ticket.getTicketId());
-    user = userRepository.getReferenceById(user.getId());
-    messageService.createMessage(user, content, ticket);
+    if (ticket.getStatus().equals(TicketStatus.OPEN)) {
+      ticket = ticketRepository.getReferenceById(ticket.getTicketId());
+      user = userRepository.getReferenceById(user.getId());
+      messageService.createMessage(user, content, ticket);
+      if (user.getRole().equals(Role.USER)) {
+        ticket.setIsReadByAdmin(false);
+        ticket.setIsReadByUser(true);
+        server.getRoomOperations(ADMINS_ROOM_NAME).sendEvent(NEW_MESSAGE_EVENT);
+      } else {
+        ticket.setIsReadByUser(false);
+        ticket.setIsReadByAdmin(true);
+        server.getRoomOperations(user.getUuid().toString()).sendEvent(NEW_MESSAGE_EVENT);
+      }
+    } else {
+      throw new RuntimeException("Ticket is already closed");
+    }
   }
 }

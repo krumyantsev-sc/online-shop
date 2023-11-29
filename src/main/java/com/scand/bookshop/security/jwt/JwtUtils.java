@@ -50,6 +50,7 @@ public class JwtUtils {
     Date expirationDate = new Date(
         System.currentTimeMillis() + 30L * 24 * 60 * 60 * 1000); // 1 month
     String token = Jwts.builder()
+        .setSubject((userDetails.getUsername()))
         .setIssuedAt(issueDate)
         .setExpiration(expirationDate)
         .signWith(key(refreshSecret), SignatureAlgorithm.HS256)
@@ -63,8 +64,8 @@ public class JwtUtils {
     return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
   }
 
-  public String getUserNameFromJwtToken(String token) {
-    return Jwts.parserBuilder().setSigningKey(key(jwtSecret)).build()
+  public String getUserNameFromJwtToken(String token, Boolean isJWT) {
+    return Jwts.parserBuilder().setSigningKey(key(isJWT ? jwtSecret : refreshSecret)).build()
         .parseClaimsJws(token).getBody().getSubject();
   }
 

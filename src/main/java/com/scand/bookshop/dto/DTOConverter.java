@@ -2,6 +2,7 @@ package com.scand.bookshop.dto;
 
 import com.scand.bookshop.entity.*;
 
+import com.scand.bookshop.entity.User.Role;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
@@ -100,14 +101,15 @@ public class DTOConverter {
     return cartBookResponseDTO;
   }
 
-  public static TicketResponseDTO toDTO(Ticket ticket) {
+  public static TicketResponseDTO toDTO(Ticket ticket, User user) {
     TicketResponseDTO ticketResponseDTO = new TicketResponseDTO();
     ticketResponseDTO.setUsername(ticket.getUser().getLogin());
     ticketResponseDTO.setTitle(ticket.getTitle());
     Message lastMessage = ticket.getMessages()
         .get(ticket.getMessages().size() - 1);
     ticketResponseDTO.setLastMessage(lastMessage.getContent());
-    ticketResponseDTO.setIsRead(ticket.getIsRead());
+    ticketResponseDTO.setIsRead(
+        user.getRole().equals(Role.USER) ? ticket.getIsReadByUser() : ticket.getIsReadByAdmin());
     ticketResponseDTO.setTimestamp(lastMessage.getTimestamp().format(messageDateFormatter));
     ticketResponseDTO.setUuid(ticket.getUuid());
     ticketResponseDTO.setStatus(ticket.getStatus());

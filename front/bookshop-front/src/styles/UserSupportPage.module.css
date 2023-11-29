@@ -29,6 +29,7 @@
 .ticketsContainer {
   width: 30%;
   border-right: 2px solid #e8e9eb;
+  overflow-y: scroll;
 }
 
 .chatContainer {

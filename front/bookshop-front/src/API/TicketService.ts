@@ -34,4 +34,8 @@ export default class TicketService {
     static closeTicket = async (uuid: string) => {
         return await axiosInstance.post("/ticket/close", {uuid: uuid}, {withCredentials: true});
     }
+
+    static readTicket = async (uuid: string) => {
+        return await axiosInstance.post("/ticket/read", {uuid: uuid}, {withCredentials: true});
+    }
 }
