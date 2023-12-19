@@ -3,7 +3,10 @@ package com.scand.bookshop.service;
 import com.scand.bookshop.entity.*;
 import com.scand.bookshop.repository.OrderDetailRepository;
 import com.scand.bookshop.repository.OrderRepository;
+import com.scand.bookshop.repository.SaleStatRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.RequiredArgsConstructor;
@@ -114,5 +117,14 @@ public class OrderService {
           });
     });
     return isPaid.get();
+  }
+
+  public List<Order> getPaidOrdersForDate(LocalDate date) {
+    LocalDateTime startOfDay = date.atStartOfDay();
+    LocalDateTime endOfDay = date.atTime(LocalTime.MAX);
+
+    return orderRepository.findAllByOrderDateBetweenAndStatus(startOfDay,
+        endOfDay,
+        OrderStatus.PAID);
   }
 }

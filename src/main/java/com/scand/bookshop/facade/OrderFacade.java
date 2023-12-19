@@ -8,7 +8,12 @@ import com.scand.bookshop.entity.User;
 import com.scand.bookshop.security.service.UserDetailsImpl;
 import com.scand.bookshop.service.BookService;
 import com.scand.bookshop.service.OrderService;
+import com.scand.bookshop.service.StatsService;
 import com.scand.bookshop.service.UserService;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +26,7 @@ public class OrderFacade {
     private final OrderService orderService;
     private final BookService bookService;
     private final UserService userService;
+    private final StatsService statsService;
 
     public CreateOrderResponseDTO createOrder(OrderRequestDTO orderData, UserDetailsImpl userDetails) {
         Book book = bookService.getBookByUuid(orderData.getUuid());
@@ -48,5 +54,12 @@ public class OrderFacade {
         Page<Order> orderPage = orderService.getAllOrdersPage(pageable, user);
         int totalPages = orderPage.getTotalPages();
         return new OrderPageResponseDTO(orderPage.map(DTOConverter::toDTO).getContent(), totalPages);
+    }
+
+    public List<DailySalesDTO> getOrderAmountStats(StatsRequestDTO statsRequestDTO) {
+        return statsService.getOrdersForDays(statsRequestDTO.getNumberOfDays())
+            .stream()
+            .map(DTOConverter::toDTO)
+            .collect(Collectors.toCollection(ArrayList::new));
     }
 }

@@ -1,6 +1,7 @@
 package com.scand.bookshop.service;
 
 import com.corundumstudio.socketio.SocketIOServer;
+import com.scand.bookshop.dto.UpdateTicketResponseDTO;
 import com.scand.bookshop.entity.Message;
 import com.scand.bookshop.entity.Ticket;
 import com.scand.bookshop.entity.TicketStatus;
@@ -97,11 +98,13 @@ public class TicketService {
       if (user.getRole().equals(Role.USER)) {
         ticket.setIsReadByAdmin(false);
         ticket.setIsReadByUser(true);
-        server.getRoomOperations(ADMINS_ROOM_NAME).sendEvent(NEW_MESSAGE_EVENT);
+        server.getRoomOperations(ADMINS_ROOM_NAME)
+            .sendEvent(NEW_MESSAGE_EVENT, new UpdateTicketResponseDTO(ticket.getUuid()));
       } else {
         ticket.setIsReadByUser(false);
         ticket.setIsReadByAdmin(true);
-        server.getRoomOperations(user.getUuid().toString()).sendEvent(NEW_MESSAGE_EVENT);
+        server.getRoomOperations(user.getUuid().toString())
+            .sendEvent(NEW_MESSAGE_EVENT, new UpdateTicketResponseDTO(ticket.getUuid()));
       }
     } else {
       throw new RuntimeException("Ticket is already closed");
