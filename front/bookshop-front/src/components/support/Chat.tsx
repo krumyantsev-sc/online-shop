@@ -5,32 +5,15 @@ import Message from "./Message";
 import IMessage from "./IMessage";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import {useSocket} from "../socket/SocketContext";
 
 interface ChatProps {
     activeChat: string | null;
 }
 
 const Chat: React.FC<ChatProps> = ({activeChat}) => {
-    const socket = useSocket();
+
     const [messages, setMessages] = useState<IMessage[]>([]);
     const [message, setMessage] = useState('');
-
-    const newMessageHandler = (data: { uuid: string }) => {
-        if (data.uuid === activeChat) {
-            fetchMessages();
-        }
-    }
-
-    useEffect(() => {
-        if (socket) {
-            socket.on('newMessage', newMessageHandler);
-
-            return () => {
-                socket.off('newMessage');
-            };
-        }
-    }, [socket]);
 
     const handleMessageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setMessage(event.target.value);

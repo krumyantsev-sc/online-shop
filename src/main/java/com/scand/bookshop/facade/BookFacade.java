@@ -153,11 +153,9 @@ public class BookFacade {
     Book book = bookService.getBookByUuid(uuid);
     byte[] content = bookService.downloadBook(book);
     HttpHeaders headers = new HttpHeaders();
-    headers.setContentDispositionFormData("attachment", "book.pdf");
     headers.setContentType(MediaType.APPLICATION_PDF);
-    return ResponseEntity.ok()
-        .headers(headers)
-        .body(content);
+    headers.setContentDispositionFormData("attachment", "book.pdf");
+    return new ResponseEntity<>(content, headers, HttpStatus.OK);
   }
 
   public void addRating(String uuid, RatingRequestDTO ratingRequestDTO,

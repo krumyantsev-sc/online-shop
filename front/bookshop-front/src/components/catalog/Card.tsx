@@ -76,6 +76,15 @@ const Card: React.FC<CardBookProps> = ({
         CartService.addItem(uuid);
     }
 
+    function downloadFile(url: string, filename: string) {
+        let link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
     const handleDescriptionClick = () => {
         navigate(`/catalog/${uuid}`)
     }
@@ -85,16 +94,7 @@ const Card: React.FC<CardBookProps> = ({
     }
 
     const handleDownloadClick = () => {
-        BookService.download(uuid).then((response) => {
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', 'book.pdf');
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-            window.URL.revokeObjectURL(url);
-        })
+        downloadFile(`${process.env.REACT_APP_API_URL}/books/${uuid}/download`, title)
     }
 
     const navigateToOrderPage = (res: AxiosResponse<any>) => {

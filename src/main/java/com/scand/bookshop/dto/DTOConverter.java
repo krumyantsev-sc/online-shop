@@ -124,14 +124,6 @@ public class DTOConverter {
     return messageResponseDTO;
   }
 
-  public static DailySalesDTO toDTO(SaleStat saleStat) {
-    DailySalesDTO dailySalesDTO = new DailySalesDTO();
-    dailySalesDTO.setDate(saleStat.getDate());
-    dailySalesDTO.setSales(saleStat.getAmount());
-    dailySalesDTO.setSum(saleStat.getSum());
-    return dailySalesDTO;
-  }
-
   public static RatingResponseDTO toDTO(double rating) {
     return new RatingResponseDTO(rating);
   }

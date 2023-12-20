@@ -23,8 +23,4 @@ export default class OrderService {
                 size: 3,
             }, withCredentials: true});
     }
-
-    static getOrderAmountStats = async (numberOfDays: number) => {
-        return await axiosInstance.post("/order/stats/amount", {numberOfDays: numberOfDays}, {withCredentials: true});
-    };
 }

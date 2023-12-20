@@ -35,5 +35,3 @@ databaseChangeLog:
       file: db/changelog/changes/add-uuid-and-timestamp-ticket.yaml
   - include:
       file: db/changelog/changes/refactor-isread-columns.yaml
-  - include:
-      file: db/changelog/changes/create-stats-table.yaml

@@ -9,6 +9,7 @@ import Chat from "./Chat";
 import {useAuth} from "../auth/context/AuthContextProvider";
 import {Roles} from "../../enums/Roles";
 import ClearIcon from '@mui/icons-material/Clear';
+import {io} from "socket.io-client";
 import {useSocket} from "../socket/SocketContext";
 
 const UserSupportPage = () => {
@@ -19,7 +20,7 @@ const UserSupportPage = () => {
     const {roles} = useAuth();
 
     const newMessageHandler = () => {
-        fetchTickets();
+        fetchTickets()
     }
 
     useEffect(() => {
@@ -45,6 +46,7 @@ const UserSupportPage = () => {
 
     const handleAddClick = () => {
         setModalOpen(true);
+
     }
 
     const handleCloseClick = () => {
