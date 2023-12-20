@@ -7,6 +7,7 @@ build/
 ./front/bookshop-front/.env
 ./uploads/
 node_modules/
+resources/static/
 errors.log
 general.log
 
