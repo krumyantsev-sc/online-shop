@@ -1,12 +1,15 @@
 package com.scand.bookshop.controller;
 
 import com.scand.bookshop.dto.CreateOrderResponseDTO;
+import com.scand.bookshop.dto.DailySalesDTO;
 import com.scand.bookshop.dto.OrderPageResponseDTO;
 import com.scand.bookshop.dto.OrderRequestDTO;
 import com.scand.bookshop.dto.OrderResponseDTO;
+import com.scand.bookshop.dto.StatsRequestDTO;
 import com.scand.bookshop.facade.OrderFacade;
 import com.scand.bookshop.security.service.UserDetailsImpl;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -43,5 +46,10 @@ public class OrderController {
                                                @RequestParam int size,
                                                @AuthenticationPrincipal UserDetailsImpl userPrincipal) {
         return orderFacade.getOrderHistoryPage(page, size, userPrincipal);
+    }
+
+    @PostMapping("/stats/amount")
+    public List<DailySalesDTO> getOrderAmountStats(@RequestBody StatsRequestDTO statsRequestDTO) {
+        return orderFacade.getOrderAmountStats(statsRequestDTO);
     }
 }

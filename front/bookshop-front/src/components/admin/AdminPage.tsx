@@ -6,6 +6,8 @@ import Pagination from "../util/Pagination";
 import SearchBar from "../catalog/SearchBar";
 import "../../styles/Admin.css"
 import {useTranslation} from "react-i18next";
+import QueryStatsIcon from '@mui/icons-material/QueryStats';
+import {Link} from "react-router-dom";
 
 const AdminPage = () => {
     const [users, setUsers] = useState(null);
@@ -57,6 +59,9 @@ const AdminPage = () => {
             <div className="user-table-container-wrapper">
                 <div className="search-bar-admin-container">
                     <SearchBar onSearch={handleSearch}/>
+                    <Link to={"/admin/stats"}>
+                        <QueryStatsIcon className={"stats-icon"} style={{fontSize: 28}}/>
+                    </Link>
                 </div>
                 <div className="user-table-container">
                     {users && <UserTable users={users} onBan={onBan}/>}
