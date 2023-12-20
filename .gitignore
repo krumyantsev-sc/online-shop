@@ -6,7 +6,6 @@ build/
 !**/src/test/**/build/
 ./front/bookshop-front/.env
 ./uploads/
-node_modules/
 errors.log
 general.log
 
