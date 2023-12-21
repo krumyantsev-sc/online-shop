@@ -44,6 +44,9 @@ public class Book {
     @Column(name = "price", nullable = false)
     private double price;
 
+    @Column(name = "available", nullable = false)
+    private Boolean isAvailable;
+
     public Book(Long id,
                 String title,
                 String genre,
@@ -51,7 +54,8 @@ public class Book {
                 String filePath,
                 String uuid,
                 String description,
-                double price) {
+                double price,
+                Boolean isAvailable) {
         this.id = id;
         this.title = title;
         this.genre = genre;
@@ -60,5 +64,6 @@ public class Book {
         this.uuid = uuid;
         this.description = description;
         this.price = price;
+        this.isAvailable = isAvailable;
     }
 }

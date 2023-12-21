@@ -7,7 +7,6 @@ build/
 ./front/bookshop-front/.env
 ./uploads/
 node_modules/
-resources/static/
 errors.log
 general.log
 
@@ -22,6 +21,7 @@ general.log
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
+src/main/resources/static/
 
 ### IntelliJ IDEA ###
 .idea
@@ -33,7 +33,6 @@ out/
 !**/src/test/**/out/
 !**/uploads/
 !**/node_modules/
-!**/resources/static/
 
 ### NetBeans ###
 /nbproject/private/
