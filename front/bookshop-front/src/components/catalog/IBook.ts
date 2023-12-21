@@ -3,5 +3,7 @@ export default interface IBook {
     genre: string,
     author: string,
     uuid: string,
-    description: string
+    description: string,
+    price: number,
+    isPaid?: boolean
 }

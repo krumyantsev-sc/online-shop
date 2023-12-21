@@ -6,6 +6,9 @@ build/
 !**/src/test/**/build/
 ./front/bookshop-front/.env
 ./uploads/
+node_modules/
+errors.log
+general.log
 
 ### STS ###
 .apt_generated
@@ -18,6 +21,7 @@ build/
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
+src/main/resources/static/
 
 ### IntelliJ IDEA ###
 .idea
@@ -28,6 +32,7 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 !**/uploads/
+!**/node_modules/
 
 ### NetBeans ###
 /nbproject/private/
@@ -40,3 +45,4 @@ out/
 .vscode/
 /uploads/
 errors.log
+general.log

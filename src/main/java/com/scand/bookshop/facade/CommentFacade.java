@@ -31,7 +31,7 @@ public class CommentFacade {
     public void addComment(CommentRequestDTO comment, UserDetailsImpl userPrincipal) {
         User user = userService.getUserById(userPrincipal.getId());
         Book book = bookService.getBookByUuid(comment.getBookUuid());
-        commentService.add(comment.getText(), book, user);
+        commentService.add(comment.getText(), book, user, comment.getParentUuid());
     }
 
     public List<CommentResponseDTO> getComments(String uuid) {
@@ -43,19 +43,11 @@ public class CommentFacade {
 
     public void deleteComment(String uuid, UserDetailsImpl userPrincipal) {
         Comment comment = commentService.getCommentByUuid(uuid);
-        if (!Objects.equals(comment.getUser().getId(), userPrincipal.getId()) && userPrincipal.getAuthorities().stream()
-                .noneMatch(auth -> auth.getAuthority().equals("ADMIN"))) {
-            throw new RuntimeException(messageSource.getMessage("no_access", null, request.getLocale()));
-        }
         commentService.deleteComment(comment);
     }
 
     public void updateComment(String uuid, String newText, UserDetailsImpl userPrincipal) {
         Comment comment = commentService.getCommentByUuid(uuid);
-        if (!Objects.equals(comment.getUser().getId(), userPrincipal.getId()) && userPrincipal.getAuthorities().stream()
-                .noneMatch(auth -> auth.getAuthority().equals("ADMIN"))) {
-            throw new RuntimeException(messageSource.getMessage("no_access", null, request.getLocale()));
-        }
         commentService.updateComment(comment, newText);
     }
 }

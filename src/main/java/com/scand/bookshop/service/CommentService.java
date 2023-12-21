@@ -12,10 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -25,9 +22,18 @@ public class CommentService {
     private final MessageSource messageSource;
     private final HttpServletRequest request;
 
-    public void add(String text, Book book, User user) {
+    public void add(String text, Book book, User user, String parentUuid) {
         log.info("Adding comment for book with ID: " + book.getId() + " by user with ID: " + user.getId());
-        Comment comment = new Comment(null, text, book, user, LocalDateTime.now(), UUID.randomUUID().toString());
+        Optional<Comment> parentComment = findCommentByUuid(parentUuid);
+        Comment comment = new Comment(null,
+                parentComment.orElse(null),
+                new ArrayList<Comment>(),
+                text,
+                book,
+                user,
+                LocalDateTime.now(),
+                UUID.randomUUID().toString(),
+                false);
         commentRepository.save(comment);
         log.info("Comment saved with UUID: " + comment.getUuid());
     }
@@ -45,10 +51,16 @@ public class CommentService {
                 });
     }
 
+    @Transactional
     public void deleteComment(Comment comment) {
         log.info("Deleting comment with ID: " + comment.getId() + " and UUID: " + comment.getUuid());
-        commentRepository.delete(comment);
-        log.info("Comment deleted");
+        if(comment.getReplies().isEmpty()) {
+            commentRepository.delete(comment);
+            log.info("Comment deleted");
+        } else {
+            comment.setRemoved(true);
+            log.info("Comment marked as removed");
+        }
     }
 
     @Transactional
@@ -57,6 +69,10 @@ public class CommentService {
         comment = commentRepository.getReferenceById(comment.getId());
         comment.setText(newText);
         log.info("Comment updated");
+    }
+
+    public void clearComments(List<Comment> comments) {
+        commentRepository.deleteAll(comments);
     }
 
     public List<Comment> getComments(Book book) {

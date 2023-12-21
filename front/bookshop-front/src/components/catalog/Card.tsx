@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import IBook from "./IBook";
 import "../../styles/Catalog.css"
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -9,6 +9,12 @@ import ImageComponent from "./Image";
 import PreviewModal from "./PreviewModal";
 import {useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from 'react-i18next';
+import {Rating} from "./Rating";
+import BookService from "../../API/BookService";
+import OrderService from "../../API/OrderService";
+import {AxiosResponse} from "axios";
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import CartService from "../../API/CartService";
 
 interface CardBookProps extends IBook {
     getBooksFromServer: () => {};
@@ -20,14 +26,36 @@ const Card: React.FC<CardBookProps> = ({
                                            genre,
                                            uuid,
                                            getBooksFromServer,
-                                           description
+                                           description,
+                                           price,
+                                           isPaid
                                        }) => {
     const {t: i18n} = useTranslation();
-    const {roles} = useAuth();
+    const {roles, isAuthenticated} = useAuth();
     const [openEdit, setOpenEdit] = React.useState(false);
     const [openPreview, setOpenPreview] = React.useState(false);
     const navigate = useNavigate();
     let {bookUuid} = useParams();
+    const [rating, setRating] = useState(1.00);
+
+    useEffect(() => {
+        getRating()
+    }, []);
+
+    const getRating = async () => {
+        try {
+            const response = await BookService.getRating(uuid);
+            const data = await response.data;
+            setRating(data.rating);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    const updateRating = async (rating: number) => {
+        BookService.setRating(uuid, rating).then(getRating);
+    }
+
     const handleClickOpenEdit = () => {
         setOpenEdit(true);
     };
@@ -44,13 +72,33 @@ const Card: React.FC<CardBookProps> = ({
         setOpenPreview(false);
     };
 
-    function downloadFile(url: string, filename: string) {
-        let link = document.createElement('a');
-        link.href = url;
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+    const handleAddToCart = () => {
+        CartService.addItem(uuid);
+    }
+
+    const handleDescriptionClick = () => {
+        navigate(`/catalog/${uuid}`)
+    }
+
+    const handleRatingChange = (rating: number) => {
+        updateRating(rating);
+    }
+
+    const handleDownloadClick = () => {
+        BookService.download(uuid).then((response) => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'book.pdf');
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            window.URL.revokeObjectURL(url);
+        })
+    }
+
+    const navigateToOrderPage = (res: AxiosResponse<any>) => {
+        navigate(`/order/${res.data.uuid}`)
     }
 
     return (
@@ -65,29 +113,42 @@ const Card: React.FC<CardBookProps> = ({
                 />
             </div>
             <div className="desc-container"
-                 onClick={() => {
-                     navigate(`/catalog/${uuid}`)
-                 }}
+                 onClick={handleDescriptionClick}
             >
                 <span>{i18n('title')}: {title}</span><br/>
                 <span>{i18n('author')}: {author}</span><br/>
                 <span>{i18n('genre')}: {genre}</span><br/>
+                <span>{i18n('price')}: {price}</span><br/>
             </div>
-            {bookUuid &&
+            <Rating
+                value={rating}
+                onChange={handleRatingChange}
+            />
             <div className="card-buttons-container">
-                <div className="download-button"
-                     onClick={() => {
-                         downloadFile(`${process.env.REACT_APP_API_URL}/books/${uuid}/download`, title)
-                     }}>
-                    {i18n('download')}
-                </div>
-                {roles.includes(Roles.Admin) && <div className="edit-button">
+                {(isAuthenticated && isPaid) ?
+                    <div className="download-button"
+                         onClick={handleDownloadClick}>
+                        {i18n('download')}
+                    </div>
+                    :
+                    <div className="card-buttons-container">
+                        <div className="download-button"
+                             onClick={() => {
+                                 OrderService.createOrder(uuid)
+                                     .then(navigateToOrderPage);
+                             }}>
+                            {i18n('buy')}
+                        </div>
+                        {!bookUuid &&
+                        <AddShoppingCartIcon onClick={handleAddToCart}/>}
+                    </div>
+                }
+                {roles.includes(Roles.Admin) && bookUuid && <div className="edit-button">
                     <SettingsIcon
                         onClick={handleClickOpenEdit}
                     />
                 </div>}
             </div>
-            }
             <BookModal
                 open={openEdit}
                 handleClose={handleCloseEdit}
@@ -96,6 +157,7 @@ const Card: React.FC<CardBookProps> = ({
                 genre={genre}
                 title={title}
                 uuid={uuid}
+                price={price}
                 description={description}
             />
             <PreviewModal open={openPreview} handleClose={handleClosePreview} uuid={uuid}/>

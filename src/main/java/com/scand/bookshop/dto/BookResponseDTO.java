@@ -15,4 +15,6 @@ public class BookResponseDTO {
     private String author;
     private String uuid;
     private String description;
+    private double price;
+    private Boolean isPaid;
 }

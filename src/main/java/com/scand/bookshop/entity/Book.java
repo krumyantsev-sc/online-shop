@@ -3,6 +3,10 @@ package com.scand.bookshop.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -33,4 +37,33 @@ public class Book {
 
     @Column(name="description")
     private String description;
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Rating> ratings = new ArrayList<>();
+
+    @Column(name = "price", nullable = false)
+    private double price;
+
+    @Column(name = "available", nullable = false)
+    private Boolean isAvailable;
+
+    public Book(Long id,
+                String title,
+                String genre,
+                String author,
+                String filePath,
+                String uuid,
+                String description,
+                double price,
+                Boolean isAvailable) {
+        this.id = id;
+        this.title = title;
+        this.genre = genre;
+        this.author = author;
+        this.filePath = filePath;
+        this.uuid = uuid;
+        this.description = description;
+        this.price = price;
+        this.isAvailable = isAvailable;
+    }
 }

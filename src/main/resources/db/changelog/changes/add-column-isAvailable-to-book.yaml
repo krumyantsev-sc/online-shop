@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: "2023-12-20-add-column-is-available-to-book"
+      author: krumyantsev-sc
+      changes:
+        - addColumn:
+            tableName: book
+            columns:
+              - column:
+                  name: available
+                  type: boolean
+                  defaultValue: false
+                  constraints:
+                    nullable: false

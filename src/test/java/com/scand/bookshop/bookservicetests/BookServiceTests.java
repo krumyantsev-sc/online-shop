@@ -35,7 +35,7 @@ public class BookServiceTests {
         String subject = "Computer Science";
         String extension = "pdf";
         byte[] content = "This is the content of the book.".getBytes();
-        Book book = bookService.createBook(title, author, subject, extension, content);
+        Book book = bookService.createBook(title, author, subject, extension, content, 6.0);
         assertAll(
                 () -> assertThat(book).isNotNull(),
                 () -> assertThat(book.getTitle()).isEqualTo(title),
@@ -54,7 +54,7 @@ public class BookServiceTests {
         doThrow(new RuntimeException("Error")).when(fileService).writeFile(any(), any());
         Book book = null;
         try {
-            book = bookService.createBook(title, author, subject, extension, content);
+            book = bookService.createBook(title, author, subject, extension, content, 6.0);
         } catch (RuntimeException e) {
             //
         }
@@ -69,7 +69,7 @@ public class BookServiceTests {
         byte[] content = "This is the content of the book.".getBytes();
         Book book = null;
         try {
-            book = bookService.createBook(null, author, subject, extension, content);
+            book = bookService.createBook(null, author, subject, extension, content, 6.0);
         } catch (Exception e) {
             // expected
         }
@@ -83,10 +83,10 @@ public class BookServiceTests {
         String subject = "Computer Science";
         String extension = "pdf";
         byte[] content = "This is the content of the book.".getBytes();
-        Book book = bookService.createBook(title, author, subject, extension, content);
+        Book book = bookService.createBook(title, author, subject, extension, content, 6.0);
         String newTitle = "The New Book";
         String newAuthor = "Jane Doe";
-        book = bookService.updateBook(book, newTitle, "new genre", newAuthor,"desc");
+        book = bookService.updateBook(book, newTitle, "new genre", newAuthor, "desc", 6.0);
         Optional<Book> newBook = bookService.findBookByUuid(book.getUuid());
         assertThat(newBook).isPresent();
         assertThat(newBook.get().getTitle()).isEqualTo(newTitle);

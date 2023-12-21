@@ -10,10 +10,10 @@ i18n
         },
         resources: {
             english: {
-                translation: require('./L5zero/out/en.json'),
+                translation: require('./L5zero/out/localization_en.json'),
             },
             russian: {
-                translation: require('./L5zero/out/ru.json'),
+                translation: require('./L5zero/out/localization_ru.json'),
             }
         },
     });

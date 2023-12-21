@@ -68,12 +68,18 @@ const RegisterForm: React.FC<RegisterFormProps> = ({setIsLoginForm}) => {
             try {
                 let response = await AuthService.register({username, password, email});
                 let data = await response.data;
+                setModalText(data.message);
+                setOpen(true);
             } catch (e: any) {
                 setModalText(e.response.data);
                 setOpen(true);
             }
         }
     };
+
+    const handleChangeFormCLick = () => {
+        setIsLoginForm(true);
+    }
 
     return (
         <Grid container justifyContent="center">
@@ -138,15 +144,13 @@ const RegisterForm: React.FC<RegisterFormProps> = ({setIsLoginForm}) => {
                         color="primary"
                         type="button"
                         style={{marginTop: 16}}
-                        onClick={() => {
-                            setIsLoginForm(true);
-                        }}
+                        onClick={handleChangeFormCLick}
                     >
                         LOGIN
                     </Button>
                 </Paper>
             </Grid>
-            <Modal open={open} modalText={modalText}  handleClose={handleClose}/>
+            <Modal open={open} modalText={modalText} handleClose={handleClose}/>
         </Grid>
     );
 };

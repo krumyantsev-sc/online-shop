@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,46 +44,74 @@ public class CommentServiceTests extends BaseTest {
 
     private Book book;
 
-    @BeforeAll
-    private void setUp() {
-        createAdmin(registrationService, "adminCommentService", "admin");
+    private Book createBook() {
         book = new Book(null,
                 "testService",
                 "test",
                 "test",
                 "testpath",
                 UUID.randomUUID().toString(),
-                "desc");
-        book = bookRepository.save(book);
+                "desc", 6.0);
+        return bookRepository.save(book);
+    }
+
+    @BeforeAll
+    private void setUp() {
+        createAdmin(registrationService, "adminCommentService", "admin@mail.ru");
+        book = createBook();
     }
 
     @Test
-    public void createComment() {
-        commentService.add("test",book, userRepository.findByLogin("adminCommentService").get());
+    public void add_shouldAddComment() {
+        commentService.add("test",
+                book,
+                userRepository.findByLogin("adminCommentService").get(),
+                null);
         assertThat(commentRepository.findByBook(book)).isNotEmpty();
     }
 
     @Test
-    public void updateComment() {
+    public void add_shouldAddReply() {
+        Book testBook = createBook();
+        commentService.add("test",
+                testBook,
+                userRepository.findByLogin("adminCommentService").get(),
+                null);
+        commentService.add("test2",
+                testBook,
+                userRepository.findByLogin("adminCommentService").get(),
+                commentRepository.findByBook(book).get(0).getUuid());
+        assertThat(commentRepository.findByBook(book)).isNotEmpty();
+        assertThat(commentRepository.findByBook(book).get(1).getParentComment()).isNotNull();
+    }
+
+    @Test
+    public void updateComment_shouldUpdateComment() {
         Comment comment = new Comment(null,
+                null,
+                null,
                 "created",
                 book,
                 userService.findUserByUsername("adminCommentService").get(),
                 LocalDateTime.now(),
-                UUID.randomUUID().toString());
+                UUID.randomUUID().toString(),
+                false);
         comment = commentRepository.save(comment);
-        commentService.updateComment(comment,"testUpdate");
+        commentService.updateComment(comment, "testUpdate");
         assertThat(commentService.getCommentByUuid(comment.getUuid()).getText()).isEqualTo("testUpdate");
     }
 
     @Test
-    public void deleteComment() {
+    public void deleteComment_shouldDeleteComment() {
         Comment comment = new Comment(null,
+                null,
+                new ArrayList<Comment>(),
                 "created",
                 book,
                 userService.findUserByUsername("adminCommentService").get(),
                 LocalDateTime.now(),
-                UUID.randomUUID().toString());
+                UUID.randomUUID().toString(),
+                false);
         comment = commentRepository.save(comment);
         commentService.deleteComment(comment);
         assertThat(commentService.findCommentByUuid(comment.getUuid())).isNotPresent();

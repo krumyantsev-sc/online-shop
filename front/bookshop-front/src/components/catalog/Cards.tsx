@@ -11,6 +11,7 @@ import {Roles} from "../../enums/Roles";
 import SortMenu from "./SortMenu";
 import SearchBar from "./SearchBar";
 import {useTranslation} from "react-i18next";
+import Pagination from "../util/Pagination";
 
 
 const Cards = () => {
@@ -20,7 +21,7 @@ const Cards = () => {
     const [books, setBooks] = useState<IBook[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [pageSize, setPageSize] = useState<number>(10);
-    const [totalPages, setTotalPages] = useState<number>(0);
+    const [totalPages, setTotalPages] = useState<number>(1);
     const navigate = useNavigate();
     const [sortField, setSortField] = useState<string>("id");
     const [sortDirection, setSortDirection] = useState<string>("ASC");
@@ -46,7 +47,8 @@ const Cards = () => {
             const data = await response.data;
             if (data) {
                 setBooks(response.data.books);
-                setTotalPages(response.data.totalPages);
+                if (response.data.totalPages > 0)
+                    setTotalPages(response.data.totalPages);
                 setIsLoading(false);
             }
         } catch (error) {
@@ -56,9 +58,18 @@ const Cards = () => {
             setIsLoading(false);
         }
     }
+
     useEffect(() => {
         getBooksFromServer(currentPage, pageSize, sortField, sortDirection);
     }, [searchTerm, currentPage, pageSize, sortField, sortDirection]);
+
+    const incPage = () => {
+        setCurrentPage(currentPage + 1);
+    }
+
+    const decPage = () => {
+        setCurrentPage(currentPage - 1);
+    }
 
     if (isLoading) {
         return <Loading/>;
@@ -68,7 +79,8 @@ const Cards = () => {
         <div className={"cards-container-wrapper"}>
             <div className="cards-sort-container">
                 <div className="sort-search-container">
-                    <SortMenu sortField={sortField} sortDirection={sortDirection} onSortChange={handleSortChange}/>
+                    <SortMenu sortField={sortField} sortDirection={sortDirection}
+                              onSortChange={handleSortChange}/>
                     <SearchBar onSearch={handleSearch}/>
                 </div>
                 <div className={"cards-container"}>
@@ -79,7 +91,9 @@ const Cards = () => {
                             title={book.title}
                             genre={book.genre}
                             uuid={book.uuid}
+                            price={book.price}
                             description={book.description}
+                            isPaid={book.isPaid}
                             getBooksFromServer={() => getBooksFromServer(currentPage, pageSize)}
                         />
                     ))}
@@ -87,21 +101,12 @@ const Cards = () => {
                     <AddCard getBooksFromServer={() => getBooksFromServer(currentPage, pageSize)}/>}
                 </div>
             </div>
-            <div className="pagination">
-                <button
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage(currentPage - 1)}
-                >
-                    {i18n('prev')}
-                </button>
-                <span>{currentPage} / {totalPages}</span>
-                <button
-                    disabled={currentPage === totalPages}
-                    onClick={() => setCurrentPage(currentPage + 1)}
-                >
-                    {i18n('next')}
-                </button>
-            </div>
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPrevPage={decPage}
+                onNextPage={incPage}
+            />
         </div>
     );
 };

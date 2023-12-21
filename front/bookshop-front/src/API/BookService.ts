@@ -4,7 +4,8 @@ interface BookData {
     title: string;
     genre: string;
     author: string;
-    description: string
+    description: string;
+    price?: number;
 }
 
 export default class BookService {
@@ -51,6 +52,24 @@ export default class BookService {
     static getBook = async (uuid: string) => {
         return await axiosInstance.get(`${process.env.REACT_APP_API_URL}/books/${uuid}`, {
             withCredentials: true,
+        });
+    }
+
+    static getRating = async (uuid: string) => {
+        return await axiosInstance.get(`${process.env.REACT_APP_API_URL}/books/${uuid}/rating`, {
+            withCredentials: true,
+        });
+    }
+
+    static setRating = async (uuid: string, value: number) => {
+        return await axiosInstance.post(`${process.env.REACT_APP_API_URL}/books/${uuid}/update-rating`,
+            {ratingValue: value}, {withCredentials: true});
+    }
+
+    static download = async (uuid: string) => {
+        return await axiosInstance.get(`${process.env.REACT_APP_API_URL}/books/${uuid}/download`, {
+            withCredentials: true,
+            responseType: 'blob',
         });
     }
 }

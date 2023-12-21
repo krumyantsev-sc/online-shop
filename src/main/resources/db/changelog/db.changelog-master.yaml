@@ -11,3 +11,31 @@ databaseChangeLog:
       file: db/changelog/changes/add_description_to_books.yaml
   - include:
       file: db/changelog/changes/create-comment-table.yaml
+  - include:
+      file: db/changelog/changes/add-column-parent-id-comment.yaml
+  - include:
+      file: db/changelog/changes/add-column-isremoved.yaml
+  - include:
+      file: db/changelog/changes/add-rating-table.yaml
+  - include:
+      file: db/changelog/changes/add-order-detail-price.yaml
+  - include:
+      file: db/changelog/changes/create-cart.yaml
+  - include:
+      file: db/changelog/changes/create-cart-for-admin.yaml
+  - include:
+      file: db/changelog/changes/add-refresh-token-table.yaml
+  - include:
+      file: db/changelog/changes/add-user-active-column.yaml
+  - include:
+      file: db/changelog/changes/create-ticket-table.yaml
+  - include:
+      file: db/changelog/changes/create-message-table.yaml
+  - include:
+      file: db/changelog/changes/add-uuid-and-timestamp-ticket.yaml
+  - include:
+      file: db/changelog/changes/refactor-isread-columns.yaml
+  - include:
+      file: db/changelog/changes/create-stats-table.yaml
+  - include:
+      file: db/changelog/changes/add-column-isAvailable-to-book.yaml

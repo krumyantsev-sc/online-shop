@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-ticket-table
+      author: krumyantsev-sc
+      changes:
+        - createTable:
+            tableName: ticket
+            columns:
+              - column:
+                  name: ticket_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_ticket_user
+                    references: users(id)
+              - column:
+                  name: title
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_read
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(255)
+                  constraints:
+                    nullable: false

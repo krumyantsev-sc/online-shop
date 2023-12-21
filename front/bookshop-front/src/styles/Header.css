@@ -47,10 +47,10 @@
     font-family: 'Quicksand', sans-serif;
     font-size: 20px;
     cursor: pointer;
+    margin-right: 20px;
 }
 
 .menu {
-    width: 400px;
     display: flex;
     justify-content: space-between;
 }

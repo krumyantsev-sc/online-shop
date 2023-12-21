@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: refactor-isread-columns-2023-11-23
+      author: krumyantsev-sc
+      changes:
+        - renameColumn:
+            tableName: ticket
+            oldColumnName: is_read
+            newColumnName: is_read_by_user
+        - addColumn:
+            tableName: ticket
+            columns:
+              - column:
+                  name: is_read_by_admin
+                  type: boolean

@@ -1,0 +1,74 @@
+.ticketPreviewContainer {
+  border: 1px solid lightgray;
+  display: flex;
+  align-items: center;
+  height: 70px;
+  cursor: pointer;
+  font-family: 'Syne', sans-serif;
+  background-color: #ffffff;
+}
+
+.credsContainer {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.ticketInfoContainer {
+  height: 100%;
+  width: 100%;
+}
+
+.titleTimestampContainer {
+  font-size: 22px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.timestamp {
+  color: #676767;
+  padding-right: 5px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+}
+
+.ticketPreviewContainer:hover {
+  background-color: lightblue;
+  transition: 0.5s;
+}
+
+.glowingDot {
+  margin-top: 10px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: skyblue;
+  box-shadow: 0 0 5px 2px rgba(255, 0, 0, 0.6);
+  margin-left: 45px;
+}
+
+.dotTime {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.statusContainer {
+  color: orangered;
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+}
+
+.statusDotContainer {
+  position: absolute;
+  width: 400px;
+  display: flex;
+}
+
+.previewMessageContainer {
+  width: 200px;
+  overflow: hidden;
+}

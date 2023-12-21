@@ -15,4 +15,6 @@ public class CommentRequestDTO {
     private String text;
     @NotBlank
     private String bookUuid;
+    
+    private String parentUuid;
 }

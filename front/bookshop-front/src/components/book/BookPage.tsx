@@ -29,7 +29,7 @@ const BookPage = () => {
     };
 
     const handleClickSave = (comment: string) => {
-        CommentService.addComment(bookInfo!.uuid, comment).then(getComments);
+        CommentService.addComment(bookInfo!.uuid, comment, null).then(getComments);
     }
 
     useEffect(() => {
@@ -51,7 +51,14 @@ const BookPage = () => {
         try {
             let response = await CommentService.getComments(bookUuid!);
             let data = await response.data;
-            setComments(data);
+            const nestedUuids = new Set();
+            data.forEach((comment: IComment) => {
+                comment.replies?.forEach(reply => {
+                    nestedUuids.add(reply.uuid);
+                });
+            });
+            const filteredComments = data.filter((comment: IComment) => !nestedUuids.has(comment.uuid));
+            setComments(filteredComments);
         } catch (e) {
             console.log(e);
         }
@@ -69,7 +76,9 @@ const BookPage = () => {
                         genre={bookInfo.genre}
                         author={bookInfo.author}
                         uuid={bookInfo.uuid}
+                        price={bookInfo.price}
                         description={bookInfo.description}
+                        isPaid={bookInfo.isPaid}
                     />
                     <div className="book-page-desc-container">
                         <div className={"desc"}>
@@ -80,11 +89,14 @@ const BookPage = () => {
                                 comments?.map((comment) => {
                                     return <Comment
                                         key={comment.uuid}
+                                        bookUuid={bookInfo?.uuid}
                                         uuid={comment.uuid}
                                         text={comment.text}
                                         timestamp={comment.timestamp}
                                         username={comment.username}
                                         getComments={getComments}
+                                        replies={comment.replies}
+                                        removed={comment.removed}
                                     />
                                 })
                             }

@@ -1,6 +1,8 @@
 package com.scand.bookshop.userservicetests;
 
+import com.scand.bookshop.BaseTest;
 import com.scand.bookshop.entity.User;
+import com.scand.bookshop.entity.User.Role;
 import com.scand.bookshop.service.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -16,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class UserServiceTests {
+public class UserServiceTests extends BaseTest {
     @Autowired
     UserService userService;
 
@@ -55,5 +57,14 @@ public class UserServiceTests {
         assertThat(updatedUser).isPresent();
         assertThat(updatedUser.get().getAvatar()).isNotNull();
         assertThat(updatedUser.get().getAvatar()).isEqualTo("uploads/avatar/" + user.getUuid() + ".jpg");
+    }
+
+    @Test
+    public void ban() {
+        createAdmin(registrationService,"adminUserS", "adminUserS@mail.ru");
+        userService.ban(userService.findUserByUsername("adminUserS").get());
+        assertThat(userService.findUserByUsername("adminUserS").get().getRole()).isEqualTo(Role.BANNED);
+        userService.ban(userService.findUserByUsername("adminUserS").get());
+        assertThat(userService.findUserByUsername("adminUserS").get().getRole()).isEqualTo(Role.USER);
     }
 }

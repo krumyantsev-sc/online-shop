@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,6 +19,13 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "parent_comment_id")
+    private Comment parentComment;
+
+    @OneToMany(mappedBy = "parentComment")
+    private List<Comment> replies;
 
     @Column(name="text",nullable = false)
     private String text;
@@ -35,4 +43,7 @@ public class Comment {
 
     @Column(name="comment_id", nullable = false)
     private String uuid;
+
+    @Column(name="removed", nullable = false)
+    private boolean isRemoved = false;
 }
